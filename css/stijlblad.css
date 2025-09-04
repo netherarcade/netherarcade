@@ -1,0 +1,60 @@
+html {
+background-color:#0C123A;
+}
+body {	
+	background-color: #9BC0D9;
+	border:5px, solid #293241;
+	margin-top:10%;
+	margin-left:20%;
+	margin-right:20%;
+	padding:2%;
+	border-radius: 10px;
+}
+
+
+h1 {
+  font-family:;
+
+}
+
+.border {
+  margin-left:750px;
+  background-color:#76879D;
+	border:3px, solid gray;
+  position: sticky;
+  top:0;
+  border-radius:5px;
+  width: 300px;
+  
+}
+
+.border-tekst
+{
+	font-size: 20px;
+  font-family:Andale Mono, monospace;
+  color: black;
+    
+}
+
+
+.shop-tekst 
+{
+	color: black;
+  font-size: 20px;
+  margin-right:20px;
+
+}
+.Shop-border {
+  background-color:#76879D;
+   font-family:Andale Mono, monospace;
+	border:3px, solid gray;
+  border-radius:5px;
+	 height: auto;
+	
+}
+
+.fiximage{ 
+	 width: 100%;
+	 height: auto;
+	padding-top:2%;
+ }
