@@ -9,7 +9,7 @@
       --bg: #131316;
       --surface: #1e1e22;
       --card: #27272c;
-      --accent: #1ce69c;          /* Modrinth-style mint */
+      --accent: #1ce69c;
       --text: #f3f3f7;
       --subtle: #9f9fa6;
     }
@@ -26,23 +26,50 @@
       flex-direction: column;
       min-height: 100vh;
     }
-    header {
-      width: 100%;
-      overflow: hidden;
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: var(--surface);
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      padding: .75rem 1rem;
+      border-bottom: 1px solid var(--card);
+    }
+    nav button {
+      background: none;
+      border: none;
+      color: var(--subtle);
+      font-size: 1rem;
+      cursor: pointer;
+      transition: color .2s ease;
+    }
+    nav button.active {
+      color: var(--accent);
     }
     header img {
       width: 100%;
       height: auto;
       display: block;
       object-fit: cover;
-      max-height: 320px;
+      max-height: 260px;
     }
     main {
       flex: 1;
-      display: grid;
-      place-content: center;
+      padding: 2.5rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       text-align: center;
-      padding: 3rem 1.5rem;
+    }
+    section {
+      display: none;
+      width: 100%;
+      max-width: 720px;
+    }
+    section.active {
+      display: block;
     }
     h1 {
       font-size: 2.5rem;
@@ -51,10 +78,9 @@
       margin-bottom: 1rem;
     }
     p {
-      max-width: 520px;
-      margin: 0 auto 2rem;
       color: var(--subtle);
       line-height: 1.6;
+      margin-bottom: 2rem;
     }
     .ip-box {
       display: inline-flex;
@@ -93,6 +119,59 @@
     .tooltip.show {
       opacity: 1;
     }
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    .member {
+      background: var(--card);
+      border-radius: 10px;
+      padding: 1rem;
+      transition: transform .2s ease;
+    }
+    .member:hover {
+      transform: translateY(-4px);
+    }
+    .member .name {
+      font-weight: 600;
+      margin-bottom: .25rem;
+    }
+    .member .role {
+      font-size: .85rem;
+      color: var(--accent);
+    }
+    textarea {
+      width: 100%;
+      min-height: 120px;
+      resize: vertical;
+      background: var(--card);
+      border: 1px solid var(--surface);
+      color: var(--text);
+      border-radius: 8px;
+      padding: .75rem;
+      font-family: inherit;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+    .btn {
+      background: var(--accent);
+      color: #000;
+      border: none;
+      padding: .75rem 1.75rem;
+      font-size: 1rem;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(28, 230, 156, .35);
+    }
+    .discord {
+      margin-top: 1.5rem;
+    }
     footer {
       text-align: center;
       padding: 1.5rem 1rem;
@@ -102,23 +181,66 @@
   </style>
 </head>
 <body>
+
+  <nav>
+    <button class="active" onclick="switchTab('home')">Home</button>
+    <button onclick="switchTab('team')">Team</button>
+    <button onclick="switchTab('feedback')">Feedback / Support</button>
+  </nav>
+
   <header>
-    <!-- Replace with your banner -->
+    <!-- banner file updated -->
     <img src="retouch_2025090307294209.jpg" alt="Nether Arcade Banner">
   </header>
 
   <main>
-    <h1>Nether Arcade</h1>
-    <p>
-      A Minecraft server community crafting <strong>minigames powered by command blocks</strong>.  
-      No mods—just pure vanilla ingenuity.
-    </p>
+    <!-- HOME -->
+    <section id="home" class="active">
+      <h1>Nether Arcade</h1>
+      <p>A Minecraft server crafting <strong>minigames powered by command blocks</strong>. No mods—just vanilla ingenuity.</p>
+      <div class="ip-box" onclick="copyIP()">
+        <span>netherarcade.cold00.eu</span>
+        <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+        <span class="tooltip" id="tip">Copied!</span>
+      </div>
+    </section>
 
-    <div class="ip-box" onclick="copyIP()">
-      <span id="ip">netherarcade.cold00.eu</span>
-      <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
-      <span class="tooltip" id="tip">Copied!</span>
-    </div>
+    <!-- TEAM -->
+    <section id="team">
+      <h1>Our Team</h1>
+      <p>The builders behind the blocks.</p>
+      <div class="team-grid">
+        <div class="member">
+          <div class="name">Ded Bob</div>
+          <div class="role">Owner</div>
+        </div>
+        <div class="member">
+          <div class="name">Vanilama</div>
+          <div class="role">Command Engineer</div>
+        </div>
+        <div class="member">
+          <div class="name">simson</div>
+          <div class="role">Builder</div>
+        </div>
+        <div class="member">
+          <div class="name">ridderbeo</div>
+          <div class="role">Builder</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEEDBACK -->
+    <section id="feedback">
+      <h1>Feedback / Support</h1>
+      <p>Found a bug or have an idea? Drop it below and copy to clipboard.</p>
+      <textarea id="feedbackArea" placeholder="Type your message here…"></textarea>
+      <button class="btn" onclick="copyFeedback()">Copy Message</button>
+
+      <div class="discord">
+        <p>Or reach us instantly on Discord:</p>
+        <a href="https://discord.gg/xpPTKx9FuP" target="_blank" rel="noopener noreferrer" class="btn">Join Discord</a>
+      </div>
+    </section>
   </main>
 
   <footer>
@@ -126,16 +248,27 @@
   </footer>
 
   <script>
+    function switchTab(tab) {
+      document.querySelectorAll("nav button").forEach(b => b.classList.remove("active"));
+      document.querySelectorAll("section").forEach(s => s.classList.remove("active"));
+      document.getElementById(tab).classList.add("active");
+      document.querySelector(`nav button[onclick="switchTab('${tab}')"]`).classList.add("active");
+    }
     function copyIP() {
-      const ip = document.getElementById('ip').textContent;
-      navigator.clipboard.writeText(ip).then(() => {
+      navigator.clipboard.writeText("netherarcade.cold00.eu").then(() => {
         const tip = document.getElementById('tip');
         tip.classList.add('show');
         setTimeout(() => tip.classList.remove('show'), 1500);
       });
     }
-    document.getElementById('yr').textContent = new Date().getFullYear();
+    function copyFeedback() {
+      const text = document.getElementById("feedbackArea").value.trim();
+      if (!text) return alert("Write something first.");
+      navigator.clipboard.writeText(text).then(() => {
+        alert("Message copied—paste it in Discord or send it anywhere!");
+      });
+    }
+    document.getElementById("yr").textContent = new Date().getFullYear();
   </script>
 </body>
 </html>
-
