@@ -142,19 +142,6 @@
       font-size: .85rem;
       color: var(--accent);
     }
-    textarea {
-      width: 100%;
-      min-height: 120px;
-      resize: vertical;
-      background: var(--card);
-      border: 1px solid var(--surface);
-      color: var(--text);
-      border-radius: 8px;
-      padding: .75rem;
-      font-family: inherit;
-      font-size: 1rem;
-      margin-bottom: 1rem;
-    }
     .btn {
       background: var(--accent);
       color: #000;
@@ -169,8 +156,14 @@
       transform: translateY(-2px);
       box-shadow: 0 8px 20px rgba(28, 230, 156, .35);
     }
-    .discord {
-      margin-top: 1.5rem;
+    .discord-widget {
+      margin-top: 2rem;
+      width: 100%;
+      max-width: 350px;
+      height: 350px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--card);
     }
     footer {
       text-align: center;
@@ -185,11 +178,10 @@
   <nav>
     <button class="active" onclick="switchTab('home')">Home</button>
     <button onclick="switchTab('team')">Team</button>
-    <button onclick="switchTab('feedback')">Feedback / Support</button>
+    <button onclick="switchTab('contact')">Contact</button>
   </nav>
 
   <header>
-    <!-- banner file updated -->
     <img src="retouch_2025090307294209.jpg" alt="Nether Arcade Banner">
   </header>
 
@@ -229,17 +221,19 @@
       </div>
     </section>
 
-    <!-- FEEDBACK -->
-    <section id="feedback">
-      <h1>Feedback / Support</h1>
-      <p>Found a bug or have an idea? Drop it below and copy to clipboard.</p>
-      <textarea id="feedbackArea" placeholder="Type your message here…"></textarea>
-      <button class="btn" onclick="copyFeedback()">Copy Message</button>
+    <!-- CONTACT -->
+    <section id="contact">
+      <h1>Contact</h1>
+      <p>Join our Discord for instant help, updates, and community chat.</p>
+      <a class="btn" href="https://discord.gg/xpPTKx9FuP" target="_blank" rel="noopener noreferrer">Join Discord</a>
 
-      <div class="discord">
-        <p>Or reach us instantly on Discord:</p>
-        <a href="https://discord.gg/xpPTKx9FuP" target="_blank" rel="noopener noreferrer" class="btn">Join Discord</a>
-      </div>
+      <!-- Discord server widget (live online list) -->
+      <iframe class="discord-widget"
+        src="https://discord.com/widget?id=1272523246230945853&theme=dark"
+        allowtransparency="true"
+        frameborder="0"
+        sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts">
+      </iframe>
     </section>
   </main>
 
@@ -259,13 +253,6 @@
         const tip = document.getElementById('tip');
         tip.classList.add('show');
         setTimeout(() => tip.classList.remove('show'), 1500);
-      });
-    }
-    function copyFeedback() {
-      const text = document.getElementById("feedbackArea").value.trim();
-      if (!text) return alert("Write something first.");
-      navigator.clipboard.writeText(text).then(() => {
-        alert("Message copied—paste it in Discord or send it anywhere!");
       });
     }
     document.getElementById("yr").textContent = new Date().getFullYear();
