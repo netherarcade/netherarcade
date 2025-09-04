@@ -1,1 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Nether Arcade – Command-Block Minigames</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root {
+      --bg: #131316;
+      --surface: #1e1e22;
+      --card: #27272c;
+      --accent: #1ce69c;          /* Modrinth-style mint */
+      --text: #f3f3f7;
+      --subtle: #9f9fa6;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: "Inter", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    header {
+      width: 100%;
+      overflow: hidden;
+    }
+    header img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+      max-height: 320px;
+    }
+    main {
+      flex: 1;
+      display: grid;
+      place-content: center;
+      text-align: center;
+      padding: 3rem 1.5rem;
+    }
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      letter-spacing: .05em;
+      margin-bottom: 1rem;
+    }
+    p {
+      max-width: 520px;
+      margin: 0 auto 2rem;
+      color: var(--subtle);
+      line-height: 1.6;
+    }
+    .ip-box {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      background: var(--card);
+      padding: .6rem 1.2rem;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background .2s ease;
+      position: relative;
+    }
+    .ip-box:hover {
+      background: var(--surface);
+    }
+    .ip-box svg {
+      width: 18px;
+      height: 18px;
+      fill: var(--accent);
+    }
+    .tooltip {
+      position: absolute;
+      bottom: 125%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--surface);
+      color: var(--text);
+      padding: .35rem .65rem;
+      border-radius: 6px;
+      font-size: .8rem;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .2s ease;
+    }
+    .tooltip.show {
+      opacity: 1;
+    }
+    footer {
+      text-align: center;
+      padding: 1.5rem 1rem;
+      font-size: .8rem;
+      color: var(--subtle);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <!-- Replace with your banner -->
+    <img src="1000399836.jpg" alt="Nether Arcade Banner">
+  </header>
+
+  <main>
+    <h1>Nether Arcade</h1>
+    <p>
+      A Minecraft server community crafting <strong>minigames powered by command blocks</strong>.  
+      No mods—just pure vanilla ingenuity.
+    </p>
+
+    <div class="ip-box" onclick="copyIP()">
+      <span id="ip">netherarcade.cold00.eu</span>
+      <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+      <span class="tooltip" id="tip">Copied!</span>
+    </div>
+  </main>
+
+  <footer>
+    &copy; <span id="yr"></span> Nether Arcade &nbsp;•&nbsp; Not affiliated with Mojang
+  </footer>
+
+  <script>
+    function copyIP() {
+      const ip = document.getElementById('ip').textContent;
+      navigator.clipboard.writeText(ip).then(() => {
+        const tip = document.getElementById('tip');
+        tip.classList.add('show');
+        setTimeout(() => tip.classList.remove('show'), 1500);
+      });
+    }
+    document.getElementById('yr').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
 
