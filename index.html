@@ -1,122 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login form | Ludiflex</title>
-<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-<style>
-:root {
-    --bg: #131316;
-    --surface: #1e1e22;
-    --card: #27272c;
-    --accent: #1ce69c;
-    --text: #f3f3f7;
-    --subtle: #9f9fa6;
-}
-* { box-sizing: border-box; margin:0; padding:0; }
-body { font-family:"Inter", system-ui, sans-serif; background:var(--bg); color:var(--text); display:flex; justify-content:center; align-items:flex-start; min-height:100vh; padding:2rem 0; }
-.container { width:100%; max-width:420px; padding:1rem; }
-.form-container { background: var(--surface); border-radius:12px; padding:2rem; position:relative; overflow:hidden; }
-.form-header p { color: var(--subtle); margin-bottom:0.25rem; }
-.form-header h1 { font-size:2rem; margin-bottom:1.5rem; }
-.input-group { position: relative; margin-bottom:1.5rem; }
-.input-field { width: 100%; padding:0.75rem 1rem; border-radius:8px; border:1px solid var(--card); background: var(--card); color: var(--text); }
-.floating-label { position:absolute; top:50%; left:1rem; transform:translateY(-50%); color: var(--subtle); pointer-events:none; transition:0.2s; }
-.input-field:focus + .floating-label, .input-field:not(:placeholder-shown) + .floating-label { top:-0.6rem; font-size:0.75rem; color: var(--accent); background: var(--surface); padding:0 0.25rem; }
-.eye-icon { position:absolute; right:0.8rem; top:50%; transform:translateY(-50%); cursor:pointer; color:var(--accent); }
-.checkbox-group { display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; }
-.form-btn { width:100%; padding:0.75rem; border:none; border-radius:8px; cursor:pointer; font-weight:600; transition:0.2s; }
-.form-btn--submit { background: var(--accent); color:#000; }
-.form-btn--submit:hover { opacity:0.9; }
-.form-divider { text-align:center; margin:1.5rem 0; color:var(--subtle); position:relative; }
-.form-divider::before, .form-divider::after { content:""; position:absolute; top:50%; width:40%; height:1px; background:var(--card); }
-.form-divider::before { left:0; }
-.form-divider::after { right:0; }
-.form-bottom { text-align:center; }
-.form-socials { display:flex; justify-content:center; gap:1rem; margin-bottom:1rem; }
-.form-btn--social { background: var(--card); padding:0.5rem; border-radius:8px; transition:0.2s; }
-.form-btn--social:hover { background: var(--surface); }
-.btn-icon { width:24px; height:24px; }
-.form-link { color: var(--accent); text-decoration:none; }
-
-/* Team section */
-.team-container { text-align:center; margin-top:2rem; display:flex; flex-wrap:wrap; justify-content:center; gap:1rem; }
-.team-container .member { position: relative; display:inline-block; cursor:pointer; }
-.team-container .member .name { font-weight:600; color: var(--accent); font-size:1rem; }
-.team-container .member .info {
-    display:none;
-    position:absolute;
-    top:2rem;
-    left:50%;
-    transform:translateX(-50%);
-    background: var(--surface);
-    color: var(--text);
-    padding:1rem;
-    border-radius:8px;
-    width:260px;
-    text-align:left;
-    z-index:10;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    font-size:0.85rem;
-    line-height:1.4;
-    white-space:pre-wrap;
-}
-.team-container .member:hover .info { display:block; }
-</style>
-</head>
-<body>
-<div class="container">
-    <div class="form-container">
-        <div class="form-header">
-            <p>Please enter your details</p>
-            <h1>Welcome Back</h1>
-        </div>
-        <form class="form-box">
-            <div class="input-group">
-                <input type="email" id="email" class="input-field" placeholder="" required>
-                <label for="email" class="floating-label">Email address</label>
-            </div>
-            <div class="input-group">
-                <input type="password" id="password" class="input-field" placeholder="" required>
-                <label for="password" class="floating-label">Password</label>
-                <div class="eye-icon" onclick="togglePassword()">
-                    <i class='bx bx-show'></i>
-                </div>
-            </div>
-            <div class="input-group checkbox-group">
-                <div class="form-col remember-me">
-                    <input type="checkbox" id="remember-me-checkbox" class="checkbox-field">
-                    <label for="remember-me-checkbox">Remember me</label>
-                </div>
-                <div class="form-col">
-                    <a href="#" class="form-link">Forgot password?</a>
-                </div>
-            </div>
-            <button type="submit" class="form-btn form-btn--submit">Sign In</button>
-        </form>
-        <div class="form-divider"><p>Or</p></div>
-        <div class="form-bottom">
-            <div class="form-socials">
-                <button type="button" class="form-btn form-btn--social">
-                    <img src="assets/images/google.svg" class="btn-icon" alt="">
-                </button>
-                <button type="button" class="form-btn form-btn--social">
-                    <img src="assets/images/facebook.svg" class="btn-icon" alt="">
-                </button>
-                <button type="button" class="form-btn form-btn--social">
-                    <img src="assets/images/apple.svg" class="btn-icon" alt="">
-                </button>
-            </div>
-            <p>Don't have an account? <a href="#" class="form-link">Sign up</a></p>
-        </div>
-
-        <!-- Team Section -->
-        <div class="team-container">
-            <!-- Ded Bob -->
-            <div class="member">
-                <span class="name">Ded Bob</span>
-                <div class="info">
+<!-- Team Section -->
+<div class="team-container">
+    <!-- Ded Bob -->
+    <div class="member">
+        <span class="name">Ded Bob</span>
+        <div class="info" style="background: linear-gradient(145deg, #3C9D2F, #6B4423); color:#f3f3f7; padding:1rem; border-radius:8px; width:260px; text-align:center; box-shadow:3px 3px 0 #000;">
 ─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────
 Hi, I’m Ded Bob (also known as Map1111)!  
 I love working with commands and with friends.  
@@ -124,13 +11,13 @@ Feel free to join the Discord group if you have any questions!
 
 Favourite colour: <span style="color:#ADD8E6;">Light Blue</span>
 ─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────
-                </div>
-            </div>
+        </div>
+    </div>
 
-            <!-- Vanilama -->
-            <div class="member">
-                <span class="name">Vanilama</span>
-                <div class="info">
+    <!-- Vanilama -->
+    <div class="member">
+        <span class="name">Vanilama</span>
+        <div class="info" style="background: linear-gradient(145deg, #3C9D2F, #6B4423); color:#f3f3f7; padding:1rem; border-radius:8px; width:260px; text-align:center; box-shadow:3px 3px 0 #000;">
 ─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────
 Hi, I’m Vanilama (Also Known As Vanilama-Modded)  
 I do multiple things on the server but mostly I make  
@@ -138,13 +25,13 @@ the command-only system for our Minigames
 
 Favourite colour: <span style="color:#B02121;">Lightly Darkened Red</span>
 ─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────
-                </div>
-            </div>
+        </div>
+    </div>
 
-            <!-- Simson -->
-            <div class="member">
-                <span class="name">Simson</span>
-                <div class="info">
+    <!-- Simson -->
+    <div class="member">
+        <span class="name">Simson</span>
+        <div class="info" style="background: linear-gradient(145deg, #3C9D2F, #6B4423); color:#f3f3f7; padding:1rem; border-radius:8px; width:260px; text-align:center; box-shadow:3px 3px 0 #000;">
 ─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────
 Yo, I’m Simson!  
 I like **building**, **PvP**, and **minigames**.  
@@ -152,13 +39,13 @@ I hope you enjoy the server and have fun!
 
 Favourite colour: **Red** 🔴
 ─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────
-                </div>
-            </div>
+        </div>
+    </div>
 
-            <!-- Ridderbeo -->
-            <div class="member">
-                <span class="name">Ridderbeo</span>
-                <div class="info">
+    <!-- Ridderbeo -->
+    <div class="member">
+        <span class="name">Ridderbeo</span>
+        <div class="info" style="background: linear-gradient(145deg, #3C9D2F, #6B4423); color:#f3f3f7; padding:1rem; border-radius:8px; width:260px; text-align:center; box-shadow:3px 3px 0 #000;">
 ─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────
 Hello, I’m Ridderbeo (also known as Pancake)!  
 I mostly work on **projects not related to Minecraft**.  
@@ -168,25 +55,41 @@ I love to **talk and interact** with people, so you’ll see me around!
 
 Favourite colour: **Green** 🟢
 ─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────
-                </div>
-            </div>
         </div>
     </div>
 </div>
 
-<script>
-function togglePassword() {
-    const passwordInput = document.getElementById("password");
-    const eyeIcon = document.querySelector(".eye-icon i");
-
-    if(passwordInput.type === "password") {
-        passwordInput.type = "text";
-        eyeIcon.classList.replace('bx-show','bx-hide');
-    } else {
-        passwordInput.type = "password";
-        eyeIcon.classList.replace('bx-hide','bx-show');
-    }
+<!-- CSS for hover effect -->
+<style>
+.team-container {
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:1rem;
+    text-align:center;
+    margin-top:2rem;
 }
-</script>
-</body>
-</html>
+.team-container .member {
+    position: relative;
+    cursor: pointer;
+}
+.team-container .member .name {
+    font-weight:600;
+    color: var(--accent, #1ce69c);
+    font-size:1rem;
+    display:block;
+    margin-bottom:0.25rem;
+}
+.team-container .member .info {
+    display:none;
+    position:absolute;
+    top:2rem;
+    left:50%;
+    transform:translateX(-50%);
+    z-index:10;
+    white-space:pre-wrap;
+}
+.team-container .member:hover .info {
+    display:block;
+}
+</style>
