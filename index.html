@@ -1,443 +1,153 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<title>Nether Arcade – Command-Block Minigames</title>
-<meta name="description" content="Fun for everyone" />
-<meta name="keywords" content="Minecraft, Fun" />
-<link rel="icon" href="logo.png" />
-<style>
-:root {
-  --bg: #131316;
-  --surface: #1e1e22;
-  --card: #27272c;
-  --accent: #ff3c3c;      /* neon red for hover/active/nav/buttons */
-  --neon-orange: #ff9f1c; /* neon orange for section dividers */
-  --text: #f3f3f7;
-  --subtle: #9f9fa6;
+<!-- TEAM SECTION -->
+<section id="team">
+  <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
+  <h1>Our Team</h1>
+  <p>The builders behind the blocks.</p>
 
-  /* Favorite-color dividers (tweak as you like) */
-  --fav-dedbob:  #4da3ff; /* Dark Light Blue vibe */
-  --fav-vanilama:#d64a4a; /* Lightly Darkened Red */
-  --fav-simson:  #ff3c3c; /* Red */
-  --fav-ridder:  #1ce69c; /* Green (your original neon green) */
-}
+  <div class="team-wrap">
+    <!-- TEAM GRID -->
+    <div class="team-grid">
+      <!-- Ded Bob -->
+      <div class="member">
+        <div class="name">Ded Bob</div>
+        <div class="role">Owner</div>
+        <div class="fav-divider" style="background:#4da3ff;"></div>
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-  font-family: "Inter", system-ui, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  display: flex; flex-direction: column; min-height: 100vh;
-}
+        <!-- Review slots -->
+        <div class="member-reviews">
+          <div class="pill">[Empty Review Slot 1]</div>
+          <div class="pill">[Empty Review Slot 2]</div>
+          <div class="pill">[Empty Review Slot 3]</div>
+        </div>
 
-/* Banner */
-.banner-wrap { position: relative; width: 100%; height: 260px; overflow: hidden; }
-.banner-img { width: 100%; height: 100%; object-fit: cover; }
-.banner-fade { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(19,19,22,0) 60%, var(--bg) 100%); }
-
-/* Nav */
-nav {
-  position: sticky; top: 0; z-index: 10;
-  background: var(--surface);
-  display: flex; justify-content: center; gap: 1.5rem;
-  padding: 0.75rem 1rem; border-bottom: 1px solid var(--card);
-}
-nav button {
-  background: none; border: none; color: var(--subtle);
-  font-size: 1rem; cursor: pointer; transition: color 0.2s ease;
-}
-nav button.active { color: var(--accent); }
-nav button:hover:not(.active) { color: var(--accent); }
-nav button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
-
-/* Layout */
-main { flex: 1; padding: 2.5rem 1.5rem; display: flex; flex-direction: column; align-items: center; text-align: center; }
-section { display: none; width: 100%; max-width: 1000px; }
-section.active { display: block; }
-
-/* Typography */
-h1 { font-size: 2.5rem; font-weight: 700; letter-spacing: 0.05em; margin-bottom: 1rem; }
-p { color: var(--subtle); line-height: 1.6; margin-bottom: 2rem; }
-
-/* Section divider (neon orange) */
-.divider { margin: 1.5rem 0; color: var(--neon-orange); font-weight: 600; }
-
-/* IP box */
-.ip-box {
-  display: inline-flex; align-items: center; gap: 0.5rem;
-  background: var(--card); padding: 0.6rem 1.2rem; border-radius: 10px;
-  cursor: pointer; transition: background 0.2s ease; position: relative; flex-direction: column;
-}
-.ip-box:hover { background: var(--surface); }
-.ip-box svg { width: 18px; height: 18px; fill: var(--accent); }
-.tooltip {
-  position: absolute; bottom: 125%; left: 50%; transform: translateX(-50%);
-  background: var(--surface); color: var(--text); padding: 0.35rem 0.65rem;
-  border-radius: 6px; font-size: 0.8rem; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.2s ease;
-}
-.tooltip.show { opacity: 1; }
-.ip-box .ip { font-weight: 800; font-size: 1.1rem; } /* FAT/BOLD IP */
-
-/* Team area: grid + general reviews sidebar */
-.team-wrap {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.25rem;
-  align-items: start;
-}
-@media (min-width: 960px) {
-  .team-wrap {
-    grid-template-columns: 2fr 1fr;
-  }
-}
-
-/* Team grid */
-.team-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-  gap: 1rem; margin-top: 0.5rem;
-}
-.member {
-  background: var(--card); border-radius: 12px; padding: 1rem;
-  transition: transform 0.2s ease, box-shadow 0.2s ease; position: relative; text-align: left;
-}
-.member:hover { transform: translateY(-3px); box-shadow: 0 6px 16px rgba(0,0,0,0.25); }
-.member .name { font-weight: 700; margin-bottom: 0.15rem; cursor: default; }
-.member .role { font-size: 0.85rem; color: var(--accent); margin-bottom: 0.5rem; }
-
-/* Favorite-color divider visible under each card */
-.fav-divider {
-  height: 3px; width: 100%; border-radius: 4px; margin: 0.6rem 0 0.4rem 0;
-  background: var(--subtle); /* fallback */
-}
-.fav-dedbob  { background: var(--fav-dedbob); }
-.fav-vanilama{ background: var(--fav-vanilama); }
-.fav-simson  { background: var(--fav-simson); }
-.fav-ridder  { background: var(--fav-ridder); }
-
-/* Hover info bubble (kept from your original) */
-.member-info {
-  display: none;
-  position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
-  background: var(--surface);
-  padding: 0.75rem 1rem; border-radius: 8px; color: var(--text);
-  font-size: 0.85rem; white-space: pre-line; width: 240px; text-align: left; z-index: 5;
-  box-shadow: 0 10px 26px rgba(0,0,0,0.35);
-}
-.member:hover .member-info { display: block; }
-
-/* Pinned reviews list under each member */
-.member-reviews {
-  margin-top: 0.5rem; display: grid; gap: 0.4rem;
-}
-.pill {
-  background: var(--surface);
-  border: 1px solid #2f2f35;
-  border-radius: 10px;
-  padding: 0.5rem 0.6rem;
-  font-size: 0.9rem;
-  color: var(--text);
-}
-
-/* Creator-only input (hidden by default; shown if ?admin=1) */
-.review-form {
-  display: none; margin-top: 0.6rem; background: #222229; border: 1px dashed #3a3a44;
-  border-radius: 10px; padding: 0.6rem; gap: 0.5rem;
-}
-.review-form textarea {
-  width: 100%; min-height: 70px; resize: vertical;
-  background: #1b1b20; color: var(--text); border: 1px solid #303039;
-  border-radius: 8px; padding: 0.5rem; font-family: inherit; font-size: 0.95rem;
-}
-.review-form .row { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; margin-top: 0.45rem; }
-.review-form .counter { font-size: 0.8rem; color: var(--subtle); }
-.review-form button {
-  background: var(--accent); color: #000; border: none; padding: 0.5rem 0.9rem;
-  border-radius: 8px; cursor: pointer; font-weight: 600;
-}
-.admin-badge { display: none; margin: 0.25rem 0 0.75rem; font-size: 0.8rem; color: var(--subtle); }
-
-/* General server reviews panel */
-.server-reviews {
-  background: var(--card); border-radius: 12px; padding: 1rem;
-  position: sticky; top: 84px; /* below nav */
-}
-.server-reviews h3 { font-size: 1.25rem; margin-bottom: 0.5rem; }
-.server-reviews .stack { display: grid; gap: 0.5rem; }
-.server-reviews .pill { text-align: left; }
-.server-reviews .review-form { margin-top: 0.75rem; }
-
-/* Buttons shared */
-.btn {
-  display: inline-block; background: var(--accent); color: #000; border: none;
-  padding: 0.75rem 1.75rem; font-size: 1rem; border-radius: 10px;
-  cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease; text-decoration: none;
-}
-.btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(255,60,60,0.35); }
-
-/* Footer */
-footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: var(--subtle); }
-</style>
-</head>
-<body>
-
-<!-- Banner -->
-<div class="banner-wrap">
-  <img class="banner-img" src="retouch_2025090307294209.jpg" alt="Nether Arcade Banner" />
-  <div class="banner-fade"></div>
-</div>
-
-<!-- Nav -->
-<nav>
-  <button class="active" onclick="switchTab('home')">Home</button>
-  <button onclick="switchTab('team')">Team</button>
-  <button onclick="switchTab('contact')">Contact</button>
-</nav>
-
-<main>
-  <!-- HOME -->
-  <section id="home" class="active">
-    <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
-    <h1>Nether Arcade</h1>
-    <p>A Minecraft server crafting <strong>minigames powered by command blocks</strong>. No mods—just vanilla ingenuity.</p>
-    <div class="ip-box" onclick="copyIP()">
-      <span class="ip"><strong>netherarcade.cold00.eu</strong></span>
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
-      <span class="tooltip" id="tip">Copied!</span>
-      <span style="color: var(--subtle); font-size: 0.85rem; margin-top:0.5rem;">Java Edition only • Version 1.21.8</span>
-    </div>
-    <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
-  </section>
-
-  <!-- TEAM -->
-  <section id="team">
-    <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
-    <h1>Our Team</h1>
-    <p>The builders behind the blocks.</p>
-
-    <div class="team-wrap">
-      <!-- GRID -->
-      <div class="team-grid">
-        <!-- Ded Bob -->
-        <div class="member" data-key="dedbob">
-          <div class="name">Ded Bob</div>
-          <div class="role">Owner</div>
-          <div class="fav-divider fav-dedbob"></div>
-
-          <div class="member-reviews pinned">
-            <div class="pill">“Knows commands like magic!”</div>
-            <div class="pill">“Keeps the vision sharp.”</div>
-          </div>
-
-          <div class="review-form">
-            <textarea maxlength="150" placeholder="Private note about Ded Bob (max 150 chars)…"></textarea>
-            <div class="row">
-              <span class="counter">0 / 150</span>
-              <button type="button" onclick="saveReview('dedbob')">Submit (private)</button>
-            </div>
-          </div>
-
-          <div class="member-info">
+        <div class="member-info">
 ─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────
 Hi, I’m Ded Bob (also known as Map1111)!
-I love working with **commands** and building with friends.
-Feel free to join the **Discord** if you have any questions!
+I love working with commands and building with friends.
+Feel free to join the Discord if you have any questions!
 Favourite colour: Dark Light Blue 🎨
 ─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────
-          </div>
-        </div>
-
-        <!-- Vanilama -->
-        <div class="member" data-key="vanilama">
-          <div class="name">Vanilama</div>
-          <div class="role">Command Engineer</div>
-          <div class="fav-divider fav-vanilama"></div>
-
-          <div class="member-reviews pinned">
-            <div class="pill">“Redstone brain with style.”</div>
-            <div class="pill">“Command-only systems are wild!”</div>
-          </div>
-
-          <div class="review-form">
-            <textarea maxlength="150" placeholder="Private note about Vanilama (max 150 chars)…"></textarea>
-            <div class="row">
-              <span class="counter">0 / 150</span>
-              <button type="button" onclick="saveReview('vanilama')">Submit (private)</button>
-            </div>
-          </div>
-
-          <div class="member-info">
-─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────
-Hi, I’m Vanilama (Also Known As Vanilama-Modded).
-I do multiple things on the server but mostly I make
-the command-only system for our Minigames
-Favourite colour: Lightly Darkened Red 🎨
-─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────
-          </div>
-        </div>
-
-        <!-- Simson -->
-        <div class="member" data-key="simson">
-          <div class="name">Simson</div>
-          <div class="role">Builder</div>
-          <div class="fav-divider fav-simson"></div>
-
-          <div class="member-reviews pinned">
-            <div class="pill">“Maps look gorgeous!”</div>
-            <div class="pill">“PvP arenas are so fun.”</div>
-          </div>
-
-          <div class="review-form">
-            <textarea maxlength="150" placeholder="Private note about Simson (max 150 chars)…"></textarea>
-            <div class="row">
-              <span class="counter">0 / 150</span>
-              <button type="button" onclick="saveReview('simson')">Submit (private)</button>
-            </div>
-          </div>
-
-          <div class="member-info">
-─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────
-Yo, I’m Simson!
-I like **building**, **PvP**, and **minigames**.
-I hope you enjoy the server and have fun!
-Favourite colour: Red 🔴
-─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────
-          </div>
-        </div>
-
-        <!-- Ridderbeo -->
-        <div class="member" data-key="ridderbeo">
-          <div class="name">Ridderbeo</div>
-          <div class="role">Builder</div>
-          <div class="fav-divider fav-ridder"></div>
-
-          <div class="member-reviews pinned">
-            <div class="pill">“Lore & aesthetics on point.”</div>
-            <div class="pill">“Website polish is clean!”</div>
-          </div>
-
-          <div class="review-form">
-            <textarea maxlength="150" placeholder="Private note about Ridderbeo (max 150 chars)…"></textarea>
-            <div class="row">
-              <span class="counter">0 / 150</span>
-              <button type="button" onclick="saveReview('ridderbeo')">Submit (private)</button>
-            </div>
-          </div>
-
-          <div class="member-info">
-─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────
-My signature is ˗ˏˋ ✩ ˎˊ˗, and I handle aesthetics and lore-related content.
-I helped make the Discord cleaner and worked on the website.
-I love to talk and interact with people, so you’ll see me around!
-Favourite colour: **Green** 🟢
-─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────
-          </div>
         </div>
       </div>
 
-      <!-- GENERAL SERVER REVIEWS SIDEBAR -->
-      <aside class="server-reviews">
-        <h3>Server Reviews</h3>
-        <div class="stack pinned" id="serverPinned">
-          <div class="pill">“Best minigames with zero mods.”</div>
-          <div class="pill">“Community is super friendly.”</div>
+      <!-- Vanilama -->
+      <div class="member">
+        <div class="name">Vanilama</div>
+        <div class="role">Command Engineer</div>
+        <div class="fav-divider" style="background:#d64a4a;"></div>
+
+        <div class="member-reviews">
+          <div class="pill">[Empty Review Slot 1]</div>
+          <div class="pill">[Empty Review Slot 2]</div>
+          <div class="pill">[Empty Review Slot 3]</div>
         </div>
 
-        <div class="review-form" id="serverForm">
-          <textarea maxlength="150" placeholder="Private general compliment (max 150 chars)…"></textarea>
-          <div class="row">
-            <span class="counter">0 / 150</span>
-            <button type="button" onclick="saveReview('server')">Submit (private)</button>
-          </div>
+        <div class="member-info">
+─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────
+Hi, I’m Vanilama (Also Known As Vanilama-Modded).
+I handle the command-only systems for Minigames.
+Favourite colour: Lightly Darkened Red 🎨
+─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────
         </div>
-      </aside>
+      </div>
+
+      <!-- Simson -->
+      <div class="member">
+        <div class="name">Simson</div>
+        <div class="role">Builder</div>
+        <div class="fav-divider" style="background:#ff3c3c;"></div>
+
+        <div class="member-reviews">
+          <div class="pill">[Empty Review Slot 1]</div>
+          <div class="pill">[Empty Review Slot 2]</div>
+          <div class="pill">[Empty Review Slot 3]</div>
+        </div>
+
+        <div class="member-info">
+─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────
+Yo, I’m Simson! I like building, PvP, and minigames.
+Favourite colour: Red 🔴
+─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────
+        </div>
+      </div>
+
+      <!-- Ridderbeo -->
+      <div class="member">
+        <div class="name">Ridderbeo</div>
+        <div class="role">Builder</div>
+        <div class="fav-divider" style="background:#1ce69c;"></div>
+
+        <div class="member-reviews">
+          <div class="pill">[Empty Review Slot 1]</div>
+          <div class="pill">[Empty Review Slot 2]</div>
+          <div class="pill">[Empty Review Slot 3]</div>
+        </div>
+
+        <div class="member-info">
+─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────
+I handle aesthetics and lore-related content.
+Favourite colour: Green 🟢
+─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────
+        </div>
+      </div>
     </div>
 
-    <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
-  </section>
+    <!-- SERVER REVIEWS BOX -->
+    <aside class="server-reviews">
+      <div class="server-email-box">
+        <p>📧 Send your server reviews to: <strong>netherarcade@gmail.com</strong></p>
+        <ul>
+          <li>Keep it kind and respectful.</li>
+          <li>No spam or advertising.</li>
+          <li>Constructive criticism only.</li>
+          <li>Breaking the rules may result in a ban from the server.</li>
+        </ul>
+      </div>
 
-  <!-- CONTACT -->
-  <section id="contact">
-    <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
-    <h1>Contact</h1>
-    <p>Hit us up on our socials!</p>
-    <a class="btn" href="https://discord.gg/xpPTKx9FuP" target="_blank" rel="noopener noreferrer">Join Discord</a>
-    <div style="margin-top: 1rem; display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;">
-      <a class="btn" href="https://youtube.com/@NetherArcade" target="_blank" rel="noopener noreferrer">View YouTube Channel</a>
-      <a class="btn" href="https://tiktok.com/@netherarcade" target="_blank" rel="noopener noreferrer">View TikTok Channel</a>
-    </div>
-    <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
-  </section>
-</main>
+      <h3>Server Reviews</h3>
+      <div class="stack">
+        <div class="pill">[Empty Review 1]</div>
+        <div class="pill">[Empty Review 2]</div>
+        <div class="pill">[Empty Review 3]</div>
+        <div class="pill">[Empty Review 4]</div>
+        <div class="pill">[Empty Review 5]</div>
+        <div class="pill">[Empty Review 6]</div>
+        <div class="pill">[Empty Review 7]</div>
+        <div class="pill">[Empty Review 8]</div>
+        <div class="pill">[Empty Review 9]</div>
+        <div class="pill">[Empty Review 10]</div>
+      </div>
+    </aside>
+  </div>
 
-<footer>
-  &copy; <span id="yr"></span> Nether Arcade &nbsp;•&nbsp; Not affiliated with Mojang
-  <div class="admin-badge" id="adminBadge">Creator mode is ON (private inputs visible)</div>
-</footer>
+  <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
+</section>
 
-<script>
-/* Tab switching */
-function switchTab(tab) {
-  document.querySelectorAll("nav button").forEach(b => b.classList.remove("active"));
-  document.querySelectorAll("section").forEach(s => s.classList.remove("active"));
-  document.getElementById(tab).classList.add("active");
-  document.querySelector(`nav button[onclick="switchTab('${tab}')"]`).classList.add("active");
-}
+<style>
+/* Team grid */
+.team-wrap { display: flex; flex-direction: column; gap: 1.5rem; }
+.team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 1rem; }
 
-/* Copy IP */
-function copyIP() {
-  navigator.clipboard.writeText("netherarcade.cold00.eu").then(() => {
-    const tip = document.getElementById('tip');
-    tip.classList.add('show');
-    setTimeout(() => tip.classList.remove('show'), 1500);
-  });
-}
+/* Member card */
+.member { background:#27272c; border-radius:12px; padding:1rem; }
+.member .name { font-weight:700; margin-bottom:0.2rem; }
+.member .role { font-size:0.85rem; color:#ff3c3c; margin-bottom:0.5rem; }
+.fav-divider { height:3px; width:100%; border-radius:4px; margin-bottom:0.5rem; }
 
-/* Year */
-document.getElementById("yr").textContent = new Date().getFullYear();
+/* Member reviews */
+.member-reviews { display:grid; gap:0.4rem; margin-bottom:0.5rem; }
+.pill { background:#1e1e22; padding:0.4rem 0.6rem; border-radius:8px; font-size:0.9rem; color:#f3f3f7; }
 
-/* Creator-only inputs: show if URL has ?admin=1 */
-const params = new URLSearchParams(location.search);
-const isAdmin = params.get('admin') === '1';
-if (isAdmin) {
-  document.querySelectorAll('.review-form').forEach(el => el.style.display = 'block');
-  const badge = document.getElementById('adminBadge');
-  if (badge) badge.style.display = 'block';
-}
+/* Member info */
+.member-info { font-size:0.85rem; line-height:1.3; color:#f3f3f7; }
 
-/* Character counters */
-document.querySelectorAll('.review-form textarea').forEach((ta) => {
-  const counter = ta.parentElement.querySelector('.counter');
-  const update = () => { counter.textContent = `${ta.value.length} / ${ta.maxLength}`; };
-  ta.addEventListener('input', update);
-  update();
-});
+/* Server reviews box */
+.server-reviews { background:#27272c; border-radius:12px; padding:1rem; margin-top:2rem; }
+.server-email-box { background:#1e1e22; border-radius:10px; padding:0.8rem; margin-bottom:1rem; font-size:0.9rem; }
+.server-email-box strong { color:#ff3c3c; }
+.server-email-box ul { margin-top:0.5rem; padding-left:1.2rem; color:#f3f3f7; }
 
-/* Save review (demo only): store in localStorage under a key; not auto-pinned */
-function saveReview(key) {
-  const scope = key === 'server'
-    ? document.getElementById('serverForm')
-    : document.querySelector(`.member[data-key="${key}"] .review-form`);
-  const ta = scope.querySelector('textarea');
-  const text = (ta.value || '').trim();
-  if (!text) return;
-
-  const storeKey = `netherarcade_reviews_${key}`;
-  const existing = JSON.parse(localStorage.getItem(storeKey) || '[]');
-  existing.push({ text, ts: Date.now() });
-  localStorage.setItem(storeKey, JSON.stringify(existing));
-  ta.value = '';
-  ta.dispatchEvent(new Event('input'));
-
-  // Simple feedback
-  scope.querySelector('button').textContent = 'Saved!';
-  setTimeout(() => scope.querySelector('button').textContent = 'Submit (private)', 900);
-}
-
-/* (Optional) Helper to preview saved (un-pinned) in console */
-// console.log(JSON.parse(localStorage.getItem('netherarcade_reviews_dedbob')||'[]'));
-</script>
-
-</body>
-</html>
+/* Server review stack */
+.server-reviews .stack { display:grid; gap:0.4rem; }
+.server-reviews .pill { background:#1e1e22; padding:0.4rem 0.6rem; border-radius:8px; font-size:0.9rem; color:#f3f3f7; }
+</style>
