@@ -12,8 +12,8 @@
   --bg: #131316;
   --surface: #1e1e22;
   --card: #27272c;
-  --accent: #ff3c3c; /* red for hover/active */
-  --accent2: #ff7a00; /* neon orange for dividers */
+  --accent: #ff3c3c;
+  --accent2: #ff7a00;
   --text: #f3f3f7;
   --subtle: #9f9fa6;
 }
@@ -31,7 +31,7 @@ section.active { display: block; }
 h1 { font-size: 2.5rem; font-weight: 700; letter-spacing: 0.05em; margin-bottom: 1rem; }
 h3 { font-size: 1.2rem; margin-bottom: 0.5rem; }
 p { color: var(--subtle); line-height: 1.6; margin-bottom: 1.5rem; }
-.divider { margin: 1.5rem 0; color: var(--accent2); font-weight: 600; }
+.divider { margin: 1.5rem 0; color: var(--accent2); font-weight: 600; cursor: pointer; }
 
 /* IP Box */
 .ip-box { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--card); padding: 0.6rem 1.2rem; border-radius: 10px; cursor: pointer; transition: background 0.2s ease; position: relative; flex-direction: column; }
@@ -54,7 +54,7 @@ p { color: var(--subtle); line-height: 1.6; margin-bottom: 1.5rem; }
 
 /* Server Reviews */
 .server-reviews { display:flex; flex-direction:column; gap:1.5rem; margin-top:2rem; }
-.server-email-box { background: var(--bg); border-radius:10px; padding:0.8rem; text-align:left; }
+.server-email-box { background: var(--bg); border-radius:10px; padding:0.8rem; text-align:left; cursor:pointer; }
 .server-email-box ul { padding-left:1.2rem; margin-top:0.5rem; }
 .server-review-grid { display:grid; grid-template-columns:repeat(2, 1fr); gap:0.5rem 1rem; }
 
@@ -69,7 +69,7 @@ footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: var
 
 <!-- Banner -->
 <div class="banner-wrap">
-  <img class="banner-img" src="banner.jpg" alt="Nether Arcade Banner">
+  <img class="banner-img" src="banner.jpg" alt="Nether Arcade Banner" loading="lazy">
   <div class="banner-fade"></div>
 </div>
 
@@ -83,7 +83,7 @@ footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: var
 <main>
   <!-- HOME -->
   <section id="home" class="active">
-    <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
+    <div id="home-divider" class="divider" onclick="toggleDivider()">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
     <h1>Nether Arcade</h1>
     <p>A Minecraft server crafting <strong>minigames powered by command blocks</strong>. No mods—just vanilla ingenuity.</p>
     <div class="ip-box" onclick="copyIP()">
@@ -92,7 +92,6 @@ footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: var
       <span class="tooltip" id="tip">Copied!</span>
       <span style="color: var(--subtle); font-size: 0.85rem; margin-top:0.5rem;">Java Edition only • Version 1.21.8</span>
     </div>
-    <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
   </section>
 
   <!-- TEAM -->
@@ -175,7 +174,7 @@ footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: var
       <!-- SERVER REVIEWS -->
       <aside class="server-reviews">
         <!-- Email Box -->
-        <div class="server-email-box">
+        <div class="server-email-box" onclick="openEmail()">
           <p><i class="fa-solid fa-envelope"></i> Send your server reviews to: 
             <a href="mailto:netherarcade@gmail.com" style="color:#ff3c3c; text-decoration:underline;">netherarcade@gmail.com</a>
           </p>
@@ -188,6 +187,7 @@ footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: var
         </div>
 
         <!-- Review Grid -->
+        <h3>Server Reviews</h3>
         <div class="server-review-grid">
           <div class="pill">[Empty Review 1]</div>
           <div class="pill">[Empty Review 2]</div>
@@ -200,9 +200,9 @@ footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: var
           <div class="pill">[Empty Review 9]</div>
           <div class="pill">[Empty Review 10]</div>
         </div>
+        <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
       </aside>
     </div>
-    <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
   </section>
 
   <!-- CONTACT -->
@@ -230,6 +230,7 @@ function switchTab(tab) {
   document.getElementById(tab).classList.add("active");
   document.querySelector(`nav button[onclick="switchTab('${tab}')"]`).classList.add("active");
 }
+
 function copyIP() {
   navigator.clipboard.writeText("netherarcade.cold00.eu").then(() => {
     const tip = document.getElementById('tip');
@@ -237,6 +238,18 @@ function copyIP() {
     setTimeout(() => tip.classList.remove('show'), 1500);
   });
 }
+
+function toggleDivider() {
+  const divider = document.getElementById('home-divider');
+  divider.textContent = divider.textContent.includes('✩') 
+    ? '─────────﹒˗ˏˋ ★ ˎˊ˗﹒─────────' 
+    : '─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────';
+}
+
+function openEmail() {
+  window.location.href = "mailto:netherarcade@gmail.com";
+}
+
 document.getElementById("yr").textContent = new Date().getFullYear();
 </script>
 
