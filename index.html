@@ -5,7 +5,7 @@
   <title>Nether Arcade – Command-Block Minigames</title>
   <meta name="description" content="Fun for everyone">
   <meta name="keywords" content="Minecraft, Fun">
-   <link rel="icon" type="image/x-icon" href="logo.png">
+  <link rel="icon" href="logo.png">
   <style>
     :root {
       --bg: #131316;
@@ -15,11 +15,7 @@
       --text: #f3f3f7;
       --subtle: #9f9fa6;
     }
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: "Inter", system-ui, sans-serif;
       background: var(--bg);
@@ -28,166 +24,62 @@
       flex-direction: column;
       min-height: 100vh;
     }
-    /* banner with fade */
-    .banner-wrap {
-      position: relative;
-      width: 100%;
-      height: 260px;
-      overflow: hidden;
-    }
-    .banner-img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    .banner-fade {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to bottom, rgba(19, 19, 22, 0) 60%, var(--bg) 100%);
-    }
+    .banner-wrap { position: relative; width: 100%; height: 260px; overflow: hidden; }
+    .banner-img { width: 100%; height: 100%; object-fit: cover; }
+    .banner-fade { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(19,19,22,0) 60%, var(--bg) 100%); }
     nav {
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      background: var(--surface);
-      display: flex;
-      justify-content: center;
-      gap: 1.5rem;
-      padding: 0.75rem 1rem;
-      border-bottom: 1px solid var(--card);
+      position: sticky; top: 0; z-index: 10; background: var(--surface);
+      display: flex; justify-content: center; gap: 1.5rem;
+      padding: 0.75rem 1rem; border-bottom: 1px solid var(--card);
     }
     nav button {
-      background: none;
-      border: none;
-      color: var(--subtle);
-      font-size: 1rem;
-      cursor: pointer;
-      transition: color 0.2s ease;
+      background: none; border: none; color: var(--subtle); font-size: 1rem;
+      cursor: pointer; transition: color 0.2s ease;
     }
-    nav button.active {
-      color: var(--accent);
-    }
+    nav button.active { color: var(--accent); }
     main {
-      flex: 1;
-      padding: 2.5rem 1.5rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      flex: 1; padding: 2.5rem 1.5rem;
+      display: flex; flex-direction: column; align-items: center;
       text-align: center;
     }
-    section {
-      display: none;
-      width: 100%;
-      max-width: 720px;
-    }
-    section.active {
-      display: block;
-    }
-    h1 {
-      font-size: 2.5rem;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      margin-bottom: 1rem;
-    }
-    p {
-      color: var(--subtle);
-      line-height: 1.6;
-      margin-bottom: 2rem;
-    }
-    .divider {
-      margin: 1.5rem 0;
-      color: var(--accent);
-      font-weight: 600;
-    }
+    section { display: none; width: 100%; max-width: 720px; }
+    section.active { display: block; }
+    h1 { font-size: 2.5rem; font-weight: 700; letter-spacing: 0.05em; margin-bottom: 1rem; }
+    p { color: var(--subtle); line-height: 1.6; margin-bottom: 2rem; }
+    .divider { margin: 1.5rem 0; color: var(--accent); font-weight: 600; }
     .ip-box {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      background: var(--card);
-      padding: 0.6rem 1.2rem;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: background 0.2s ease;
-      position: relative;
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--card); padding: 0.6rem 1.2rem; border-radius: 10px;
+      cursor: pointer; transition: background 0.2s ease; position: relative;
     }
-    .ip-box:hover {
-      background: var(--surface);
-    }
-    .ip-box svg {
-      width: 18px;
-      height: 18px;
-      fill: var(--accent);
-    }
+    .ip-box:hover { background: var(--surface); }
+    .ip-box svg { width: 18px; height: 18px; fill: var(--accent); }
     .tooltip {
-      position: absolute;
-      bottom: 125%;
-      left: 50%;
-      transform: translateX(-50%);
-      background: var(--surface);
-      color: var(--text);
-      padding: 0.35rem 0.65rem;
-      border-radius: 6px;
-      font-size: 0.8rem;
-      white-space: nowrap;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.2s ease;
+      position: absolute; bottom: 125%; left: 50%; transform: translateX(-50%);
+      background: var(--surface); color: var(--text); padding: 0.35rem 0.65rem;
+      border-radius: 6px; font-size: 0.8rem; white-space: nowrap;
+      opacity: 0; pointer-events: none; transition: opacity 0.2s ease;
     }
-    .tooltip.show {
-      opacity: 1;
-    }
+    .tooltip.show { opacity: 1; }
     .team-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 1rem;
-      margin-top: 1.5rem;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1rem; margin-top: 1.5rem;
     }
     .member {
-      background: var(--card);
-      border-radius: 10px;
-      padding: 1rem;
+      background: var(--card); border-radius: 10px; padding: 1rem;
       transition: transform 0.2s ease;
     }
-    .member:hover {
-      transform: translateY(-4px);
-    }
-    .member .name {
-      font-weight: 600;
-      margin-bottom: 0.25rem;
-    }
-    .member .role {
-      font-size: 0.85rem;
-      color: var(--accent);
-    }
+    .member:hover { transform: translateY(-4px); }
+    .member .name { font-weight: 600; margin-bottom: 0.25rem; }
+    .member .role { font-size: 0.85rem; color: var(--accent); }
     .btn {
-      display: inline-block;
-      background: var(--accent);
-      color: #000;
-      border: none;
-      padding: 0.75rem 1.75rem;
-      font-size: 1rem;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      text-decoration: none;
+      display: inline-block; background: var(--accent); color: #000; border: none;
+      padding: 0.75rem 1.75rem; font-size: 1rem; border-radius: 10px; cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease; text-decoration: none;
     }
-    .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(28, 230, 156, 0.35);
-    }
-    .social-buttons {
-      margin-top: 2rem;
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-    footer {
-      text-align: center;
-      padding: 1.5rem 1rem;
-      font-size: 0.8rem;
-      color: var(--subtle);
-    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(28,230,156,0.35); }
+    .social-buttons { margin-top: 2rem; display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+    footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: var(--subtle); }
   </style>
 </head>
 <body>
@@ -207,24 +99,13 @@
     <!-- HOME -->
     <section id="home" class="active">
       <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
-      <h1>🎮 Nether Arcade</h1>
-      <p>This is a Minecraft Discord server where you can talk and have fun!<br>
-      If there are any problems or feedback, go to 🆘support-and-bug-reports.<br>
-      Have any awesome ideas you want us to add? Feel free to share in ideas-minigame.</p>
-      <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
-
-      <div class="divider">🌐 Server Info</div>
-      <p>IP: <span class="ip-box" onclick="copyIP()">netherarcade.cold00.eu
+      <h1>Nether Arcade</h1>
+      <p>A Minecraft server crafting <strong>minigames powered by command blocks</strong>. No mods—just vanilla ingenuity.</p>
+      <div class="ip-box" onclick="copyIP()">
+        <span>netherarcade.cold00.eu</span>
         <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
         <span class="tooltip" id="tip">Copied!</span>
-      </span><br>
-      Version: 1.21.8<br>
-      Feel free to join anytime and start playing!</p>
-      <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
-
-      <div class="divider">:youtube: YouTube Channel</div>
-      <p>Check out our videos & subscribe here:</p>
-      <a class="btn" href="https://youtube.com/@NetherArcade" target="_blank" rel="noopener noreferrer">👉 Nether Arcade Youtube</a>
+      </div>
       <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
     </section>
 
@@ -259,9 +140,7 @@
       <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
       <h1>Contact</h1>
       <p>Hit us up on our socials!</p>
-
       <a class="btn" href="https://discord.gg/xpPTKx9FuP" target="_blank" rel="noopener noreferrer">Join Discord</a>
-
       <div class="social-buttons">
         <a class="btn" href="https://youtube.com/@NetherArcade" target="_blank" rel="noopener noreferrer">View YouTube Channel</a>
         <a class="btn" href="https://tiktok.com/@netherarcade" target="_blank" rel="noopener noreferrer">View TikTok Channel</a>
