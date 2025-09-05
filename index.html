@@ -2,191 +2,149 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login form | Ludiflex</title>
-<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+<title>Nether Arcade – Command-Block Minigames</title>
+<meta name="description" content="Fun for everyone">
+<meta name="keywords" content="Minecraft, Fun">
+<link rel="icon" href="logo.png">
 <style>
 :root {
-    --bg: #131316;
-    --surface: #1e1e22;
-    --card: #27272c;
-    --accent: #1ce69c;
-    --text: #f3f3f7;
-    --subtle: #9f9fa6;
+  --bg: #131316;
+  --surface: #1e1e22;
+  --card: #27272c;
+  --accent: #1ce69c; /* green for dividers */
+  --text: #f3f3f7;
+  --subtle: #9f9fa6;
 }
-* { box-sizing: border-box; margin:0; padding:0; }
-body { font-family:"Inter", system-ui, sans-serif; background:var(--bg); color:var(--text); display:flex; justify-content:center; align-items:flex-start; min-height:100vh; padding:2rem 0; }
-.container { width:100%; max-width:420px; padding:1rem; }
-.form-container { background: var(--surface); border-radius:12px; padding:2rem; position:relative; overflow:hidden; }
-.form-header p { color: var(--subtle); margin-bottom:0.25rem; }
-.form-header h1 { font-size:2rem; margin-bottom:1.5rem; }
-.input-group { position: relative; margin-bottom:1.5rem; }
-.input-field { width: 100%; padding:0.75rem 1rem; border-radius:8px; border:1px solid var(--card); background: var(--card); color: var(--text); }
-.floating-label { position:absolute; top:50%; left:1rem; transform:translateY(-50%); color: var(--subtle); pointer-events:none; transition:0.2s; }
-.input-field:focus + .floating-label, .input-field:not(:placeholder-shown) + .floating-label { top:-0.6rem; font-size:0.75rem; color: var(--accent); background: var(--surface); padding:0 0.25rem; }
-.eye-icon { position:absolute; right:0.8rem; top:50%; transform:translateY(-50%); cursor:pointer; color:var(--accent); }
-.checkbox-group { display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; }
-.form-btn { width:100%; padding:0.75rem; border:none; border-radius:8px; cursor:pointer; font-weight:600; transition:0.2s; }
-.form-btn--submit { background: var(--accent); color:#000; }
-.form-btn--submit:hover { opacity:0.9; }
-.form-divider { text-align:center; margin:1.5rem 0; color:var(--subtle); position:relative; }
-.form-divider::before, .form-divider::after { content:""; position:absolute; top:50%; width:40%; height:1px; background:var(--card); }
-.form-divider::before { left:0; }
-.form-divider::after { right:0; }
-.form-bottom { text-align:center; }
-.form-socials { display:flex; justify-content:center; gap:1rem; margin-bottom:1rem; }
-.form-btn--social { background: var(--card); padding:0.5rem; border-radius:8px; transition:0.2s; }
-.form-btn--social:hover { background: var(--surface); }
-.btn-icon { width:24px; height:24px; }
-.form-link { color: var(--accent); text-decoration:none; }
-
-/* Team section */
-.team-container { text-align:center; margin-top:2rem; display:flex; flex-wrap:wrap; justify-content:center; gap:1rem; }
-.team-container .member { position: relative; display:inline-block; cursor:pointer; }
-.team-container .member .name { font-weight:600; color: var(--accent); font-size:1rem; }
-.team-container .member .info {
-    display:none;
-    position:absolute;
-    top:2rem;
-    left:50%;
-    transform:translateX(-50%);
-    background: var(--surface);
-    color: var(--text);
-    padding:1rem;
-    border-radius:8px;
-    width:260px;
-    text-align:left;
-    z-index:10;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    font-size:0.85rem;
-    line-height:1.4;
-    white-space:pre-wrap;
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: "Inter", system-ui, sans-serif; background: var(--bg); color: var(--text); display: flex; flex-direction: column; min-height: 100vh; }
+.banner-wrap { position: relative; width: 100%; height: 260px; overflow: hidden; }
+.banner-img { width: 100%; height: 100%; object-fit: cover; }
+.banner-fade { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(19,19,22,0) 60%, var(--bg) 100%); }
+nav { position: sticky; top: 0; z-index: 10; background: var(--surface); display: flex; justify-content: center; gap: 1.5rem; padding: 0.75rem 1rem; border-bottom: 1px solid var(--card); }
+nav button { background: none; border: none; color: var(--subtle); font-size: 1rem; cursor: pointer; transition: color 0.2s ease; }
+nav button.active { color: var(--accent); }
+main { flex: 1; padding: 2.5rem 1.5rem; display: flex; flex-direction: column; align-items: center; text-align: center; }
+section { display: none; width: 100%; max-width: 720px; }
+section.active { display: block; }
+h1 { font-size: 2.5rem; font-weight: 700; letter-spacing: 0.05em; margin-bottom: 1rem; }
+p { color: var(--subtle); line-height: 1.6; margin-bottom: 2rem; }
+.divider { margin: 1.5rem 0; color: var(--accent); font-weight: 600; }
+.ip-box { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--card); padding: 0.6rem 1.2rem; border-radius: 10px; cursor: pointer; transition: background 0.2s ease; position: relative; flex-direction: column; }
+.ip-box:hover { background: var(--surface); }
+.ip-box svg { width: 18px; height: 18px; fill: var(--accent); }
+.tooltip { position: absolute; bottom: 125%; left: 50%; transform: translateX(-50%); background: var(--surface); color: var(--text); padding: 0.35rem 0.65rem; border-radius: 6px; font-size: 0.8rem; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.2s ease; }
+.tooltip.show { opacity: 1; }
+.team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; margin-top: 1.5rem; }
+.member { background: var(--card); border-radius: 10px; padding: 1rem; transition: transform 0.2s ease; position: relative; }
+.member:hover { transform: translateY(-4px); }
+.member .name { font-weight: 600; margin-bottom: 0.25rem; cursor: pointer; }
+.member .role { font-size: 0.85rem; color: var(--accent); }
+.member-info {
+  display: none;
+  position: absolute;
+  top: 100%; left: 50%;
+  transform: translateX(-50%);
+  background: var(--surface);
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  color: var(--text);
+  font-size: 0.85rem;
+  white-space: pre-line;
+  width: 220px;
+  text-align: left;
+  z-index: 5;
 }
-.team-container .member:hover .info { display:block; }
+.member:hover .member-info { display: block; }
+.btn { display: inline-block; background: var(--accent); color: #000; border: none; padding: 0.75rem 1.75rem; font-size: 1rem; border-radius: 10px; cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease; text-decoration: none; }
+.btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(28,230,156,0.35); }
+.social-buttons { margin-top: 2rem; display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: var(--subtle); }
 </style>
 </head>
 <body>
-<div class="container">
-    <div class="form-container">
-        <div class="form-header">
-            <p>Please enter your details</p>
-            <h1>Welcome Back</h1>
-        </div>
-        <form class="form-box">
-            <div class="input-group">
-                <input type="email" id="email" class="input-field" placeholder="" required>
-                <label for="email" class="floating-label">Email address</label>
-            </div>
-            <div class="input-group">
-                <input type="password" id="password" class="input-field" placeholder="" required>
-                <label for="password" class="floating-label">Password</label>
-                <div class="eye-icon" onclick="togglePassword()">
-                    <i class='bx bx-show'></i>
-                </div>
-            </div>
-            <div class="input-group checkbox-group">
-                <div class="form-col remember-me">
-                    <input type="checkbox" id="remember-me-checkbox" class="checkbox-field">
-                    <label for="remember-me-checkbox">Remember me</label>
-                </div>
-                <div class="form-col">
-                    <a href="#" class="form-link">Forgot password?</a>
-                </div>
-            </div>
-            <button type="submit" class="form-btn form-btn--submit">Sign In</button>
-        </form>
-        <div class="form-divider"><p>Or</p></div>
-        <div class="form-bottom">
-            <div class="form-socials">
-                <button type="button" class="form-btn form-btn--social">
-                    <img src="assets/images/google.svg" class="btn-icon" alt="">
-                </button>
-                <button type="button" class="form-btn form-btn--social">
-                    <img src="assets/images/facebook.svg" class="btn-icon" alt="">
-                </button>
-                <button type="button" class="form-btn form-btn--social">
-                    <img src="assets/images/apple.svg" class="btn-icon" alt="">
-                </button>
-            </div>
-            <p>Don't have an account? <a href="#" class="form-link">Sign up</a></p>
-        </div>
 
-        <!-- Team Section -->
-        <div class="team-container">
-            <!-- Ded Bob -->
-            <div class="member">
-                <span class="name">Ded Bob</span>
-                <div class="info">
+<div class="banner-wrap">
+  <img class="banner-img" src="retouch_2025090307294209.jpg" alt="Nether Arcade Banner">
+  <div class="banner-fade"></div>
+</div>
+
+<nav>
+  <button class="active" onclick="switchTab('home')">Home</button>
+  <button onclick="switchTab('team')">Team</button>
+  <button onclick="switchTab('contact')">Contact</button>
+</nav>
+
+<main>
+  <!-- HOME -->
+  <section id="home" class="active">
+    <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
+    <h1>Nether Arcade</h1>
+    <p>A Minecraft server crafting <strong>minigames powered by command blocks</strong>. No mods—just vanilla ingenuity.</p>
+    <div class="ip-box" onclick="copyIP()">
+      <span>netherarcade.cold00.eu</span>
+      <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+      <span class="tooltip" id="tip">Copied!</span>
+      <span style="color: var(--subtle); font-size: 0.85rem; margin-top:0.5rem;">Java Edition only • Version 1.21.8</span>
+    </div>
+    <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
+  </section>
+
+  <!-- TEAM -->
+  <section id="team">
+    <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
+    <h1>Our Team</h1>
+    <p>The builders behind the blocks.</p>
+    <div class="team-grid">
+      <!-- Ded Bob -->
+      <div class="member">
+        <div class="name">Ded Bob</div>
+        <div class="role">Owner</div>
+        <div class="member-info">
 ─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────
 Hi, I’m Ded Bob (also known as Map1111)!  
-I love working with commands and with friends.  
-Feel free to join the Discord group if you have any questions!  
+I love working with **commands** and building with friends.  
+Feel free to join the **Discord** if you have any questions!
 
-Favourite colour: <span style="color:#ADD8E6;">Light Blue</span>
+Favourite colour: Dark Light Blue 🎨
 ─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────
-                </div>
-            </div>
-
-            <!-- Vanilama -->
-            <div class="member">
-                <span class="name">Vanilama</span>
-                <div class="info">
+        </div>
+      </div>
+      <!-- Vanilama -->
+      <div class="member">
+        <div class="name">Vanilama</div>
+        <div class="role">Command Engineer</div>
+        <div class="member-info">
 ─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────
 Hi, I’m Vanilama (Also Known As Vanilama-Modded)  
 I do multiple things on the server but mostly I make  
-the command-only system for our Minigames  
+the command-only system for our Minigames
 
-Favourite colour: <span style="color:#B02121;">Lightly Darkened Red</span>
+Favourite colour: Lightly Darkened Red 🎨
 ─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────
-                </div>
-            </div>
-
-            <!-- Simson -->
-            <div class="member">
-                <span class="name">Simson</span>
-                <div class="info">
+        </div>
+      </div>
+      <!-- Simson -->
+      <div class="member">
+        <div class="name">Simson</div>
+        <div class="role">Builder</div>
+        <div class="member-info">
 ─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────
 Yo, I’m Simson!  
 I like **building**, **PvP**, and **minigames**.  
 I hope you enjoy the server and have fun!  
 
-Favourite colour: **Red** 🔴
+Favourite colour: Red 🔴
 ─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────
-                </div>
-            </div>
-
-            <!-- Ridderbeo -->
-            <div class="member">
-                <span class="name">Ridderbeo</span>
-                <div class="info">
+        </div>
+      </div>
+      <!-- Ridderbeo -->
+      <div class="member">
+        <div class="name">Ridderbeo</div>
+        <div class="role">Builder</div>
+        <div class="member-info">
 ─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────
 Hello, I’m Ridderbeo (also known as Pancake)!  
 I mostly work on **projects not related to Minecraft**.  
 My signature is ˗ˏˋ ✩ ˎˊ˗, and I handle **aesthetics and lore-related content**.  
 I helped make the **Discord cleaner** and worked on the **website**.  
-I love to **talk and interact** with people, so you’ll see me around!  
-
-Favourite colour: **Green** 🟢
-─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-function togglePassword() {
-    const passwordInput = document.getElementById("password");
-    const eyeIcon = document.querySelector(".eye-icon i");
-
-    if(passwordInput.type === "password") {
-        passwordInput.type = "text";
-        eyeIcon.classList.replace('bx-show','bx-hide');
-    } else {
-        passwordInput.type = "password";
-        eyeIcon.classList.replace('bx-hide','bx-show');
-    }
-}
-</script>
-</body>
-</html>
+I love to **talk and interact** with people, so
