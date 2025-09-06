@@ -33,15 +33,15 @@ h3 { font-size: 1.2rem; margin-bottom: 0.5rem; }
 p { color: var(--subtle); line-height: 1.6; margin-bottom: 1.5rem; }
 .divider { display: flex; justify-content: center; align-items: center; gap: 0.25rem; margin: 1.5rem 0; font-weight: 600; cursor: pointer; }
 
-/* IP + version + star container */
-.ip-star-container { display:flex; justify-content:center; align-items:center; gap:1rem; margin-top:1rem; flex-wrap: wrap; }
-.ip-box { display:flex; flex-direction:column; align-items:center; gap:0.25rem; background:var(--card); padding:0.8rem 1.2rem; border-radius:10px; transition: background 0.2s ease; cursor:default; }
+/* IP Box / Version / Counter */
+.ip-box { display: flex; align-items: center; gap: 0.5rem; background: var(--card); padding: 0.6rem 1.2rem; border-radius: 10px; transition: background 0.2s ease; width:100%; max-width:300px; justify-content:center; }
 .ip-box:hover { background: var(--surface); }
-.counter-box { width:36px; height:36px; background: var(--surface); color: var(--text); display:flex; justify-content:center; align-items:center; border-radius:6px; font-weight:700; font-size:1rem; }
+.counter-box { width: 28px; height: 28px; background: var(--surface); color: var(--text); display: flex; justify-content: center; align-items: center; border-radius: 6px; font-weight: 700; }
 
 /* Bottom divider with clickable star */
 #bottom-divider .star-button { font-size: 1.5rem; color: var(--accent); cursor: pointer; transition: transform 0.2s ease; }
 #bottom-divider .star-button:hover { transform: scale(1.3); }
+#reset-btn { margin-left:0.5rem; padding:0.2rem 0.6rem; border:none; border-radius:6px; background: var(--accent2); color:#000; cursor:pointer; display:none; }
 
 /* Team Section */
 .team-wrap { display: flex; flex-direction: column; gap: 2rem; }
@@ -86,35 +86,46 @@ footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: var
 <main>
   <!-- HOME -->
   <section id="home" class="active">
+    <!-- Top divider (green) -->
     <div class="divider" style="color:#1ce69c;">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
 
     <h1>Nether Arcade</h1>
     <p>A Minecraft server crafting <strong>minigames powered by command blocks</strong>. No mods—just vanilla ingenuity.</p>
 
-    <div class="ip-star-container">
-      <div class="ip-box">
-        <span style="font-weight:700;">netherarcade.cold00.eu</span>
-        <span style="cursor:pointer;" onclick="copyToClipboard('netherarcade.cold00.eu')">📋</span>
-        <span style="color: var(--subtle); font-size: 0.85rem;">Java Edition only • Version 1.21.8</span>
-      </div>
-      <div class="counter-box" id="counter">0</div>
+    <!-- IP box with copy emoji -->
+    <div class="ip-box">
+      <span style="font-weight:700;">netherarcade.cold00.eu</span>
+      <span style="cursor:pointer;" onclick="copyToClipboard('netherarcade.cold00.eu')">📋</span>
     </div>
 
+    <!-- Version box -->
+    <div class="ip-box" style="margin-top:0.5rem;">
+      <span style="color: var(--subtle); font-size: 0.85rem;">Java Edition only • Version 1.21.8</span>
+    </div>
+
+    <!-- Star counter -->
+    <div class="ip-box" style="margin-top:0.5rem;">
+      <div id="counter" class="counter-box">0</div>
+    </div>
+
+    <!-- Bottom divider with clickable red star -->
     <div id="bottom-divider" class="divider" style="margin-top:1.5rem;">
       <span style="color:#1ce69c;">──────﹒˗ˏˋ</span>
       <span id="star" class="star-button">✩</span>
       <span style="color:#1ce69c;">ˎˊ˗﹒──────</span>
+      <button id="reset-btn">Reset</button>
     </div>
   </section>
 
   <!-- TEAM -->
   <section id="team">
-    <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
+    <div class="divider" style="color:#1ce69c;">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
     <h1><i class="fa-solid fa-people-group"></i> Our Team</h1>
     <p>The builders behind the blocks.</p>
 
     <div class="team-wrap">
       <div class="team-grid">
+        <!-- Ded Bob -->
         <div class="member">
           <div class="name">Ded Bob</div>
           <div class="role">Owner</div>
@@ -130,7 +141,8 @@ footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: var
             <div class="pill">[Empty Review 3]</div>
           </div>
         </div>
-
+        
+        <!-- Vanilama -->
         <div class="member">
           <div class="name">Vanilama</div>
           <div class="role">Command Engineer</div>
@@ -147,6 +159,7 @@ footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: var
           </div>
         </div>
 
+        <!-- Simson -->
         <div class="member">
           <div class="name">Simsom</div>
           <div class="role">Builder</div>
@@ -163,6 +176,7 @@ footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: var
           </div>
         </div>
 
+        <!-- Ridderbeo -->
         <div class="member">
           <div class="name">Ridderbeo</div>
           <div class="role">Builder</div>
@@ -180,6 +194,7 @@ footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: var
         </div>
       </div>
 
+      <!-- SERVER REVIEWS -->
       <aside class="server-reviews">
         <div class="server-email-box" onclick="openEmail()">
           <p><i class="fa-solid fa-envelope"></i> Send your server reviews to: 
@@ -206,14 +221,14 @@ footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: var
           <div class="pill">[Empty Review 9]</div>
           <div class="pill">[Empty Review 10]</div>
         </div>
-        <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
+        <div class="divider" style="color:#1ce69c;">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
       </aside>
     </div>
   </section>
 
   <!-- CONTACT -->
   <section id="contact">
-    <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
+    <div class="divider" style="color:#1ce69c;">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
     <h1>Socials</h1>
     <p>Hit us up on our socials!</p>
     <a class="btn" href="https://discord.gg/xpPTKx9FuP" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-discord"></i> Join Discord</a>
@@ -221,7 +236,7 @@ footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: var
       <a class="btn" href="https://youtube.com/@NetherArcade" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-youtube"></i> View YouTube Channel</a>
       <a class="btn" href="https://tiktok.com/@netherarcade" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-tiktok"></i> View TikTok Channel</a>
     </div>
-    <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
+    <div class="divider" style="color:#1ce69c;">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
   </section>
 </main>
 
@@ -237,11 +252,31 @@ function switchTab(tab) {
   document.querySelector(`nav button[onclick="switchTab('${tab}')"]`).classList.add("active");
 }
 
-// Star click counter
+// Star click counter logic
 let starCount = 0;
-document.getElementById("star").addEventListener("click", () => {
-  starCount++;
-  document.getElementById("counter").textContent = starCount;
+let increment = 1;
+const star = document.getElementById("star");
+const counter = document.getElementById("counter");
+const resetBtn = document.getElementById("reset-btn");
+
+star.addEventListener("click", () => {
+  if(starCount < 100000) {
+    starCount += increment;
+    counter.textContent = starCount;
+    if(starCount >= 100000) {
+      resetBtn.style.display = "inline-block";
+    }
+  } else if(starCount >= 100000 && starCount < 250000) {
+    starCount += increment;
+    counter.textContent = starCount;
+  }
+});
+
+resetBtn.addEventListener("click", () => {
+  starCount = 0;
+  increment = 2;
+  counter.textContent = starCount;
+  resetBtn.style.display = "none";
 });
 
 // Copy to clipboard
@@ -251,6 +286,7 @@ function copyToClipboard(text) {
   });
 }
 
+// Open email
 function openEmail() {
   const email = "netherarcade@gmail.com";
   const subject = encodeURIComponent("Server Review");
@@ -258,6 +294,7 @@ function openEmail() {
   window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${subject}&body=${body}`, "_blank");
 }
 
+// Update year
 document.getElementById("yr").textContent = new Date().getFullYear();
 </script>
 
