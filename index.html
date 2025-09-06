@@ -98,12 +98,15 @@ footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: var
     <!-- IP + Version -->
     <!-- IP + Version Box Centered -->
 <div style="display:flex; justify-content:center; margin-top:1rem;">
-  <div class="ip-version-box">
-    <span>netherarcade.cold00.eu</span>
-    <span onclick="copyToClipboard('netherarcade.cold00.eu')">📋</span>
-    <span style="margin-left:10px;">Java Edition only • Version 1.21.8</span>
+  <div class="ip-version-box" style="display:flex; flex-direction:column; align-items:center; gap:0.3rem; padding:0.8rem 1.5rem; background:var(--card); border-radius:10px;">
+    <div style="display:flex; align-items:center; gap:0.5rem;">
+      <span style="font-weight:700;">netherarcade.cold00.eu</span>
+      <span style="cursor:pointer;" onclick="copyToClipboard('netherarcade.cold00.eu')">📋</span>
+    </div>
+    <div style="color: var(--subtle); font-size: 0.85rem;">Java Edition only • Version 1.21.8</div>
   </div>
 </div>
+
 
 
     <!-- Counter -->
