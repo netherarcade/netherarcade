@@ -34,11 +34,17 @@ p { color: var(--subtle); line-height: 1.6; margin-bottom: 1.5rem; }
 .divider { margin: 1.5rem 0; color: var(--accent2); font-weight: 600; cursor: pointer; }
 
 /* IP Box */
-.ip-box { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--card); padding: 0.6rem 1.2rem; border-radius: 10px; cursor: pointer; transition: background 0.2s ease; position: relative; flex-direction: column; }
+.ip-box { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--card); padding: 0.6rem 1.2rem; border-radius: 10px; transition: background 0.2s ease; position: relative; flex-direction: column; }
 .ip-box:hover { background: var(--surface); }
 .ip-box svg { width: 18px; height: 18px; fill: var(--accent2); }
 .tooltip { position: absolute; bottom: 125%; left: 50%; transform: translateX(-50%); background: var(--surface); color: var(--text); padding: 0.35rem 0.65rem; border-radius: 6px; font-size: 0.8rem; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.2s ease; }
 .tooltip.show { opacity: 1; }
+
+/* Star Clicker */
+.star-container { display: flex; align-items: center; gap: 0.5rem; justify-content: center; margin-top: 0.5rem; }
+.star-button { font-size: 1.5rem; color: var(--accent); cursor: pointer; user-select: none; transition: transform 0.2s ease; }
+.star-button:hover { transform: scale(1.2); }
+.counter-box { width: 28px; height: 28px; background: var(--surface); color: var(--text); display: flex; justify-content: center; align-items: center; border-radius: 6px; font-weight: 700; }
 
 /* Team Section */
 .team-wrap { display: flex; flex-direction: column; gap: 2rem; }
@@ -83,16 +89,22 @@ footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: var
 <main>
   <!-- HOME -->
   <section id="home" class="active">
-    <div id="home-divider" class="divider" onclick="toggleDivider()">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
+    <div id="home-divider" class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
     <h1>Nether Arcade</h1>
     <p>A Minecraft server crafting <strong>minigames powered by command blocks</strong>. No mods—just vanilla ingenuity.</p>
-    <div class="ip-box" onclick="copyIP()">
+
+    <div class="ip-box">
       <span style="font-weight:700;">netherarcade.cold00.eu</span>
       <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
-      <span class="tooltip" id="tip">Copied!</span>
       <span style="color: var(--subtle); font-size: 0.85rem; margin-top:0.5rem;">Java Edition only • Version 1.21.8</span>
     </div>
-     <div>──────﹒˗ˏˋ ✩ ˎˊ˗﹒──────</div>
+
+    <div class="star-container">
+      <div id="star" class="star-button">✩</div>
+      <div id="counter" class="counter-box">0</div>
+    </div>
+
+    <div>──────﹒˗ˏˋ ✩ ˎˊ˗﹒──────</div>
   </section>
 
   <!-- TEAM -->
@@ -232,20 +244,12 @@ function switchTab(tab) {
   document.querySelector(`nav button[onclick="switchTab('${tab}')"]`).classList.add("active");
 }
 
-function copyIP() {
-  navigator.clipboard.writeText("netherarcade.cold00.eu").then(() => {
-    const tip = document.getElementById('tip');
-    tip.classList.add('show');
-    setTimeout(() => tip.classList.remove('show'), 1500);
-  });
-}
-
-function toggleDivider() {
-  const divider = document.getElementById('home-divider');
-  divider.textContent = divider.textContent.includes('✩') 
-    ? '─────────﹒˗ˏˋ ★ ˎˊ˗﹒─────────' 
-    : '─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────';
-}
+// Star click counter
+let starCount = 0;
+document.getElementById("star").addEventListener("click", () => {
+  starCount++;
+  document.getElementById("counter").textContent = starCount;
+});
 
 function openEmail() {
   const email = "netherarcade@gmail.com";
@@ -253,7 +257,6 @@ function openEmail() {
   const body = encodeURIComponent("Hi Nether Arcade, \n\n");
   window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${subject}&body=${body}`, "_blank");
 }
-
 
 document.getElementById("yr").textContent = new Date().getFullYear();
 </script>
