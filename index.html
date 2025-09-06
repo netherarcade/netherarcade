@@ -45,6 +45,15 @@ p { color: var(--subtle); line-height: 1.6; margin-bottom: 1.5rem; }
 #resetBtn { display:none; background:#000; color:#fff; border:none; padding:0.5rem 1rem; border-radius:8px; cursor:pointer; margin-left:10px; transition: transform 0.2s; }
 #resetBtn:hover { transform: scale(1.05); }
 
+/* Team grid */
+.team-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(200px,1fr)); gap:1.5rem; margin-top:1.5rem; }
+.team-card { background:var(--card); padding:1rem; border-radius:10px; }
+.team-card h4 { margin-bottom:0.3rem; }
+
+/* Social links */
+.socials { display:flex; justify-content:center; gap:1rem; margin-top:1rem; }
+.socials a { color:var(--subtle); font-size:1.5rem; transition:color 0.2s; }
+.socials a:hover { color:var(--accent2); }
 </style>
 </head>
 <body>
@@ -65,7 +74,7 @@ p { color: var(--subtle); line-height: 1.6; margin-bottom: 1.5rem; }
 <main>
   <!-- HOME -->
   <section id="home" class="active">
-    <!-- Top divider (non-clickable) -->
+    <!-- Top divider -->
     <div class="divider" style="color:#1ce69c;">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
 
     <h1>Nether Arcade</h1>
@@ -81,7 +90,7 @@ p { color: var(--subtle); line-height: 1.6; margin-bottom: 1.5rem; }
         <div style="color: var(--subtle); font-size: 0.85rem;">Java Edition only • Version 1.21.8</div>
       </div>
       <div class="counter-box" id="counter">0</div>
-      <button id="resetBtn" onclick="doReset()">Reset</button>
+      <button id="resetBtn">Reset</button>
     </div>
 
     <!-- Stats display -->
@@ -97,6 +106,36 @@ p { color: var(--subtle); line-height: 1.6; margin-bottom: 1.5rem; }
     </div>
   </section>
 
+  <!-- TEAM -->
+  <section id="team">
+    <h3>Our Team</h3>
+    <div class="team-grid">
+      <div class="team-card">
+        <h4>Alex</h4>
+        <p>Redstone Engineer</p>
+      </div>
+      <div class="team-card">
+        <h4>Sam</h4>
+        <p>Command Block Wizard</p>
+      </div>
+      <div class="team-card">
+        <h4>Lily</h4>
+        <p>Builder & Designer</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <h3>Find us online</h3>
+    <div class="socials">
+      <a href="#"><i class="fab fa-discord"></i></a>
+      <a href="#"><i class="fab fa-youtube"></i></a>
+      <a href="#"><i class="fab fa-twitter"></i></a>
+    </div>
+  </section>
+</main>
+
 <script>
 function switchTab(tab) {
   document.querySelectorAll("nav button").forEach(b => b.classList.remove("active"));
@@ -109,6 +148,10 @@ function switchTab(tab) {
 let counter = 0;
 let clickValue = 0.5;
 let idleCPM = 0;
+let timerInterval = 30000; // default 30 sec
+let idleTimer;
+
+let checkpoint100kUnlocked = false;
 
 // Milestones
 let milestones = [
@@ -132,17 +175,25 @@ document.getElementById("resetBtn").addEventListener("click", () => {
   let milestone = milestones.find(m => counter >= m.limit && !m.used);
 
   if (milestone) {
-    // Standard milestone reset
+    // Normal milestone reset
     counter = 0;
     clickValue = milestone.clickVal;
     idleCPM = milestone.idleCPM;
     milestone.used = true;
     document.getElementById("resetBtn").style.display = "none";
     updateDisplay();
-  } else if (counter >= 25000) {
-    // Infinite rebirths after 25k
+  } else if (counter >= 25000 && counter < 100000) {
+    // Infinite rebirths at 25k
     counter = 0;
     idleCPM += 5;
+    document.getElementById("resetBtn").style.display = "none";
+    updateDisplay();
+  } else if (!checkpoint100kUnlocked && counter >= 100000) {
+    // Special 100k checkpoint
+    counter = 0;
+    checkpoint100kUnlocked = true;
+    timerInterval = 20000; // 20 sec
+    restartIdleTimer();
     document.getElementById("resetBtn").style.display = "none";
     updateDisplay();
   }
@@ -151,7 +202,7 @@ document.getElementById("resetBtn").addEventListener("click", () => {
 // Check milestones
 function checkMilestones() {
   let milestone = milestones.find(m => counter >= m.limit && !m.used);
-  if (milestone || counter >= 25000) {
+  if (milestone || counter >= 25000 || (!checkpoint100kUnlocked && counter >= 100000)) {
     document.getElementById("resetBtn").style.display = "inline-block";
   }
 }
@@ -159,8 +210,9 @@ function checkMilestones() {
 // Update display
 function updateDisplay() {
   document.getElementById("counter").textContent = Math.floor(counter);
+  let secText = checkpoint100kUnlocked ? "20 sec" : "30 sec";
   document.getElementById("stats").textContent =
-    `Click Value: ${clickValue} | Idle CPM: ${idleCPM} | 30 sec`;
+    `Click Value: ${clickValue} | Idle CPM: ${idleCPM} | ${secText}`;
 }
 
 // Copy IP
@@ -170,232 +222,23 @@ function copyToClipboard(text) {
   });
 }
 
-// Idle CPM every 30 seconds
-setInterval(() => {
-  counter += idleCPM;
-  updateDisplay();
-  checkMilestones();
-}, 30000);
+// Idle CPM system
+function startIdleTimer() {
+  idleTimer = setInterval(() => {
+    counter += idleCPM;
+    updateDisplay();
+    checkMilestones();
+  }, timerInterval);
+}
+
+function restartIdleTimer() {
+  clearInterval(idleTimer);
+  startIdleTimer();
+}
 
 // Initialize
 updateDisplay();
-</script>
-  <!-- TEAM -->
-  <section id="team">
-    <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
-    <h1><i class="fa-solid fa-people-group"></i> Our Team</h1>
-    <p>The builders behind the blocks.</p>
-
-    <div class="team-wrap">
-      <div class="team-grid">
-        <!-- Members same as your version -->
-        <div class="member">
-          <div class="name">Ded Bob</div>
-          <div class="role">Owner</div>
-          <div class="fav-divider" style="background:#4da3ff;"></div>
-          <div class="member-info">
-            <div>──────﹒˗ˏˋ ✩ ˎˊ˗﹒──────</div>
-            <p>Hi, I’m Ded Bob (Map1111)! I love working with commands and building with friends. Feel free to join the Discord if you have any questions!</p>
-            <div>──────﹒˗ˏˋ ✩ ˎˊ˗﹒──────</div>
-          </div>
-          <div class="member-reviews">
-            <div class="pill">[Empty Review 1]</div>
-            <div class="pill">[Empty Review 2]</div>
-            <div class="pill">[Empty Review 3]</div>
-          </div>
-        </div>
-
-        <div class="member">
-          <div class="name">Vanilama</div>
-          <div class="role">Command Engineer</div>
-          <div class="fav-divider" style="background:#d64a4a;"></div>
-          <div class="member-info">
-            <div>──────﹒˗ˏˋ ✩ ˎˊ˗﹒──────</div>
-            <p>Hi, I’m Vanilama (Vanilama-Modded). I handle the command-only systems for Minigames.</p>
-            <div>──────﹒˗ˏˋ ✩ ˎˊ˗﹒──────</div>
-          </div>
-          <div class="member-reviews">
-            <div class="pill">[Empty Review 1]</div>
-            <div class="pill">[Empty Review 2]</div>
-            <div class="pill">[Empty Review 3]</div>
-          </div>
-        </div>
-
-        <div class="member">
-          <div class="name">Simsom</div>
-          <div class="role">Builder</div>
-          <div class="fav-divider" style="background:#ff3c3c;"></div>
-          <div class="member-info">
-            <div>──────﹒˗ˏˋ ✩ ˎˊ˗﹒──────</div>
-            <p>Yo, I’m Simson! I like building, PvP, and minigames, I also made the map-art.</p>
-            <div>──────﹒˗ˏˋ ✩ ˎˊ˗﹒──────</div>
-          </div>
-          <div class="member-reviews">
-            <div class="pill">[Empty Review 1]</div>
-            <div class="pill">[Empty Review 2]</div>
-            <div class="pill">[Empty Review 3]</div>
-          </div>
-        </div>
-
-        <div class="member">
-          <div class="name">Ridderbeo</div>
-          <div class="role">Builder</div>
-          <div class="fav-divider" style="background:#1ce69c;"></div>
-          <div class="member-info">
-            <div>──────﹒˗ˏˋ ✩ ˎˊ˗﹒──────</div>
-            <p>I handle aesthetics and lore-related content, I love interacting with people, so you will definitely meet me!</p>
-            <div>──────﹒˗ˏˋ ✩ ˎˊ˗﹒──────</div>
-          </div>
-          <div class="member-reviews">
-            <div class="pill">[Empty Review 1]</div>
-            <div class="pill">[Empty Review 2]</div>
-            <div class="pill">[Empty Review 3]</div>
-          </div>
-        </div>
-      </div>
-
-      <aside class="server-reviews">
-        <div class="server-email-box" onclick="openEmail()">
-          <p><i class="fa-solid fa-envelope"></i> Send your server reviews to: 
-            <a href="mailto:netherarcade@gmail.com" style="color:#ff3c3c; text-decoration:underline;">netherarcade@gmail.com</a>
-          </p>
-          <ul>
-            <li>Keep it kind and respectful.</li>
-            <li>No spam or advertising.</li>
-            <li>Constructive criticism only.</li>
-            <li>Breaking the rules may result in a ban from the server.</li>
-          </ul>
-        </div>
-
-        <h3>Server Reviews</h3>
-        <div class="server-review-grid">
-          <div class="pill">This server is amazing!</div>
-          <div class="pill">[Empty Review 2]</div>
-          <div class="pill">[Empty Review 3]</div>
-          <div class="pill">[Empty Review 4]</div>
-          <div class="pill">[Empty Review 5]</div>
-          <div class="pill">[Empty Review 6]</div>
-          <div class="pill">[Empty Review 7]</div>
-          <div class="pill">[Empty Review 8]</div>
-          <div class="pill">[Empty Review 9]</div>
-          <div class="pill">[Empty Review 10]</div>
-        </div>
-        <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
-      </aside>
-    </div>
-  </section>
-
-  <!-- CONTACT -->
-  <section id="contact">
-    <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
-    <h1>Socials</h1>
-    <p>Hit us up on our socials!</p>
-    <a class="btn" href="https://discord.gg/xpPTKx9FuP" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-discord"></i> Join Discord</a>
-    <div class="social-buttons">
-      <a class="btn" href="https://youtube.com/@NetherArcade" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-youtube"></i> View YouTube Channel</a>
-      <a class="btn" href="https://tiktok.com/@netherarcade" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-tiktok"></i> View TikTok Channel</a>
-    </div>
-    <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
-  </section>
-</main>
-
-<footer>
-  &copy; <span id="yr"></span> Nether Arcade &nbsp;•&nbsp; Not affiliated with Mojang
-</footer>
-
-<script>
-function switchTab(tab) {
-  document.querySelectorAll("nav button").forEach(b => b.classList.remove("active"));
-  document.querySelectorAll("section").forEach(s => s.classList.remove("active"));
-  document.getElementById(tab).classList.add("active");
-  document.querySelector(`nav button[onclick="switchTab('${tab}')"]`).classList.add("active");
-}
-
-// Counter system
-let counter = 0;
-let clickValue = 0.5;
-let idleCPM = 0;
-
-// Milestones
-let milestones = [
-  { limit: 10, clickVal: 1, idleCPM: 0, used: false, forced: true },
-  { limit: 100, clickVal: 1.5, idleCPM: 15, used: false, forced: true },
-  { limit: 1000, clickVal: 2, idleCPM: 15, used: false, forced: true },
-  { limit: 5000, clickVal: 2, idleCPM: 30, used: false, forced: true },
-  { limit: 10000, clickVal: 2, idleCPM: 45, used: false, forced: true },
-  { limit: 25000, clickVal: 2.5, idleCPM: 50, used: false, forced: false }
-];
-
-// Click star
-document.getElementById("star").addEventListener("click", () => {
-  counter += clickValue;
-  updateDisplay();
-  checkMilestones();
-});
-
-// Reset button
-document.getElementById("resetBtn").addEventListener("click", () => {
-  let milestone = milestones.find(m => counter >= m.limit && !m.used);
-  if (milestone) {
-    counter = 0;
-    clickValue = milestone.clickVal;
-    idleCPM = milestone.idleCPM;
-    milestone.used = true;
-    document.getElementById("resetBtn").style.display = "none";
-    updateDisplay();
-  } else if (counter >= 25000) {
-    counter = 0;
-    idleCPM += 5;
-    document.getElementById("resetBtn").style.display = "none";
-    updateDisplay();
-  }
-});
-
-// Check milestones
-function checkMilestones() {
-  let milestone = milestones.find(m => counter >= m.limit && !m.used);
-  if (milestone) {
-    document.getElementById("resetBtn").style.display = "inline-block";
-  }
-}
-
-// Update display
-function updateDisplay() {
-  document.getElementById("counter").textContent = Math.floor(counter);
-  document.getElementById("stats").textContent =
-    `Click Value: ${clickValue} | Idle CPM: ${idleCPM} | 30 sec`;
-}
-
-// Copy IP
-function copyToClipboard(text) {
-  navigator.clipboard.writeText(text).then(() => {
-    alert("Copied: " + text);
-  });
-}
-
-// Open email (TEAM page)
-function openEmail() {
-  const email = "netherarcade@gmail.com";
-  const subject = encodeURIComponent("Server Review");
-  const body = encodeURIComponent("Hi Nether Arcade,\n\n");
-  window.open(
-    `https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${subject}&body=${body}`,
-    "_blank"
-  );
-}
-
-// Set footer year
-document.getElementById("yr").textContent = new Date().getFullYear();
-
-// Idle CPM every 30 seconds
-setInterval(() => {
-  counter += idleCPM;
-  updateDisplay();
-  checkMilestones();
-}, 30000);
-
-// Initialize
-updateDisplay();
+startIdleTimer();
 </script>
 </body>
 </html>
