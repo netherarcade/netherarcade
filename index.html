@@ -33,13 +33,18 @@ h3 { font-size: 1.2rem; margin-bottom: 0.5rem; }
 p { color: var(--subtle); line-height: 1.6; margin-bottom: 1.5rem; }
 .divider { display: flex; justify-content: center; align-items: center; gap: 0.25rem; margin: 1.5rem 0; font-weight: 600; cursor: pointer; }
 
-/* Home page boxes */
-.home-box { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--card); padding: 0.75rem 1.25rem; border-radius: 10px; transition: background 0.2s ease; justify-content: center; margin:0.5rem auto; max-width: 500px; }
-.home-box:hover { background: var(--surface); }
-.counter-box { width: 40px; height: 28px; background: var(--surface); color: var(--text); display: flex; justify-content: center; align-items: center; border-radius: 6px; font-weight: 700; font-size: 1rem; }
-.star-button { font-size: 1.5rem; color: var(--accent); cursor: pointer; transition: transform 0.2s ease; margin:0 5px; }
-.star-button:hover { transform: scale(1.3); }
-#stats { margin-top:0.5rem; font-size:0.9rem; color:var(--subtle); }
+/* IP Box / Counter */
+.ip-container { display: flex; justify-content: center; align-items: center; gap: 0.5rem; flex-wrap: wrap; margin-top: 1rem; }
+.ip-box, .counter-box { display: flex; justify-content: center; align-items: center; padding: 0.6rem 1.2rem; border-radius: 10px; font-weight: 700; }
+.ip-box { background: var(--card); cursor: default; min-width: 250px; gap:0.5rem; }
+.ip-box span.copy { cursor:pointer; }
+.counter-box { background: var(--surface); min-width: 60px; color: var(--text); font-weight:700; }
+
+.stats { margin-top:0.5rem; font-size:0.9rem; color: var(--accent2); }
+
+/* Bottom divider with clickable star */
+#bottom-divider .star-button { font-size: 1.5rem; color: var(--accent); cursor: pointer; transition: transform 0.2s ease; }
+#bottom-divider .star-button:hover { transform: scale(1.3); }
 
 /* Team Section */
 .team-wrap { display: flex; flex-direction: column; gap: 2rem; }
@@ -84,30 +89,33 @@ footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: var
 <main>
   <!-- HOME -->
   <section id="home" class="active">
-    <!-- Top divider -->
     <div class="divider" style="color:#1ce69c;">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
 
     <h1>Nether Arcade</h1>
     <p>A Minecraft server crafting <strong>minigames powered by command blocks</strong>. No mods—just vanilla ingenuity.</p>
 
-    <!-- Single cube with IP, copy, version -->
-    <div class="home-box">
-      <span style="font-weight:700;">netherarcade.cold00.eu</span>
-      <span style="cursor:pointer;" onclick="copyToClipboard('netherarcade.cold00.eu')">📋</span>
-      <span style="margin-left:10px; color:var(--text);" id="counter">0</span>
+    <!-- IP + version + counter -->
+    <div class="ip-container">
+      <div class="ip-box">
+        <span>netherarcade.cold00.eu</span>
+        <span class="copy" onclick="copyToClipboard('netherarcade.cold00.eu')">📋</span>
+        <span>Java Edition only • Version 1.21.8</span>
+      </div>
+      <div id="counter" class="counter-box">0</div>
     </div>
-    <div class="home-box" style="margin-top:0.5rem;">
-      <span style="color: var(--subtle); font-size: 0.85rem;">Java Edition only • Version 1.21.8</span>
-    </div>
-    <div id="stats">Click Value: 0.5 | Idle CPM: 0</div>
+
+    <!-- Stats -->
+    <div id="stats" class="stats">Click Value: 0.5 | Idle CPM: 0 | 30 sec</div>
+
+    <!-- Reset button -->
+    <button id="resetBtn" style="display:none; margin-top:0.5rem;">Reset</button>
 
     <!-- Bottom divider with clickable star -->
-    <div class="divider" style="margin-top:1.5rem;">
+    <div id="bottom-divider" class="divider" style="margin-top:1.5rem;">
       <span style="color:#1ce69c;">──────﹒˗ˏˋ</span>
       <span id="star" class="star-button">✩</span>
       <span style="color:#1ce69c;">ˎˊ˗﹒──────</span>
     </div>
-    <button id="resetBtn" class="btn" style="margin-top:10px; display:none;">Reset</button>
   </section>
 
   <!-- TEAM -->
@@ -118,6 +126,7 @@ footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: var
 
     <div class="team-wrap">
       <div class="team-grid">
+        <!-- Ded Bob -->
         <div class="member">
           <div class="name">Ded Bob</div>
           <div class="role">Owner</div>
@@ -133,6 +142,8 @@ footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: var
             <div class="pill">[Empty Review 3]</div>
           </div>
         </div>
+
+        <!-- Vanilama -->
         <div class="member">
           <div class="name">Vanilama</div>
           <div class="role">Command Engineer</div>
@@ -148,13 +159,15 @@ footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: var
             <div class="pill">[Empty Review 3]</div>
           </div>
         </div>
+
+        <!-- Simson -->
         <div class="member">
           <div class="name">Simsom</div>
           <div class="role">Builder</div>
           <div class="fav-divider" style="background:#ff3c3c;"></div>
           <div class="member-info">
             <div>──────﹒˗ˏˋ ✩ ˎˊ˗﹒──────</div>
-            <p>Yo, I’m Simson! I like building, PvP, and minigames, I also made the map-art.</p>
+            <p>Yo, I’m Simson! I like building, PvP, minigames, and I also made the map-art.</p>
             <div>──────﹒˗ˏˋ ✩ ˎˊ˗﹒──────</div>
           </div>
           <div class="member-reviews">
@@ -163,13 +176,15 @@ footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: var
             <div class="pill">[Empty Review 3]</div>
           </div>
         </div>
+
+        <!-- Ridderbeo -->
         <div class="member">
           <div class="name">Ridderbeo</div>
           <div class="role">Builder</div>
           <div class="fav-divider" style="background:#1ce69c;"></div>
           <div class="member-info">
             <div>──────﹒˗ˏˋ ✩ ˎˊ˗﹒──────</div>
-            <p>I handle aesthetics and lore-related content. I love to talk and interact with people, so you will definitely meet me!</p>
+            <p>I handle aesthetics and lore-related content. I love to talk and interact with people!</p>
             <div>──────﹒˗ˏˋ ✩ ˎˊ˗﹒──────</div>
           </div>
           <div class="member-reviews">
@@ -179,35 +194,6 @@ footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: var
           </div>
         </div>
       </div>
-
-      <aside class="server-reviews">
-        <div class="server-email-box" onclick="openEmail()">
-          <p><i class="fa-solid fa-envelope"></i> Send your server reviews to: 
-            <a href="mailto:netherarcade@gmail.com" style="color:#ff3c3c; text-decoration:underline;">netherarcade@gmail.com</a>
-          </p>
-          <ul>
-            <li>Keep it kind and respectful.</li>
-            <li>No spam or advertising.</li>
-            <li>Constructive criticism only.</li>
-            <li>Breaking the rules may result in a ban from the server.</li>
-          </ul>
-        </div>
-
-        <h3>Server Reviews</h3>
-        <div class="server-review-grid">
-          <div class="pill">This server is amazing, keep it going!</div>
-          <div class="pill">[Empty Review 2]</div>
-          <div class="pill">[Empty Review 3]</div>
-          <div class="pill">[Empty Review 4]</div>
-          <div class="pill">[Empty Review 5]</div>
-          <div class="pill">[Empty Review 6]</div>
-          <div class="pill">[Empty Review 7]</div>
-          <div class="pill">[Empty Review 8]</div>
-          <div class="pill">[Empty Review 9]</div>
-          <div class="pill">[Empty Review 10]</div>
-        </div>
-        <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
-      </aside>
     </div>
   </section>
 
@@ -237,93 +223,74 @@ function switchTab(tab) {
   document.querySelector(`nav button[onclick="switchTab('${tab}')"]`).classList.add("active");
 }
 
-// Click system with milestones and forced resets
-let clickValue = 0.5;
+// Click + idle system with milestones
 let counter = 0;
+let clickValue = 0.5;
 let idleCPM = 0;
 let resetAvailable = false;
 let milestones = [
-  {limit:10, used:false, newClick:1},
-  {limit:100, used:false, newClick:1.5},
-  {limit:1000, used:false, newClick:2},
-  {limit:5000, used:false, newClick:2},
-  {limit:10000, used:false, newClick:2},
-  {limit:25000, used:false, newClick:2}
+  {limit: 10, used:false, newClick:1, newCPM:0},
+  {limit: 100, used:false, newClick:1.5, newCPM:1},
+  {limit: 1000, used:false, newClick:2, newCPM:2},
+  {limit: 5000, used:false, newClick:2, newCPM:3},
+  {limit: 10000, used:false, newClick:2, newCPM:3},
+  {limit: 25000, used:false, newClick:2, newCPM:3}
 ];
 
-function updateStats() {
-  document.getElementById("stats").textContent = `Click Value: ${clickValue} | Idle CPM: ${idleCPM}`;
+const counterEl = document.getElementById("counter");
+const statsEl = document.getElementById("stats");
+const resetBtn = document.getElementById("resetBtn");
+
+// Star click
+document.getElementById("star").addEventListener("click", () => {
+  counter += clickValue;
+  updateDisplay();
+  checkMilestones();
+});
+
+// Idle CPM increment every 30 seconds
+setInterval(() => {
+  counter += idleCPM;
+  updateDisplay();
+  checkMilestones();
+}, 30000);
+
+// Reset button click
+resetBtn.addEventListener("click", () => {
+  counter = 0;
+  idleCPM += 2; // After 25k resets, CPM increases on reset
+  clickValue += 0; // keep click value as per milestone
+  resetBtn.style.display = "none";
+  updateDisplay();
+});
+
+// Update display
+function updateDisplay(){
+  counterEl.textContent = Math.floor(counter);
+  statsEl.textContent = `Click Value: ${clickValue} | Idle CPM: ${idleCPM} | 30 sec`;
 }
 
-function checkMilestones() {
+// Check milestones
+function checkMilestones(){
+  resetAvailable = false;
   for(let m of milestones){
     if(counter >= m.limit && !m.used){
       resetAvailable = true;
-      document.getElementById("resetBtn").style.display = "inline-block";
-      break;
-    }
-  }
-}
-  document.getElementById("star").addEventListener("click", () => {
-  counter += clickValue;
-  counter = Math.round(counter * 100) / 100; // round to 2 decimals
-  document.getElementById("counter").textContent = counter;
-  checkMilestones();
-});
-
-document.getElementById("resetBtn").addEventListener("click", () => {
-  for(let m of milestones){
-    if(counter >= m.limit && !m.used){
-      counter = 0;
+      resetBtn.style.display = "inline-block";
       clickValue = m.newClick;
-      m.used = true;
-      idleCPM = 0;
-      resetAvailable = false;
-      document.getElementById("resetBtn").style.display = "none";
-      document.getElementById("counter").textContent = counter;
-      updateStats();
+      idleCPM = m.newCPM;
+      m.used = true; // Force single reset
       break;
     }
   }
-});
-
-function incrementIdleCPM(){
-  // Increment counter automatically every 30 seconds
-  let addedClicks = 0;
-  if(counter >= 100 && counter < 1000) addedClicks = 1;
-  else if(counter >= 1000 && counter < 5000) addedClicks = 2;
-  else if(counter >= 5000 && counter < 10000) addedClicks = 2;
-  else if(counter >= 10000 && counter < 25000) addedClicks = 3;
-  else if(counter >= 25000) addedClicks = 0;
-
-  counter += addedClicks;
-  counter = Math.round(counter * 100) / 100;
-  idleCPM = addedClicks * 2; // because 30 sec interval, multiply for per minute
-  document.getElementById("counter").textContent = counter;
-  updateStats();
-  checkMilestones();
 }
 
-// 30-second interval for idle CPM
-setInterval(incrementIdleCPM, 30000);
-
-updateStats();
-
-// Copy to clipboard function
 function copyToClipboard(text) {
   navigator.clipboard.writeText(text).then(() => {
     alert('Copied to clipboard: ' + text);
   });
 }
 
-function openEmail() {
-  const email = "netherarcade@gmail.com";
-  const subject = encodeURIComponent("Server Review");
-  const body = encodeURIComponent("Hi Nether Arcade, \n\n");
-  window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${subject}&body=${body}`, "_blank");
-}
-
-// Year update
 document.getElementById("yr").textContent = new Date().getFullYear();
 </script>
 </body>
