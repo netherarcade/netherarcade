@@ -43,7 +43,7 @@ background: linear-gradient(0deg, rgba(130, 23, 23, 1) 44%, rgba(253, 45, 45, 1)
   width: 100%;
   max-width: 450px;
   border-radius: 8px;
-  border: 1px solid var(--color-border);
+  border: 1px solid black;
   overflow: hidden;
 }
 
@@ -53,7 +53,7 @@ background: linear-gradient(0deg, rgba(130, 23, 23, 1) 44%, rgba(253, 45, 45, 1)
 }
 
 .form-header p {
-  color: var(--color-placeholder);
+  color: gray;
 }
 
 .form-header h1 {
@@ -72,7 +72,7 @@ background: linear-gradient(0deg, rgba(130, 23, 23, 1) 44%, rgba(253, 45, 45, 1)
 .input-field {
   height: 48px;
   padding-inline: 14px;
-  border: 1px solid var(--color-border);
+  border: 1px solid black;
   border-radius: 6px;
   width: 100%;
   outline: none;
@@ -82,8 +82,8 @@ background: linear-gradient(0deg, rgba(130, 23, 23, 1) 44%, rgba(253, 45, 45, 1)
   top: 50%;
   left: 8px;
   transform: translateY(-50%);
-  color: var(--color-placeholder);
-  background-color: var(--color-white);
+  color: gray;
+  background-color: white;
   padding-inline: 6px;
   transition: all 0.3s ease;
   pointer-events: none;
@@ -94,13 +94,13 @@ background: linear-gradient(0deg, rgba(130, 23, 23, 1) 44%, rgba(253, 45, 45, 1)
   left: 8px;
   transform: translateY(-50%);
   font-size: 12px;
-  color: var(--color-primary);
+  color: gray;
 }
 .input-field:focus {
-  border-color: var(--color-primary);
+  border-color: black;
 }
 .input-field:not(:focus):not(:placeholder-shown) ~ .floating-label {
-  color: var(--color-floating-label);
+  color: blue;
 }
 .eye-icon {
   position: absolute;
@@ -113,7 +113,7 @@ background: linear-gradient(0deg, rgba(130, 23, 23, 1) 44%, rgba(253, 45, 45, 1)
   width: 20px;
   height: 20px;
   cursor: pointer;
-  color: var(--color-placeholder);
+  color: black;
 }
 .checkbox-group {
   display: flex;
@@ -143,7 +143,7 @@ background: linear-gradient(0deg, rgba(130, 23, 23, 1) 44%, rgba(253, 45, 45, 1)
 }
 .form-btn--submit {
   background-color: black;
-  color: var(--color-white);
+  color: white;
   font-size: 16px;
   font-weight: 600;
   margin-top: 20px;
@@ -166,16 +166,8 @@ background: linear-gradient(0deg, rgba(130, 23, 23, 1) 44%, rgba(253, 45, 45, 1)
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
 }
-.form-btn--social {
-  border: 1px solid var(--color-divider);
-  transition: 0.3s ease;
-}
-.form-btn--social:hover {
-  background-color: var(--color-social-hover);
-}
-.btn-icon {
-  width: 30px;
-}
+
+
 .form-link {
   color: gray;
 }
@@ -187,7 +179,7 @@ background: linear-gradient(0deg, rgba(130, 23, 23, 1) 44%, rgba(253, 45, 45, 1)
   align-items: center;
   gap: 20px;
   font-size: 14px;
-  color: var(--color-placeholder);
+  color: gray;
   margin-top: 20px;
 }
 .form-divider::before,
@@ -195,7 +187,7 @@ background: linear-gradient(0deg, rgba(130, 23, 23, 1) 44%, rgba(253, 45, 45, 1)
   content: "";
   flex: 1;
   height: 1px;
-  background-color: var(--color-divider);
+  background-color: gray;
 }
 
 
