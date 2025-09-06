@@ -54,7 +54,7 @@ p { color: var(--subtle); line-height: 1.6; margin-bottom: 1.5rem; }
 .server-review-grid { display:grid; grid-template-columns:repeat(2, 1fr); gap:0.5rem 1rem; }
 
 /* Buttons */
-.btn { display: inline-block; background: var(--accent); color: #000; border: none; padding: 0.75rem 1.75rem; font-size: 1rem; border-radius: 10px; cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease; text-decoration: none; }
-.btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(255,60,60,0.35); }
+.a { display: inline-block; background: var(--accent); color: #000; border: none; padding: 0.75rem 1.75rem; font-size: 1rem; border-radius: 10px; cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease; text-decoration: none; }
+.a:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(255,60,60,0.35); }
 .social-buttons { margin-top: 2rem; display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
 footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: var(--subtle); }
