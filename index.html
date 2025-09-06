@@ -33,19 +33,17 @@ h3 { font-size: 1.2rem; margin-bottom: 0.5rem; }
 p { color: var(--subtle); line-height: 1.6; margin-bottom: 1.5rem; }
 .divider { display: flex; justify-content: center; align-items: center; gap: 0.25rem; margin: 1.5rem 0; font-weight: 600; cursor: pointer; }
 
-/* Boxes */
-.ip-version-box, .counter-box { display: flex; align-items: center; justify-content: center; padding: 0.8rem 1.5rem; border-radius: 10px; font-weight:700; margin: 0.5rem 0; width: 320px; max-width: 80%; background: var(--card); }
-.ip-version-box span { margin-left: 0.5rem; cursor:pointer; font-weight:normal; }
-.counter-box { background: var(--surface); width: 80px; font-size: 1.2rem; }
-.stats { margin-top:0.5rem; color: var(--subtle); font-size:0.9rem; }
-
-/* Reset Button */
-#resetBtn { display:none; padding:0.6rem 1.2rem; margin-top:0.5rem; background:#000; color:#fff; border:none; border-radius:10px; cursor:pointer; font-weight:700; transition: transform 0.2s ease; }
-#resetBtn:hover { transform:translateY(-2px); }
+/* IP/Version & Counter */
+.ip-version-box { display:flex; flex-direction:column; align-items:center; gap:0.3rem; padding:0.8rem 1.5rem; background:var(--card); border-radius:10px; }
+.counter-box { width: 50px; min-width:50px; height: 28px; background: var(--surface); color: var(--text); display: flex; justify-content: center; align-items: center; border-radius: 6px; font-weight: 700; font-size:1rem; margin-left:10px; }
 
 /* Bottom divider with clickable star */
 #bottom-divider .star-button { font-size: 1.5rem; color: var(--accent); cursor: pointer; transition: transform 0.2s ease; }
 #bottom-divider .star-button:hover { transform: scale(1.3); }
+
+/* Reset button */
+#resetBtn { display:none; background:#000; color:#fff; border:none; padding:0.5rem 1rem; border-radius:8px; cursor:pointer; margin-left:10px; transition: transform 0.2s; }
+#resetBtn:hover { transform: scale(1.05); }
 
 /* Team Section */
 .team-wrap { display: flex; flex-direction: column; gap: 2rem; }
@@ -90,33 +88,26 @@ footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: var
 <main>
   <!-- HOME -->
   <section id="home" class="active">
+    <!-- Top divider (non-clickable) -->
     <div class="divider" style="color:#1ce69c;">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
 
     <h1>Nether Arcade</h1>
     <p>A Minecraft server crafting <strong>minigames powered by command blocks</strong>. No mods—just vanilla ingenuity.</p>
 
-    <!-- IP + Version -->
-    <!-- IP + Version Box Centered -->
-<div style="display:flex; justify-content:center; margin-top:1rem;">
-  <div class="ip-version-box" style="display:flex; flex-direction:column; align-items:center; gap:0.3rem; padding:0.8rem 1.5rem; background:var(--card); border-radius:10px;">
-    <div style="display:flex; align-items:center; gap:0.5rem;">
-      <span style="font-weight:700;">netherarcade.cold00.eu</span>
-      <span style="cursor:pointer;" onclick="copyToClipboard('netherarcade.cold00.eu')">📋</span>
-    </div>
-    <div style="color: var(--subtle); font-size: 0.85rem;">Java Edition only • Version 1.21.8</div>
-  </div>
-</div>
-
-
-
-    <!-- Counter -->
-    <div style="display:flex; justify-content:center; gap:0.5rem; align-items:center; margin-top:0.5rem;">
-      <div id="counter" class="counter-box">0</div>
-      <button id="resetBtn">Reset</button>
+    <!-- IP + Version + Counter -->
+    <div style="display:flex; justify-content:center; margin-top:1rem; align-items:center;">
+      <div class="ip-version-box">
+        <div style="display:flex; align-items:center; gap:0.5rem;">
+          <span style="font-weight:700;">netherarcade.cold00.eu</span>
+          <span style="cursor:pointer;" onclick="copyToClipboard('netherarcade.cold00.eu')">📋</span>
+        </div>
+        <div style="color: var(--subtle); font-size: 0.85rem;">Java Edition only • Version 1.21.8</div>
+      </div>
+      <div class="counter-box" id="counter">0</div>
+      <button id="resetBtn" onclick="doReset()">Reset</button>
     </div>
 
-    <div class="stats" id="stats">Click Value: 0.5 | Idle CPM: 0 | 30 sec</div>
-
+    <!-- Bottom divider with clickable red star -->
     <div id="bottom-divider" class="divider" style="margin-top:1.5rem;">
       <span style="color:#1ce69c;">──────﹒˗ˏˋ</span>
       <span id="star" class="star-button">✩</span>
