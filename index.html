@@ -82,6 +82,110 @@ p { color: var(--subtle); line-height: 1.6; margin-bottom: 1.5rem; }
         <div class="counter-box" id="counter">0</div>
         <button id="resetBtn">Reset</button>
       </div>
+      <div id="stats">Click Value: 0.5 | Idle CPM: 0 | 30 sec</div>
+    </div>
+
+    <!-- Bottom divider with clickable red star -->
+    <div id="bottom-divider" class="divider" style="margin-top:1.5rem;">
+      <span style="color:#1ce69c;">──────﹒˗ˏˋ</span>
+      <span id="star" class="star-button">✩</span>
+      <span style="color:#1ce69c;">ˎˊ˗﹒──────</span>
+    </div>
+  </section>
+
+<script>
+function switchTab(tab) {
+  document.querySelectorAll("nav button").forEach(b => b.classList.remove("active"));
+  document.querySelectorAll("section").forEach(s => s.classList.remove("active"));
+  document.getElementById(tab).classList.add("active");
+  document.querySelector(`nav button[onclick="switchTab('${tab}')"]`).classList.add("active");
+}
+
+// Counter system
+let counter = 0;
+let clickValue = 0.5;
+let idleCPM = 0;
+
+// Updated milestones
+let milestones = [
+  { limit: 10, clickVal: 1, idleCPM: 0, used: false, forced: true },
+  { limit: 100, clickVal: 1.5, idleCPM: 15, used: false, forced: true },
+  { limit: 1000, clickVal: 2, idleCPM: 15, used: false, forced: true },
+  { limit: 5000, clickVal: 2, idleCPM: 30, used: false, forced: true },
+  { limit: 10000, clickVal: 2, idleCPM: 45, used: false, forced: true },
+  { limit: 25000, clickVal: 2.5, idleCPM: 50, used: false, forced: false } // optional reset
+];
+
+document.getElementById("star").addEventListener("click", () => {
+  counter += clickValue;
+  updateDisplay();
+  checkMilestones();
+});
+
+document.getElementById("resetBtn").addEventListener("click", () => {
+  let milestone = milestones.find(m => counter >= m.limit && !m.used);
+  if(milestone){
+    counter = 0;
+    clickValue = milestone.clickVal;
+    idleCPM = milestone.idleCPM;
+    milestone.used = true;
+    document.getElementById("resetBtn").style.display = "none";
+    updateDisplay();
+  } else if(counter >= 25000){
+    counter = 0;
+    idleCPM += 5; // extra gain after 25k resets
+    document.getElementById("resetBtn").style.display = "none";
+    updateDisplay();
+  }
+});
+
+function checkMilestones(){
+  let milestone = milestones.find(m => counter >= m.limit && !m.used);
+  if(milestone){
+    document.getElementById("resetBtn").style.display = "inline-block";
+  }
+}
+
+function updateDisplay(){
+  document.getElementById("counter").textContent = Math.floor(counter);
+  document.getElementById("stats").textContent = 
+    `Click Value: ${clickValue} | Idle CPM: ${idleCPM} | 30 sec`;
+}
+
+function copyToClipboard(text) {
+  navigator.clipboard.writeText(text).then(()=>{alert("Copied: "+text);});
+}
+
+// Idle CPM every 30 seconds
+setInterval(()=>{
+  counter += idleCPM;
+  updateDisplay();
+  checkMilestones();
+},30000);
+
+updateDisplay();
+</script>
+
+  <!-- HOME -->
+  <section id="home" class="active">
+    <div class="divider" style="color:#1ce69c;">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
+
+    <h1>Nether Arcade</h1>
+    <p>A Minecraft server crafting <strong>minigames powered by command blocks</strong>. No mods—just vanilla ingenuity.</p>
+
+    <!-- IP + Version + Counter -->
+    <div style="display:flex; flex-direction:column; align-items:center; gap:0.75rem;">
+      <div style="display:flex; justify-content:center; align-items:center;">
+        <div class="ip-version-box">
+          <div style="display:flex; align-items:center; gap:0.5rem;">
+            <span style="font-weight:700;">netherarcade.cold00.eu</span>
+            <span style="cursor:pointer;" onclick="copyToClipboard('netherarcade.cold00.eu')">📋</span>
+          </div>
+          <div style="color: var(--subtle); font-size: 0.85rem;">Java Edition only • Version 1.21.8</div>
+        </div>
+        <div class="counter-box" id="counter">0</div>
+        <button id="resetBtn">Reset</button>
+      </div>
       <div id="stats">Click Value: 0.5 | Idle CPM: 0</div>
     </div>
 
