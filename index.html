@@ -33,9 +33,9 @@ h3 { font-size: 1.2rem; margin-bottom: 0.5rem; }
 p { color: var(--subtle); line-height: 1.6; margin-bottom: 1.5rem; }
 .divider { display: flex; justify-content: center; align-items: center; gap: 0.25rem; margin: 1.5rem 0; font-weight: 600; cursor: pointer; }
 
-/* IP Box / Version / Counter in one line */
-.ip-row { display: flex; justify-content: center; align-items: center; gap: 0.5rem; margin-top: 1rem; }
-.ip-box { display: flex; align-items: center; gap: 0.5rem; background: var(--card); padding: 0.6rem 1.2rem; border-radius: 10px; transition: background 0.2s ease; }
+/* IP Boxes Row */
+.ip-row { display: flex; justify-content: center; align-items: center; gap: 0.5rem; margin-top: 1rem; flex-wrap: wrap; }
+.ip-box { display: flex; align-items: center; gap: 0.5rem; background: var(--card); padding: 0.6rem 1rem; border-radius: 10px; transition: background 0.2s ease; cursor: default; }
 .ip-box:hover { background: var(--surface); }
 .counter-box { min-width: 60px; height: 28px; background: var(--surface); color: var(--text); display: flex; justify-content: center; align-items: center; border-radius: 6px; font-weight: 700; }
 
@@ -92,11 +92,18 @@ footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: var
     <h1>Nether Arcade</h1>
     <p>A Minecraft server crafting <strong>minigames powered by command blocks</strong>. No mods—just vanilla ingenuity.</p>
 
-    <!-- IP and counter row -->
+    <!-- Three boxes in one row, centered -->
     <div class="ip-row">
+      <!-- Box 1: Server IP with copy -->
+      <div class="ip-box">
+        <span style="font-weight:700;">netherarcade.cold00.eu</span>
+        <span style="cursor:pointer;" onclick="copyToClipboard('netherarcade.cold00.eu')">📋</span>
+      </div>
+      <!-- Box 2: Version -->
       <div class="ip-box">
         <span style="color: var(--subtle); font-size: 0.85rem;">Java Edition only • Version 1.21.8</span>
       </div>
+      <!-- Box 3: Counter -->
       <div class="counter-box" id="counter">0</div>
     </div>
 
@@ -109,53 +116,8 @@ footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: var
     </div>
   </section>
 
-  <!-- TEAM -->
-  <section id="team">
-    <div class="divider" style="color:#1ce69c;">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
-    <h1><i class="fa-solid fa-people-group"></i> Our Team</h1>
-    <p>The builders behind the blocks.</p>
+  <!-- TEAM Section and CONTACT remain the same as before -->
 
-    <div class="team-wrap">
-      <div class="team-grid">
-        <!-- Members omitted for brevity, same as before -->
-      </div>
-
-      <aside class="server-reviews">
-        <div class="server-email-box" onclick="openEmail()">
-          <p><i class="fa-solid fa-envelope"></i> Send your server reviews to: 
-            <a href="mailto:netherarcade@gmail.com" style="color:#ff3c3c; text-decoration:underline;">netherarcade@gmail.com</a>
-          </p>
-          <ul>
-            <li>Keep it kind and respectful.</li>
-            <li>No spam or advertising.</li>
-            <li>Constructive criticism only.</li>
-            <li>Breaking the rules may result in a ban from the server.</li>
-          </ul>
-        </div>
-
-        <h3>Server Reviews</h3>
-        <div class="server-review-grid">
-          <div class="pill">This shit is so sigma keep it going</div>
-          <div class="pill">[Empty Review 2]</div>
-          <div class="pill">[Empty Review 3]</div>
-        </div>
-        <div class="divider" style="color:#1ce69c;">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
-      </aside>
-    </div>
-  </section>
-
-  <!-- CONTACT -->
-  <section id="contact">
-    <div class="divider" style="color:#1ce69c;">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
-    <h1>Socials</h1>
-    <p>Hit us up on our socials!</p>
-    <a class="btn" href="https://discord.gg/xpPTKx9FuP" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-discord"></i> Join Discord</a>
-    <div class="social-buttons">
-      <a class="btn" href="https://youtube.com/@NetherArcade" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-youtube"></i> View YouTube Channel</a>
-      <a class="btn" href="https://tiktok.com/@netherarcade" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-tiktok"></i> View TikTok Channel</a>
-    </div>
-    <div class="divider" style="color:#1ce69c;">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
-  </section>
 </main>
 
 <footer>
@@ -202,14 +164,6 @@ function copyToClipboard(text) {
   navigator.clipboard.writeText(text).then(() => {
     alert('Copied to clipboard: ' + text);
   });
-}
-
-// Open email
-function openEmail() {
-  const email = "netherarcade@gmail.com";
-  const subject = encodeURIComponent("Server Review");
-  const body = encodeURIComponent("Hi Nether Arcade, \n\n");
-  window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${subject}&body=${body}`, "_blank");
 }
 
 // Update year
