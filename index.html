@@ -33,34 +33,15 @@ h3 { font-size: 1.2rem; margin-bottom: 0.5rem; }
 p { color: var(--subtle); line-height: 1.6; margin-bottom: 1.5rem; }
 .divider { display: flex; justify-content: center; align-items: center; gap: 0.25rem; margin: 1.5rem 0; font-weight: 600; cursor: pointer; }
 
-/* IP / Version / Counter Boxes */
-.box-container { display:flex; flex-direction:row; gap:0.5rem; justify-content:center; align-items:center; margin-top:1rem; flex-wrap:wrap; }
-.ip-box { display: flex; align-items: center; gap: 0.5rem; background: var(--card); padding: 0.8rem 1.5rem; border-radius: 12px; transition: background 0.2s ease; min-width:220px; justify-content:center; flex-direction:row; }
-.ip-box:hover { background: var(--surface); }
-.counter-box { width: 60px; height: 40px; background: var(--surface); color: var(--text); display: flex; justify-content: center; align-items: center; border-radius: 8px; font-weight: 700; font-size:1.1rem; }
+/* Boxes */
+.ip-version-box, .counter-box { display: flex; align-items: center; justify-content: center; padding: 0.8rem 1.5rem; border-radius: 10px; font-weight:700; margin: 0.5rem 0; width: 320px; max-width: 80%; background: var(--card); }
+.ip-version-box span { margin-left: 0.5rem; cursor:pointer; font-weight:normal; }
+.counter-box { background: var(--surface); width: 80px; font-size: 1.2rem; }
+.stats { margin-top:0.5rem; color: var(--subtle); font-size:0.9rem; }
 
-/* Reset button */
-#resetBtn {
-  display: none;
-  padding: 0.6rem 1.5rem;
-  font-weight: bold;
-  font-size: 1rem;
-  color: #fff;
-  background: linear-gradient(45deg, #ff3c3c, #ff7a00);
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: 0 4px 12px rgba(255, 60, 60, 0.3);
-  margin-top: 0.8rem;
-}
-#resetBtn:hover {
-  transform: scale(1.1);
-  box-shadow: 0 8px 20px rgba(255, 60, 60, 0.5);
-}
-
-/* Stats display */
-#stats { margin-top:0.5rem; font-size:0.9rem; color: var(--subtle); }
+/* Reset Button */
+#resetBtn { display:none; padding:0.6rem 1.2rem; margin-top:0.5rem; background:#000; color:#fff; border:none; border-radius:10px; cursor:pointer; font-weight:700; transition: transform 0.2s ease; }
+#resetBtn:hover { transform:translateY(-2px); }
 
 /* Bottom divider with clickable star */
 #bottom-divider .star-button { font-size: 1.5rem; color: var(--accent); cursor: pointer; transition: transform 0.2s ease; }
@@ -89,7 +70,6 @@ p { color: var(--subtle); line-height: 1.6; margin-bottom: 1.5rem; }
 .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(255,60,60,0.35); }
 .social-buttons { margin-top: 2rem; display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
 footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: var(--subtle); }
-
 </style>
 </head>
 <body>
@@ -115,22 +95,20 @@ footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: var
     <h1>Nether Arcade</h1>
     <p>A Minecraft server crafting <strong>minigames powered by command blocks</strong>. No mods—just vanilla ingenuity.</p>
 
-    <div class="box-container">
-      <!-- IP & Copy -->
-      <div class="ip-box">
-        <span style="font-weight:700;">netherarcade.cold00.eu</span>
-        <span style="cursor:pointer;" onclick="copyToClipboard('netherarcade.cold00.eu')">📋</span>
-      </div>
-      <!-- Version -->
-      <div class="ip-box">
-        <span style="color: var(--subtle); font-size: 0.85rem;">Java Edition only • Version 1.21.8</span>
-      </div>
-      <!-- Counter -->
-      <div class="counter-box" id="counter">0</div>
+    <!-- IP + Version -->
+    <div class="ip-version-box">
+      <span>netherarcade.cold00.eu</span>
+      <span onclick="copyToClipboard('netherarcade.cold00.eu')">📋</span>
+      <span style="margin-left:10px;">Java Edition only • Version 1.21.8</span>
     </div>
 
-    <button id="resetBtn" onclick="performReset()">Reset</button>
-    <div id="stats">Click Value: 0.5 | Idle CPM: 0 | 30 sec</div>
+    <!-- Counter -->
+    <div style="display:flex; justify-content:center; gap:0.5rem; align-items:center; margin-top:0.5rem;">
+      <div id="counter" class="counter-box">0</div>
+      <button id="resetBtn">Reset</button>
+    </div>
+
+    <div class="stats" id="stats">Click Value: 0.5 | Idle CPM: 0 | 30 sec</div>
 
     <div id="bottom-divider" class="divider" style="margin-top:1.5rem;">
       <span style="color:#1ce69c;">──────﹒˗ˏˋ</span>
@@ -144,9 +122,9 @@ footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: var
     <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
     <h1><i class="fa-solid fa-people-group"></i> Our Team</h1>
     <p>The builders behind the blocks.</p>
+
     <div class="team-wrap">
       <div class="team-grid">
-        <!-- Ded Bob -->
         <div class="member">
           <div class="name">Ded Bob</div>
           <div class="role">Owner</div>
@@ -163,7 +141,6 @@ footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: var
           </div>
         </div>
 
-        <!-- Vanilama -->
         <div class="member">
           <div class="name">Vanilama</div>
           <div class="role">Command Engineer</div>
@@ -180,14 +157,13 @@ footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: var
           </div>
         </div>
 
-        <!-- Simson -->
         <div class="member">
           <div class="name">Simsom</div>
           <div class="role">Builder</div>
           <div class="fav-divider" style="background:#ff3c3c;"></div>
           <div class="member-info">
             <div>──────﹒˗ˏˋ ✩ ˎˊ˗﹒──────</div>
-            <p>Yo, I’m Simson! I like building, PvP, and minigames, i also made the map-art .</p>
+            <p>Yo, I’m Simson! I like building, PvP, and minigames, I also made the map-art.</p>
             <div>──────﹒˗ˏˋ ✩ ˎˊ˗﹒──────</div>
           </div>
           <div class="member-reviews">
@@ -197,14 +173,13 @@ footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: var
           </div>
         </div>
 
-        <!-- Ridderbeo -->
         <div class="member">
           <div class="name">Ridderbeo</div>
           <div class="role">Builder</div>
           <div class="fav-divider" style="background:#1ce69c;"></div>
           <div class="member-info">
             <div>──────﹒˗ˏˋ ✩ ˎˊ˗﹒──────</div>
-            <p>I handle aesthetics and lore-related content, i love to talk with people and interact with people so you will definitely meet me!</p>
+            <p>I handle aesthetics and lore-related content, I love interacting with people, so you will definitely meet me!</p>
             <div>──────﹒˗ˏˋ ✩ ˎˊ˗﹒──────</div>
           </div>
           <div class="member-reviews">
@@ -214,6 +189,35 @@ footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: var
           </div>
         </div>
       </div>
+
+      <aside class="server-reviews">
+        <div class="server-email-box" onclick="openEmail()">
+          <p><i class="fa-solid fa-envelope"></i> Send your server reviews to: 
+            <a href="mailto:netherarcade@gmail.com" style="color:#ff3c3c; text-decoration:underline;">netherarcade@gmail.com</a>
+          </p>
+          <ul>
+            <li>Keep it kind and respectful.</li>
+            <li>No spam or advertising.</li>
+            <li>Constructive criticism only.</li>
+            <li>Breaking the rules may result in a ban from the server.</li>
+          </ul>
+        </div>
+
+        <h3>Server Reviews</h3>
+        <div class="server-review-grid">
+          <div class="pill">This server is amazing!</div>
+          <div class="pill">[Empty Review 2]</div>
+          <div class="pill">[Empty Review 3]</div>
+          <div class="pill">[Empty Review 4]</div>
+          <div class="pill">[Empty Review 5]</div>
+          <div class="pill">[Empty Review 6]</div>
+          <div class="pill">[Empty Review 7]</div>
+          <div class="pill">[Empty Review 8]</div>
+          <div class="pill">[Empty Review 9]</div>
+          <div class="pill">[Empty Review 10]</div>
+        </div>
+        <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
+      </aside>
     </div>
   </section>
 
@@ -243,42 +247,46 @@ function switchTab(tab) {
   document.querySelector(`nav button[onclick="switchTab('${tab}')"]`).classList.add("active");
 }
 
-// Copy
-function copyToClipboard(text) {
-  navigator.clipboard.writeText(text).then(()=>{alert('Copied to clipboard: ' + text)});
-}
-
-// Star click counter
+// Counter system
 let counter = 0;
 let clickValue = 0.5;
 let idleCPM = 0;
-const counterBox = document.getElementById("counter");
-const statsBox = document.getElementById("stats");
 let resetAvailable = false;
-
-// Milestones
-const milestones = [
-  {limit:10, clickValue:1, idle:0, used:false},
-  {limit:100, clickValue:1.5, idle:15, used:false},
-  {limit:1000, clickValue:2, idle:15, used:false},
-  {limit:5000, clickValue:2, idle:30, used:false},
-  {limit:10000, clickValue:2, idle:45, used:false},
-  {limit:25000, clickValue:2, idle:50, used:false}
+let milestones = [
+  { limit: 10, used:false, clickVal:1, idleCPM:0 },
+  { limit: 100, used:false, clickVal:1.5, idleCPM:15 },
+  { limit: 1000, used:false, clickVal:2, idleCPM:15 },
+  { limit: 5000, used:false, clickVal:2, idleCPM:30 },
+  { limit: 10000, used:false, clickVal:2, idleCPM:45 },
+  { limit: 25000, used:false, clickVal:2, idleCPM:50 }
 ];
 
-// Click
-document.getElementById("star").addEventListener("click", ()=>{
-  counter += clickValue;
-  updateCounter();
-  checkMilestones();
+// Star click
+document.getElementById("star").addEventListener("click", () => {
+  if(!resetAvailable || counter < milestones.find(m=>!m.used)?.limit) counter += clickValue;
+  updateDisplay();
 });
 
-function updateCounter() {
-  counterBox.textContent = Math.floor(counter);
-  statsBox.textContent = `Click Value: ${clickValue} | Idle CPM: ${idleCPM} | 30 sec`;
-}
+// Reset button
+document.getElementById("resetBtn").addEventListener("click", () => {
+  let currentMilestone = milestones.find(m=>counter>=m.limit && !m.used);
+  if(currentMilestone){
+    counter = 0;
+    clickValue = currentMilestone.clickVal;
+    idleCPM = currentMilestone.idleCPM;
+    currentMilestone.used = true;
+    resetAvailable = false;
+    document.getElementById("resetBtn").style.display = "none";
+    updateDisplay();
+  } else if(counter>25000){
+    counter=0;
+    clickValue +=2;
+    updateDisplay();
+  }
+});
 
 function checkMilestones() {
+  resetAvailable = false;
   for(let m of milestones){
     if(counter >= m.limit && !m.used){
       resetAvailable = true;
@@ -288,28 +296,33 @@ function checkMilestones() {
   }
 }
 
-function performReset() {
-  for(let m of milestones){
-    if(counter >= m.limit && !m.used){
-      counter = 0;
-      clickValue = m.clickValue;
-      idleCPM = m.idle;
-      m.used = true;
-      updateCounter();
-      document.getElementById("resetBtn").style.display = "none";
-      break;
-    }
-  }
+function updateDisplay(){
+  document.getElementById("counter").textContent = Math.floor(counter);
+  document.getElementById("stats").textContent = `Click Value: ${clickValue} | Idle CPM: ${idleCPM} | 30 sec`;
 }
 
-// Idle CPM auto increase every 30 sec
-setInterval(()=>{
-  counter += idleCPM;
-  updateCounter();
-},30000);
+function copyToClipboard(text) {
+  navigator.clipboard.writeText(text).then(()=>{alert("Copied: "+text);});
+}
+
+function openEmail(){
+  const email="netherarcade@gmail.com";
+  const subject=encodeURIComponent("Server Review");
+  const body=encodeURIComponent("Hi Nether Arcade,\n\n");
+  window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${subject}&body=${body}`,"_blank");
+}
 
 document.getElementById("yr").textContent = new Date().getFullYear();
 
+// Idle CPM increase every 30 seconds
+setInterval(()=>{
+  counter += idleCPM;
+  updateDisplay();
+  checkMilestones();
+},30000);
+
+updateDisplay();
 </script>
+
 </body>
 </html>
