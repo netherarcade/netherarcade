@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Nether Arcade – Socials</title>
+<title>Nether Arcade – Home</title>
 <link rel="icon" href="logo.png">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
 <style>
@@ -13,6 +13,7 @@
   --accent: #ff3c3c;
   --text: #f3f3f7;
   --subtle: #9f9fa6;
+  --green: #00ff88;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: "Inter", system-ui, sans-serif; background: var(--bg); color: var(--text); display: flex; flex-direction: column; min-height: 100vh; }
@@ -26,12 +27,14 @@ main { flex: 1; padding: 2.5rem 1.5rem; display: flex; flex-direction: column; a
 section { width: 100%; max-width: 960px; }
 h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 1rem; }
 p { color: var(--subtle); line-height: 1.6; margin-bottom: 1.5rem; }
-.divider { display: flex; justify-content: center; align-items: center; margin: 1.5rem 0; font-weight: 600; }
+.divider { color: var(--green); display: flex; justify-content: center; align-items: center; margin: 1.5rem 0; font-weight: 600; }
 
-/* Social buttons */
-.btn { display: inline-block; background: var(--accent); color: #000; border: none; padding: 0.75rem 1.75rem; font-size: 1rem; border-radius: 10px; cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease; text-decoration: none; }
-.btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(255,60,60,0.35); }
-.social-buttons { margin-top: 2rem; display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+/* Server IP Box */
+.ip-box { background: var(--card); border-radius: 12px; padding: 1.2rem; text-align: center; font-size: 1.2rem; font-weight: 600; cursor: pointer; position: relative; }
+.ip-box:hover { background: var(--surface); }
+.tooltip { position: absolute; bottom: -1.5rem; left: 50%; transform: translateX(-50%); background: var(--accent); color: #000; padding: 0.3rem 0.6rem; border-radius: 6px; font-size: 0.75rem; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+.ip-box.copied .tooltip { opacity: 1; }
+
 footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: var(--subtle); }
 </style>
 </head>
@@ -45,31 +48,23 @@ footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: var
 
 <!-- Navigation -->
 <nav>
-  <a href="index.html">Home</a>
+  <a class="active" href="index.html">Home</a>
   <a href="about.html">Team</a>
   <a href="mini-game.html">Mini-Game</a>
-  <a class="active" href="socials.html">Socials</a>
+  <a href="socials.html">Socials</a>
 </nav>
 
-
 <main>
-  <!-- CONTACT -->
-  <section id="contact">
+  <section id="home">
     <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
-    <h1><i class="fa-solid fa-globe"></i> Socials</h1>
-    <p>Hit us up on our socials!</p>
+    <h1><i class="fa-solid fa-fire"></i> Welcome to Nether Arcade</h1>
+    <p>Fun minigames, creative builds, and a great community await you!</p>
 
-    <a class="btn" href="https://discord.gg/xpPTKx9FuP" target="_blank" rel="noopener noreferrer">
-      <i class="fa-brands fa-discord"></i> Join Discord
-    </a>
-
-    <div class="social-buttons">
-      <a class="btn" href="https://youtube.com/@NetherArcade" target="_blank" rel="noopener noreferrer">
-        <i class="fa-brands fa-youtube"></i> View YouTube Channel
-      </a>
-      <a class="btn" href="https://tiktok.com/@netherarcade" target="_blank" rel="noopener noreferrer">
-        <i class="fa-brands fa-tiktok"></i> View TikTok Channel
-      </a>
+    <!-- Server IP Box -->
+    <div class="ip-box" onclick="copyIP()">
+      <span>netherarcade.cold00.eu</span>
+      <div style="font-size:0.85rem; color:var(--subtle);">Java Edition only • Version 1.21.8</div>
+      <span class="tooltip" id="tip">Copied!</span>
     </div>
 
     <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
@@ -81,6 +76,14 @@ footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: var
 </footer>
 
 <script>
+function copyIP() {
+  const ip = "netherarcade.cold00.eu";
+  navigator.clipboard.writeText(ip).then(() => {
+    const box = document.querySelector(".ip-box");
+    box.classList.add("copied");
+    setTimeout(() => box.classList.remove("copied"), 2000);
+  });
+}
 document.getElementById("yr").textContent = new Date().getFullYear();
 </script>
 </body>
