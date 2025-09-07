@@ -175,9 +175,9 @@ document.getElementById("resetBtn").addEventListener("click", () => {
   let milestone = milestones.find(m => !m.used && counter >= m.limit);
 
   if(!milestone && counter >= 25000) {
-    // Rebirth loop (25k+)
+    // 🔹 Rebirth loop (25k+): +5 idle CPM each time
     counter = 0;
-    clickValue += 2;
+    idleCPM += 5;
     resetAvailable = false;
     document.getElementById("resetBtn").style.display="none";
     updateUI();
@@ -189,12 +189,12 @@ document.getElementById("resetBtn").addEventListener("click", () => {
     milestone.used = true;
     clickValue = milestone.clickVal;
 
-    // 🔹 only apply idleCPM if milestone defines one
+    // apply idleCPM if milestone defines one
     if (milestone.idleCPM !== undefined) {
       idleCPM = milestone.idleCPM;
     }
 
-    // 🔹 special milestone: reduce interval but keep idleCPM as-is
+    // special milestone (100k): reduce interval, idleCPM stays as-is
     if(milestone.special){ intervalTime = 20000; }
 
     resetAvailable = false;
@@ -239,5 +239,6 @@ function copyToClipboard(text){
 document.getElementById("yr").textContent = new Date().getFullYear();
 updateUI();
 </script>
+
 </body>
 </html>
