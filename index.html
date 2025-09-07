@@ -157,7 +157,8 @@ let milestones = [
   { limit: 5000, used:false, clickVal:2, idleCPM:30 },
   { limit: 10000, used:false, clickVal:2, idleCPM:45 },
   { limit: 25000, used:false, clickVal:2, idleCPM:50 },
-  { limit: 100000, used:false, clickVal:2, idleCPM:50, special:true }
+  // 🔹 At 100k: no idleCPM overwrite, only interval upgrade
+  { limit: 100000, used:false, clickVal:2, special:true }
 ];
 
 // Star click
@@ -172,20 +173,30 @@ document.getElementById("star").addEventListener("click", () => {
 // Reset button
 document.getElementById("resetBtn").addEventListener("click", () => {
   let milestone = milestones.find(m => !m.used && counter >= m.limit);
- if(!milestone && counter >= 25000) {
-  counter = 0;
-  idleCPM += 5;   // ✅ only Idle CPM increases
-  resetAvailable = false;
-  document.getElementById("resetBtn").style.display="none";
-  updateUI();
-  return;
-}
+
+  if(!milestone && counter >= 25000) {
+    // Rebirth loop (25k+)
+    counter = 0;
+    clickValue += 2;
+    resetAvailable = false;
+    document.getElementById("resetBtn").style.display="none";
+    updateUI();
+    return;
+  }
+
   if(milestone && !milestone.used) {
     counter = 0;
     milestone.used = true;
     clickValue = milestone.clickVal;
-    idleCPM = milestone.idleCPM;
+
+    // 🔹 only apply idleCPM if milestone defines one
+    if (milestone.idleCPM !== undefined) {
+      idleCPM = milestone.idleCPM;
+    }
+
+    // 🔹 special milestone: reduce interval but keep idleCPM as-is
     if(milestone.special){ intervalTime = 20000; }
+
     resetAvailable = false;
     document.getElementById("resetBtn").style.display="none";
     updateUI();
@@ -193,7 +204,11 @@ document.getElementById("resetBtn").addEventListener("click", () => {
 });
 
 // Idle interval
-setInterval(()=>{ counter += idleCPM; updateUI(); checkMilestones(); }, intervalTime);
+setInterval(()=>{
+  counter += idleCPM;
+  updateUI();
+  checkMilestones();
+}, intervalTime);
 
 // Check milestones
 function checkMilestones(){
@@ -220,6 +235,7 @@ function copyToClipboard(text){
   alert("Copied: " + text);
 }
 
+// Footer year
 document.getElementById("yr").textContent = new Date().getFullYear();
 updateUI();
 </script>
