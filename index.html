@@ -1,235 +1,160 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nether Arcade</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #0e0e0e;
-      color: #fff;
-      margin: 0;
-      padding: 0;
-      text-align: center;
-    }
+<meta charset="UTF-8">
+<title>Nether Arcade – Command-Block Minigames</title>
+<link rel="icon" href="logo.png">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+<style>
+:root {
+  --bg: #131316;
+  --surface: #1e1e22;
+  --card: #27272c;
+  --accent: #ff3c3c;
+  --text: #f3f3f7;
+  --subtle: #9f9fa6;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: "Inter", sans-serif; background:var(--bg); color:var(--text); display:flex; flex-direction:column; min-height:100vh; }
 
-    h1 {
-      margin-top: 1rem;
-    }
+/* Layout */
+main { flex:1; display:flex; justify-content:center; align-items:flex-start; gap:1rem; padding:2rem; }
 
-    .ip-version-box {
-      background: #1a1a1a;
-      border-radius: 12px;
-      padding: 1rem 2rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.5rem;
-      margin: 1rem auto;
-      box-shadow: 0 0 10px rgba(255,255,255,0.1);
-    }
+/* Server Info Cube */
+.ip-version-box {
+  background:var(--card);
+  border-radius:10px;
+  padding:1rem 1.5rem;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:0.5rem;
+  min-width:260px;
+}
+.ip-version-box strong { font-size:1.1rem; }
+.ip-version-box span.copy { cursor:pointer; }
 
-    .counter-box {
-      background: #2b2b2b;
-      border-radius: 12px;
-      padding: 1rem 2rem;
-      font-size: 2rem;
-      font-weight: bold;
-      margin-left: 1rem;
-      box-shadow: 0 0 10px rgba(255,0,0,0.3);
-    }
+/* Counter Cube */
+.counter-box {
+  background:var(--surface);
+  border-radius:10px;
+  padding:1.5rem;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:1.4rem;
+  font-weight:700;
+  min-width:60px;
+  height:60px;
+}
 
-    .stats {
-      margin-top: 1rem;
-      font-size: 0.9rem;
-      color: #aaa;
-      font-weight: 600;
-    }
-
-    .star {
-      position: absolute;
-      top: 50px;
-      left: -50px;
-      font-size: 2rem;
-      color: red;
-      cursor: pointer;
-      display: none;
-    }
-
-    /* Achievements */
-    #achievements {
-      margin-top: 2rem;
-      background: #151515;
-      border-radius: 12px;
-      padding: 1rem;
-      width: 80%;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .trophy {
-      background: #2a2a2a;
-      margin: 0.5rem;
-      padding: 0.5rem;
-      border-radius: 8px;
-      font-size: 0.9rem;
-    }
-
-    /* Star Shop */
-    #star-shop {
-      margin-top: 2rem;
-      background: #151515;
-      border-radius: 12px;
-      padding: 1rem;
-      width: 80%;
-      margin-left: auto;
-      margin-right: auto;
-      display: none;
-    }
-
-    .shop-item {
-      background: #2a2a2a;
-      margin: 0.5rem;
-      padding: 0.5rem;
-      border-radius: 8px;
-      font-size: 0.9rem;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    .shop-item:hover {
-      background: #3a3a3a;
-    }
-  </style>
+/* Achievements Panel */
+.achievements {
+  background:var(--card);
+  border-radius:10px;
+  padding:1rem;
+  min-width:180px;
+  display:flex;
+  flex-direction:column;
+  gap:0.5rem;
+}
+.achievements h3 { font-size:1rem; margin-bottom:0.5rem; }
+.achievement {
+  background:var(--surface);
+  padding:0.4rem 0.6rem;
+  border-radius:6px;
+  font-size:0.85rem;
+}
+footer { text-align:center; padding:1rem; font-size:0.8rem; color:var(--subtle); }
+</style>
 </head>
 <body>
-  <h1>Nether Arcade</h1>
-  <p>A Minecraft server crafting <strong>minigames powered by command blocks</strong>. No mods—just vanilla ingenuity.</p>
 
-<!-- Server + Counter -->
-<div style="display:flex; justify-content:center; align-items:flex-start; gap:1rem; margin-top:1.5rem;">
-  
-  <!-- Cube 1: Server Info -->
-  <div class="ip-version-box" style="background:#1a1a1a; border-radius:12px; padding:1rem 2rem; box-shadow:0 0 10px rgba(255,255,255,0.1);">
-    <div style="display:flex; align-items:center; gap:0.5rem; font-size:1.1rem;">
-      <span style="font-weight:700;">netherarcade.cold00.eu</span>
-      <span style="cursor:pointer;" onclick="copyToClipboard('netherarcade.cold00.eu')">📋</span>
-    </div>
-    <div style="color:#aaa; font-size:0.9rem; margin-top:0.3rem;">Java Edition only • Version 1.21.8</div>
-  </div>
-  
-  <!-- Cube 2: Counter -->
-  <div class="counter-box" id="counter" style="background:#2b2b2b; border-radius:12px; padding:1rem 2rem; font-size:2rem; font-weight:bold; box-shadow:0 0 10px rgba(255,0,0,0.3);">
-    0
-  </div>
-  <!-- Stats -->
-  <div id="stats" class="stats">
-    Click Value: 0.5 | Idle CPM: 0 | 30 sec
-  </div>
+<nav style="background:var(--surface); padding:0.75rem; display:flex; justify-content:center; gap:1.5rem;">
+  <a href="index.html" style="color:var(--accent)">Home</a>
+  <a href="about.html" style="color:var(--subtle)">Team</a>
+  <a href="socials.html" style="color:var(--subtle)">Socials</a>
+</nav>
 
-  <!-- Floating Star -->
-  <div id="star" class="star" onclick="collectStar()">★</div>
+<main>
+  <!-- Server Info -->
+  <div class="ip-version-box" style="display:flex; align-items:center; gap:0.5rem;">
+    <strong>netherarcade.cold00.eu</strong>
+    <span class="copy" onclick="copyToClipboard('netherarcade.cold00.eu')">📋</span>
+    <span style="color:var(--subtle); font-size:0.9rem;">Java Edition only • Version 1.21.8</span>
+  </div>
+</main>
+  <!-- Counter -->
+  <div class="counter-box" id="counter">0</div>
 
   <!-- Achievements -->
-  <section id="achievements">
-    <h2>🏆 Achievements</h2>
-    <div id="trophies">
-      <!-- Trophies appear here -->
-    </div>
-  </section>
+  <div class="achievements" id="achievements">
+    <h3>Achievements</h3>
+    <div id="achievements-list"></div>
+  </div>
+</main>
 
-  <!-- Star Shop -->
-  <section id="star-shop">
-    <h2>✦ Star Shop ✦</h2>
-    <p>You have <span id="starCoins">0</span> ✦</p>
-    <div class="shop-item" onclick="buyUpgrade(5, 'Star Icon')">[5 ✦] Change Star Icon → ★</div>
-    <div class="shop-item" onclick="buyUpgrade(10, '+1 Click')">[10 ✦] +1 Click Value</div>
-    <div class="shop-item" onclick="buyUpgrade(50, 'Double Stars')">[50 ✦] Double Star Reward</div>
-    <div class="shop-item" onclick="buyUpgrade(100, 'Cooldown ↓ 15s')">[100 ✦] Cooldown → 15s</div>
-  </section>
+<footer>
+  &copy; <span id="yr"></span> Nether Arcade • Not affiliated with Mojang
+</footer>
 
-  <script>
-    let counter = 0;
-    let clickValue = 0.5;
-    let idleCPM = 0;
-    let cooldown = 30;
-    let starCoins = 0;
-    let starInterval;
-    let doubleStars = false;
+<script>
+let counter = 0;
+let clickValue = 0.5;
+let idleCPM = 0;
+let intervalTime = 30000;
+let resetAvailable = false;
+let specialResetUsed = false;
 
-    function copyToClipboard(text) {
-      navigator.clipboard.writeText(text);
-      alert("Copied: " + text);
-    }
+let achievements = [];
 
-    function updateUI() {
-      document.getElementById("counter").textContent = counter;
-      document.getElementById("stats").textContent =
-        `Click Value: ${clickValue} | Idle CPM: ${idleCPM} | ${cooldown} sec`;
-      document.getElementById("starCoins").textContent = starCoins;
-    }
+function unlockAchievement(name){
+  if(!achievements.includes(name)){
+    achievements.push(name);
+    let list = document.getElementById("achievements-list");
+    let item = document.createElement("div");
+    item.className = "achievement";
+    item.textContent = "🏆 " + name;
+    list.appendChild(item);
+  }
+}
 
-    // Floating star
-    function spawnStar() {
-      let star = document.getElementById("star");
-      star.style.display = "block";
-      star.style.left = "-50px";
-      let pos = -50;
-      clearInterval(starInterval);
-      starInterval = setInterval(() => {
-        if (pos > window.innerWidth) {
-          star.style.display = "none";
-          clearInterval(starInterval);
-        } else {
-          pos += 2;
-          star.style.left = pos + "px";
-        }
-      }, 50);
-    }
+// Star clicker
+document.body.addEventListener("click", () => {
+  counter += clickValue;
+  updateUI();
+  checkMilestones();
+});
 
-    function collectStar() {
-      starCoins += doubleStars ? 2 : 1;
-      updateUI();
-      document.getElementById("star-shop").style.display = "block";
-      document.getElementById("star").style.display = "none";
-    }
+// Idle loop
+setInterval(() => {
+  counter += idleCPM;
+  updateUI();
+  checkMilestones();
+}, intervalTime);
 
-    function buyUpgrade(cost, upgrade) {
-      if (starCoins >= cost) {
-        starCoins -= cost;
-        if (upgrade === "+1 Click") clickValue += 1;
-        if (upgrade === "Double Stars") doubleStars = true;
-        if (upgrade === "Cooldown ↓ 15s") cooldown = 15;
-        alert("Purchased: " + upgrade);
-        updateUI();
-      } else {
-        alert("Not enough ✦!");
-      }
-    }
+// Milestones & achievements
+function checkMilestones(){
+  if(counter >= 5000) unlockAchievement("So far to go!");
+  if(counter >= 25000) unlockAchievement("Quarter of 100k!");
+  if(counter >= 50000) unlockAchievement("Halfway There!");
+  if(counter >= 100000 && !specialResetUsed){
+    unlockAchievement("Prestige Unlocked");
+  }
+}
 
-    // Achievements
-    function addTrophy(name) {
-      let trophies = document.getElementById("trophies");
-      if (![...trophies.children].some(t => t.textContent === name)) {
-        let div = document.createElement("div");
-        div.className = "trophy";
-        div.textContent = name;
-        trophies.appendChild(div);
-      }
-    }
+function updateUI(){
+  document.getElementById("counter").textContent = Math.floor(counter);
+}
 
-    // Demo triggers
-    setTimeout(() => addTrophy("Reset!"), 2000);
-    setTimeout(() => addTrophy("5,000: So far to go!"), 4000);
-    setTimeout(() => addTrophy("25,000: Quarter of 100,000"), 6000);
-    setTimeout(() => addTrophy("50,000 – Halfway there!"), 8000);
-    setTimeout(() => addTrophy("Star!"), 10000);
+function copyToClipboard(text){
+  navigator.clipboard.writeText(text);
+  alert("Copied: " + text);
+}
 
-    // Demo star spawn
-    setInterval(spawnStar, 15000);
-
-    updateUI();
-  </script>
+document.getElementById("yr").textContent = new Date().getFullYear();
+updateUI();
+</script>
 </body>
 </html>
+t
