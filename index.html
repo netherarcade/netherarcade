@@ -1,111 +1,115 @@
-<main>
-  <!-- NAVIGATION -->
-  <nav style="text-align:center; margin-bottom:1rem;">
-    <a href="#home">Home</a> | 
-    <a href="#about">About</a> | 
-    <a href="#minigame">Mini-Game</a> | 
-    <a href="#reviews">Reviews</a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nether Arcade - Home</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0d0d0d;
+      color: white;
+      text-align: center;
+    }
+
+    nav {
+      margin: 1rem 0;
+    }
+
+    nav a {
+      color: white;
+      margin: 0 1rem;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    .divider {
+      color: #39ff14; /* Fluorescent green */
+      margin: 1.5rem 0;
+      font-weight: bold;
+    }
+
+    .ip-box {
+      background: #1a1a1a;
+      border: 2px solid #39ff14;
+      border-radius: 10px;
+      padding: 1rem;
+      margin: 1rem auto;
+      width: fit-content;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .ip-box:hover {
+      background: #262626;
+    }
+
+    .ip-box svg {
+      width: 18px;
+      height: 18px;
+      fill: white;
+      vertical-align: middle;
+      margin-left: 5px;
+    }
+
+    .tooltip {
+      display: none;
+      font-size: 0.8rem;
+      color: #39ff14;
+      margin-top: 0.3rem;
+    }
+
+    .show {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="about.html">About Us</a>
+    <a href="mini-game.html">Mini-Game</a>
+    <a href="socials.html">Socials</a>
   </nav>
 
-  <!-- HOME -->
-  <section id="home" class="active" style="text-align:center;">
-    
-    <!-- Green Divider -->
-    <div class="divider">────────﹒˗ˏˋ ✩ ˎˊ˗﹒────────</div>
-    
-    <!-- Title & Description -->
-    <h1>Nether Arcade</h1>
-    <p>A Minecraft server crafting <strong>minigames powered by command blocks</strong>.  
-    No mods—just vanilla ingenuity.</p>
-    
-    <!-- IP Box -->
-    <div class="ip-box" onclick="copyIP()">
-      <span>netherarcade.cold00.eu</span>
-      <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
-      <span class="tooltip" id="tip">Copied!</span>
-      <div style="color: var(--subtle); font-size: 0.85rem; margin-top:0.5rem;">
-        Java Edition only • Version 1.21.8
+  <main>
+    <!-- HOME -->
+    <section id="home" class="active">
+      <div class="divider">────────﹒˗ˏˋ ✩ ˎˊ˗﹒────────</div>
+      <h1>Nether Arcade</h1>
+      <p>A Minecraft server crafting <strong>minigames powered by command blocks</strong>. No mods—just vanilla ingenuity.</p>
+
+      <!-- Server IP Box -->
+      <div class="ip-box" onclick="copyIP()">
+        <span>netherarcade.cold00.eu</span>
+        <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+        <div style="color: #aaa; font-size: 0.85rem; margin-top:0.5rem;">
+          Java Edition only • Version 1.21.8
+        </div>
+        <span class="tooltip" id="tip">Copied!</span>
       </div>
-    </div>
 
-    <!-- Green Divider -->
-    <div class="divider">────────﹒˗ˏˋ ✩ ˎˊ˗﹒────────</div>
-  </section>
-</main>
+      <div class="divider">────────﹒˗ˏˋ ✩ ˎˊ˗﹒────────</div>
+    </section>
+  </main>
 
-<!-- Styles -->
-<style>
-  :root {
-    --bg: #131316;
-    --surface: #1e1e22;
-    --card: #27272c;
-    --accent: #ff3c3c;
-    --text: #f3f3f7;
-    --subtle: #9f9fa6;
-    --divider: #39ff14; /* Neon green (subtle) */
-  }
+  <footer style="margin-top:2rem; font-size:0.8rem; color:#666;">
+    © 2025 Nether Arcade • Not affiliated with Mojang
+  </footer>
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: Arial, sans-serif;
-    text-align: center;
-  }
-
-  nav a {
-    color: var(--text);
-    text-decoration: none;
-    margin: 0 0.5rem;
-    font-weight: 600;
-  }
-
-  nav a:hover {
-    color: var(--divider);
-  }
-
-  .divider {
-    margin: 1.5rem 0;
-    font-weight: 600;
-    color: var(--divider);
-    text-shadow: 0 0 4px #39ff14; /* softer glow */
-  }
-
-  .ip-box {
-    background: var(--card);
-    padding: 1rem;
-    border-radius: 10px;
-    display: inline-block;
-    margin-top: 1rem;
-    cursor: pointer;
-  }
-
-  .ip-box svg {
-    width: 16px;
-    height: 16px;
-    fill: var(--text);
-    vertical-align: middle;
-    margin-left: 0.5rem;
-  }
-
-  .tooltip {
-    display: none;
-    font-size: 0.75rem;
-    color: var(--accent);
-    margin-left: 0.5rem;
-  }
-
-  .ip-box:active .tooltip {
-    display: inline;
-  }
-</style>
-
-<!-- Copy Script -->
-<script>
-  function copyIP() {
-    navigator.clipboard.writeText("netherarcade.cold00.eu");
-    document.getElementById("tip").style.display = "inline";
-    setTimeout(() => {
-      document.getElementById("tip").style.display = "none";
-    }, 1500);
-  }
-</script>
+  <script>
+    function copyIP() {
+      navigator.clipboard.writeText("netherarcade.cold00.eu");
+      let tooltip = document.getElementById("tip");
+      tooltip.classList.add("show");
+      setTimeout(() => tooltip.classList.remove("show"), 1500);
+    }
+  </script>
+</body>
+</html>
