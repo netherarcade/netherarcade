@@ -16,7 +16,6 @@
   --accent2: #ff7a00;
   --text: #f3f3f7;
   --subtle: #9f9fa6;
-  --starcoin: #4da3ff;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: "Inter", system-ui, sans-serif; background: var(--bg); color: var(--text); display: flex; flex-direction: column; min-height: 100vh; }
@@ -30,58 +29,61 @@ main { flex: 1; padding: 2.5rem 1.5rem; display: flex; flex-direction: column; a
 section { display: none; width: 100%; max-width: 960px; }
 section.active { display: block; }
 h1 { font-size: 2.5rem; font-weight: 700; letter-spacing: 0.05em; margin-bottom: 1rem; }
+h3 { font-size: 1.2rem; margin-bottom: 0.5rem; }
+p { color: var(--subtle); line-height: 1.6; margin-bottom: 1.5rem; }
 .divider { display: flex; justify-content: center; align-items: center; gap: 0.25rem; margin: 1.5rem 0; font-weight: 600; }
 
-/* Server Cube */
-.server-box {
-  padding:1rem 1.2rem; background:var(--card);
-  border-radius:12px; text-align:center; min-width:260px;
+/* IP/Version & Counter */
+.ip-version-box {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:0.3rem;
+  padding:0.7rem 1rem; /* smaller cube */
+  background:var(--card);
+  border-radius:10px;
+  flex:1;
 }
-.server-ip { display:flex; align-items:center; justify-content:center; gap:0.5rem; font-weight:700; }
-.server-ver { font-size:0.9rem; color:var(--subtle); margin-top:0.3rem; }
-
-/* Counter Cube */
-.counter-box { width:50px; min-width:50px; height:50px;
-  background: var(--surface); color: var(--text);
-  display:flex; justify-content:center; align-items:center;
-  border-radius:10px; font-weight:700; font-size:1.1rem;
+.counter-box {
+  width: 50px; /* smaller cube */
+  min-width:50px;
+  height: 50px;
+  background: var(--surface);
+  color: var(--text);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size:1.1rem;
 }
 
 /* Reset button */
 #resetBtn { display:none; background:#000; color:#fff; border:none; padding:0.5rem 1rem; border-radius:8px; cursor:pointer; margin-top:0.8rem; transition: transform 0.2s; }
 #resetBtn:hover { transform: scale(1.05); }
 
-/* Red Star Button */
-#star { color:#ff3c3c; cursor:pointer; font-size:1.5rem; }
-
-/* Floating Blue Star */
-#blueStar {
-  position: absolute;
-  top: 150px;
-  right: -50px;
-  font-size: 1.8rem;
-  color: var(--starcoin);
-  cursor: pointer;
-  display: none;
-  animation: floatStar 60s linear forwards;
-}
-@keyframes floatStar {
-  from { right: -50px; }
-  to { right: 100vw; }
-}
-
-/* Star Coins */
-#starCoinBox { display:none; margin-top:1rem; }
+/* Team Section (kept for consistency if needed later) */
+.team-wrap { display: flex; flex-direction: column; gap: 2rem; }
+.team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 1rem; }
+.member { background: var(--card); border-radius:12px; padding:1rem; position:relative; }
+.member .name { font-weight:700; margin-bottom:0.2rem; }
+.member .role { font-size:0.85rem; color: var(--accent); margin-bottom:0.5rem; }
+.fav-divider { height:3px; width:100%; border-radius:4px; margin-bottom:0.5rem; }
+.member-info { font-size:0.85rem; line-height:1.3; color: var(--text); margin-bottom:0.5rem; opacity:0; max-height:0; overflow:hidden; transition: opacity 0.3s ease, max-height 0.3s ease; }
+.member:hover .member-info { opacity:1; max-height:500px; }
+.member-reviews { display:grid; gap:0.4rem; margin-bottom:0.5rem; }
 .pill { background: var(--surface); padding:0.4rem 0.6rem; border-radius:8px; font-size:0.9rem; color: var(--text); }
-#starCoinCount { background: var(--starcoin); color:#000; font-weight:700; }
 
-/* Star Shop */
-#shop { margin-top:1rem; display:none; flex-direction:column; gap:0.5rem; }
-.shop-item { background:var(--card); padding:0.5rem; border-radius:8px; cursor:pointer; transition:0.2s; }
-.shop-item:hover { background:var(--accent2); }
-.shop-item.disabled { background:#444; color:#888; cursor:not-allowed; }
+/* Server Reviews */
+.server-reviews { display:flex; flex-direction:column; gap:1.5rem; margin-top:2rem; }
+.server-email-box { background: var(--bg); border-radius:10px; padding:0.8rem; text-align:left; cursor:pointer; }
+.server-email-box ul { padding-left:1.2rem; margin-top:0.5rem; }
+.server-review-grid { display:grid; grid-template-columns:repeat(2, 1fr); gap:0.5rem 1rem; }
 
-/* Footer */
+/* Buttons */
+.btn { display: inline-block; background: var(--accent); color: #000; border: none; padding: 0.75rem 1.75rem; font-size: 1rem; border-radius: 10px; cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease; text-decoration: none; }
+.btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(255,60,60,0.35); }
+.social-buttons { margin-top: 2rem; display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
 footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: var(--subtle); }
 </style>
 </head>
@@ -108,17 +110,14 @@ footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: var
     <h1>Nether Arcade</h1>
     <p>A Minecraft server crafting <strong>minigames powered by command blocks</strong>. No mods—just vanilla ingenuity.</p>
 
-    <!-- Server + Counter -->
-    <div style="display:flex; justify-content:center; align-items:flex-start; gap:1rem; margin-top:1.5rem;">
-      <div class="server-box">
-        <div class="server-ip">
-          <span>netherarcade.cold00.eu</span>
-          <span style="cursor:pointer;" onclick="copyToClipboard('netherarcade.cold00.eu')">📋</span>
-        </div>
-        <div class="server-ver">Java Edition only • Version 1.21.8</div>
-      </div>
-      <div class="counter-box" id="counter">0</div>
-    </div>
+   <div class="ip-version-box">
+  <div style="display:flex; align-items:center; gap:0.5rem; font-size:1.1rem;">
+    <span style="font-weight:700;">netherarcade.cold00.eu</span>
+    <span style="cursor:pointer;" onclick="copyToClipboard('netherarcade.cold00.eu')">📋</span>
+  </div>
+  <div style="color: var(--subtle); font-size: 0.9rem;">Java Edition only • Version 1.21.8</div>
+  <div class="counter-box" id="counter">0</div>
+</div>
 
     <!-- Stats -->
     <div id="stats" style="margin-top:1rem; font-size:0.9rem; color:var(--subtle); font-weight:600;">
@@ -127,26 +126,12 @@ footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: var
 
     <button id="resetBtn">Reset</button>
 
-    <!-- Star Coin Shop -->
-    <div id="starCoinBox">
-      <div class="pill">Star Coins: <span id="starCoinCount">0</span> ✦</div>
-      <div id="shop">
-        <div class="shop-item" data-cost="5" data-upgrade="icon">[5 ✦] Change Star Icon</div>
-        <div class="shop-item" data-cost="10" data-upgrade="click">[10 ✦] +1 Click Value</div>
-        <div class="shop-item" data-cost="50" data-upgrade="double">[50 ✦] Double Star Coin reward</div>
-        <div class="shop-item" data-cost="100" data-upgrade="interval">[100 ✦] Reduce interval to 15s</div>
-      </div>
-    </div>
-
-    <!-- Red Star -->
+    <!-- Star -->
     <div id="bottom-divider" class="divider" style="margin-top:1.5rem;">
       <span style="color:#1ce69c;">──────﹒˗ˏˋ</span>
-      <span id="star">✩</span>
+      <span id="star" class="star-button" style="color:#ff3c3c; cursor:pointer;">✩</span>
       <span style="color:#1ce69c;">ˎˊ˗﹒──────</span>
     </div>
-
-    <!-- Floating Blue Star -->
-    <div id="blueStar">✦</div>
   </section>
 </main>
 
@@ -155,134 +140,98 @@ footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: var
 </footer>
 
 <script>
-// Counter
+// ---- State ----
 let counter = 0;
 let clickValue = 0.5;
 let idleCPM = 0;
 let resetAvailable = false;
-let intervalTime = 30000;
 
-// Achievements
-let achievements = { a25k:false, a50k:false, prestige:false };
+let prestigeDone = false; // 100k one-time cooldown reduction
+let intervalMs = 30000;
+let intervalId = null;
 
-// Star Coins
-let starCoins = 0;
-let starCoinClickValue = 1;
-let shopUpgrades = { icon:false, click:false, double:false, interval:false };
-
-// Blue star logic
-let starReady = false;
-let blueStar = document.getElementById("blueStar");
-
-// Milestones
-let milestones = [
-  { limit: 10, used:false, clickVal:1, idleCPM:0 },
-  { limit: 100, used:false, clickVal:1.5, idleCPM:15 },
-  { limit: 1000, used:false, clickVal:2, idleCPM:15 },
-  { limit: 5000, used:false, clickVal:2, idleCPM:30 },
-  { limit: 10000, used:false, clickVal:2, idleCPM:45 },
-  { limit: 25000, used:false, clickVal:2, idleCPM:50 },
-  { limit: 100000, used:false, clickVal:2, idleCPM:50, special:true }
+// Milestones that consume on reset
+const milestones = [
+  { limit: 10,    used:false, apply: () => { clickValue = 1; } },
+  { limit: 100,   used:false, apply: () => { clickValue = 1.5; idleCPM = 15; } },
+  { limit: 1000,  used:false, apply: () => { clickValue = 2; } },
+  { limit: 5000,  used:false, apply: () => { idleCPM = 30; } },
+  { limit: 10000, used:false, apply: () => { idleCPM = 45; } },
 ];
 
-// Red star
-document.getElementById("star").addEventListener("click", () => {
-  if(!resetAvailable || counter < milestones.find(m=>!m.used)?.limit) {
-    counter += clickValue;
+// ---- Helpers ----
+function startInterval(ms){
+  if(intervalId) clearInterval(intervalId);
+  intervalMs = ms;
+  intervalId = setInterval(() => {
+    counter += idleCPM;
     updateUI();
-    checkMilestones();
+    checkResetAvailability();
+  }, intervalMs);
+}
+
+function checkResetAvailability(){
+  const hasUnclaimed = milestones.some(m => !m.used && counter >= m.limit);
+  const canLoop25k  = counter >= 25000;
+  const canPrestige = !prestigeDone && counter >= 100000;
+
+  const shouldShow = hasUnclaimed || canLoop25k || canPrestige;
+  if(shouldShow && !resetAvailable){
+    resetAvailable = true;
+    document.getElementById("resetBtn").style.display = "inline-block";
   }
+  if(!shouldShow && resetAvailable){
+    resetAvailable = false;
+    document.getElementById("resetBtn").style.display = "none";
+  }
+}
+
+function updateUI(){
+  document.getElementById("counter").textContent = Math.floor(counter);
+  document.getElementById("stats").textContent =
+    `Click Value: ${clickValue} | Idle CPM: ${idleCPM} | ${intervalMs/1000} sec`;
+}
+
+// ---- Interactions ----
+document.getElementById("star").addEventListener("click", () => {
+  counter += clickValue;
+  updateUI();
+  checkResetAvailability();
 });
 
-// Reset
 document.getElementById("resetBtn").addEventListener("click", () => {
-  let milestone = milestones.find(m => !m.used && counter >= m.limit);
-
-  if(counter >= 25000 && counter < 100000){
+  // 1) 100k prestige (one-time): cooldown -> 20 sec
+  if(!prestigeDone && counter >= 100000){
+    prestigeDone = true;
     counter = 0;
-    idleCPM += 5;
+    startInterval(20000); // actually switch to 20s
+    document.getElementById("resetBtn").style.display = "none";
     resetAvailable = false;
-    document.getElementById("resetBtn").style.display="none";
     updateUI();
     return;
   }
-  if(milestone && milestone.limit === 100000 && !milestone.used){
+
+  // 2) 25k loop: unlimited, +5 idle CPM each time
+  if(counter >= 25000){
     counter = 0;
-    milestone.used = true;
-    intervalTime = 20000;
-    achievements.prestige = true;
+    idleCPM += 5; // stack
+    document.getElementById("resetBtn").style.display = "none";
     resetAvailable = false;
-    document.getElementById("resetBtn").style.display="none";
+    updateUI();
+    return;
+  }
+
+  // 3) Milestone claims (consume once)
+  const toApply = milestones.find(m => !m.used && counter >= m.limit);
+  if(toApply){
+    toApply.used = true;
+    toApply.apply();
+    counter = 0;
+    document.getElementById("resetBtn").style.display = "none";
+    resetAvailable = false;
     updateUI();
   }
 });
-
-// Idle clicks
-setInterval(()=>{ counter += idleCPM; updateUI(); checkMilestones(); }, intervalTime);
-
-// Blue star spawn
-setInterval(()=>{
-  if(counter >= 150000){
-    starReady = true;
-    blueStar.style.display="block";
-    blueStar.style.right="-50px";
-    blueStar.style.animation="none";
-    void blueStar.offsetWidth;
-    blueStar.style.animation="floatStar 60s linear forwards";
-  }
-}, 60000);
-
-// Collect blue star
-blueStar.addEventListener("click", ()=>{
-  if(starReady){
-    starReady=false;
-    blueStar.style.display="none";
-    starCoins += starCoinClickValue;
-    document.getElementById("starCoinBox").style.display="block";
-    updateUI();
-  }
-});
-
-// Shop
-document.querySelectorAll(".shop-item").forEach(item=>{
-  item.addEventListener("click", ()=>{
-    let cost = parseInt(item.dataset.cost);
-    let upgrade = item.dataset.upgrade;
-    if(starCoins >= cost && !shopUpgrades[upgrade]){
-      starCoins -= cost;
-      shopUpgrades[upgrade] = true;
-      item.classList.add("disabled");
-      if(upgrade==="icon"){ document.getElementById("star").textContent="★"; }
-      if(upgrade==="click"){ clickValue += 1; }
-      if(upgrade==="double"){ starCoinClickValue = 2; }
-      if(upgrade==="interval"){ intervalTime = 15000; }
-      updateUI();
-    }
-  });
-});
-
-// Achievements
-function checkMilestones(){
-  if(counter >= 25000 && !achievements.a25k){ achievements.a25k=true; alert("Achievement: 1/4 to 100k!"); }
-  if(counter >= 50000 && !achievements.a50k){ achievements.a50k=true; alert("Achievement: Halfway there!"); }
-
-  let milestone = milestones.find(m => !m.used && counter >= m.limit);
-  if(milestone || counter >= 25000){
-    if(!resetAvailable){
-      resetAvailable = true;
-      document.getElementById("resetBtn").style.display="inline-block";
-    }
-  }
-}
-
-// UI update
-function updateUI(){
-  document.getElementById("counter").textContent = Math.floor(counter);
-  let secLabel = intervalTime===30000 ? "30 sec" : (intervalTime===20000 ? "20 sec" : "15 sec");
-  document.getElementById("stats").textContent = `Click Value: ${clickValue} | Idle CPM: ${idleCPM} | ${secLabel}`;
-  document.getElementById("starCoinCount").textContent = starCoins;
-  if(starCoins > 0) document.getElementById("shop").style.display="flex";
-}
 
 // Copy IP
 function copyToClipboard(text){
@@ -290,8 +239,13 @@ function copyToClipboard(text){
   alert("Copied: " + text);
 }
 
+// Footer year
 document.getElementById("yr").textContent = new Date().getFullYear();
+
+// Init
 updateUI();
+startInterval(30000);
+checkResetAvailability();
 </script>
 </body>
 </html>
