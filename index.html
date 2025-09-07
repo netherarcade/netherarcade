@@ -1,41 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Nether Arcade – Home</title>
-  <meta name="description" content="Minecraft Minigame Server">
-  <meta name="keywords" content="Minecraft, Minigames, Fun">
-  <link rel="icon" href="logo.png">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
-  <style>
-    :root {
-      --bg: #131316;
-      --surface: #1e1e22;
-      --card: #27272c;
-      --accent: #ff3c3c;
-      --accent2: #ff7a00;
-      --text: #f3f3f7;
-      --subtle: #9f9fa6;
-      --green: #00ff80;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: "Inter", system-ui, sans-serif; background: var(--bg); color: var(--text); display: flex; flex-direction: column; min-height: 100vh; }
-    .banner-wrap { position: relative; width: 100%; height: 260px; overflow: hidden; }
-    .banner-img { width: 100%; height: 100%; object-fit: cover; }
-    .banner-fade { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(19,19,22,0) 60%, var(--bg) 100%); }
-    nav { position: sticky; top: 0; z-index: 10; background: var(--surface); display: flex; justify-content: center; gap: 1.5rem; padding: 0.75rem 1rem; border-bottom: 1px solid var(--card); }
-    nav a { color: var(--subtle); font-size: 1rem; text-decoration: none; transition: color 0.2s ease; }
-    nav a.active, nav a:hover { color: var(--accent); }
-    main { flex: 1; padding: 2.5rem 1.5rem; display: flex; flex-direction: column; align-items: center; text-align: center; }
-    section { width: 100%; max-width: 760px; }
-    h1 { font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem; }
-    p { color: var(--subtle); line-height: 1.6; margin-bottom: 1.5rem; }
-    .divider { display: flex; justify-content: center; align-items: center; margin: 1.5rem 0; color: var(--green); font-weight: 600; text-shadow: 0 0 8px var(--green); }
-    .ip-box { background: var(--card); border-radius: 12px; padding: 1.5rem; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease; }
-    .ip-box:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,255,128,0.3); }
-    .ip-box span { font-size: 1.2rem; font-weight: 600; }
-    .tooltip { opacity: 0; transition: opacity 0.2s ease; font-size: 0.85rem; color: var(--accent); }
-  </style>
+<meta charset="UTF-8">
+<title>Nether Arcade – Home</title>
+<meta name="description" content="A Minecraft server crafting minigames powered by command blocks.">
+<meta name="keywords" content="Minecraft, Minigames, Vanilla, Server">
+<link rel="icon" href="logo.png">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+<style>
+:root {
+  --bg: #131316;
+  --surface: #1e1e22;
+  --card: #27272c;
+  --accent: #ff3c3c;
+  --accent2: #ff7a00;
+  --text: #f3f3f7;
+  --subtle: #9f9fa6;
+  --divider: #39ff14;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: "Inter", system-ui, sans-serif; background: var(--bg); color: var(--text); display: flex; flex-direction: column; min-height: 100vh; }
+.banner-wrap { position: relative; width: 100%; height: 260px; overflow: hidden; }
+.banner-img { width: 100%; height: 100%; object-fit: cover; }
+.banner-fade { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(19,19,22,0) 60%, var(--bg) 100%); }
+nav { position: sticky; top: 0; z-index: 10; background: var(--surface); display: flex; justify-content: center; gap: 1.5rem; padding: 0.75rem 1rem; border-bottom: 1px solid var(--card); }
+nav a { background: none; border: none; color: var(--subtle); font-size: 1rem; cursor: pointer; text-decoration: none; transition: color 0.2s ease; }
+nav a.active, nav a:hover { color: var(--accent); }
+main { flex: 1; padding: 2.5rem 1.5rem; display: flex; flex-direction: column; align-items: center; text-align: center; }
+section { width: 100%; max-width: 960px; }
+h1 { font-size: 2.5rem; font-weight: 700; letter-spacing: 0.05em; margin-bottom: 1rem; }
+p { color: var(--subtle); line-height: 1.6; margin-bottom: 1.5rem; }
+.divider { color: var(--divider); font-weight: 600; margin: 1.5rem 0; }
+
+/* IP Box */
+.ip-box {
+  background: var(--card);
+  border-radius: 12px;
+  padding: 0.6rem 1rem;   /* smaller padding */
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  gap: 0.3rem;
+  transition: background 0.2s ease;
+}
+.ip-box:hover { background: var(--surface); }
+.tooltip { display:none; font-size:0.8rem; color:var(--accent); margin-top:0.3rem; }
+footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: var(--subtle); }
+</style>
 </head>
 <body>
 
@@ -54,28 +66,34 @@
 </nav>
 
 <main>
-  <section id="home">
+  <!-- HOME -->
+  <section id="home" class="active">
     <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
     <h1>Nether Arcade</h1>
     <p>A Minecraft server crafting <strong>minigames powered by command blocks</strong>. No mods—just vanilla ingenuity.</p>
-
     <div class="ip-box" onclick="copyIP()">
       <span>netherarcade.cold00.eu</span>
       <div style="font-size:0.85rem; color:var(--subtle);">Java Edition only • Version 1.21.8</div>
       <span class="tooltip" id="tip">Copied!</span>
     </div>
-
     <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
   </section>
 </main>
 
+<footer>
+  &copy; <span id="yr"></span> Nether Arcade &nbsp;•&nbsp; Not affiliated with Mojang
+</footer>
+
 <script>
-  function copyIP() {
-    navigator.clipboard.writeText("netherarcade.cold00.eu");
-    let tip = document.getElementById("tip");
-    tip.style.opacity = 1;
-    setTimeout(() => { tip.style.opacity = 0; }, 1500);
-  }
+function copyIP() {
+  navigator.clipboard.writeText("netherarcade.cold00.eu").then(() => {
+    const tip = document.getElementById("tip");
+    tip.style.display = "block";
+    setTimeout(() => tip.style.display = "none", 1500);
+  });
+}
+document.getElementById("yr").textContent = new Date().getFullYear();
 </script>
+
 </body>
 </html>
