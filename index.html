@@ -2,9 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Nether Arcade – Home</title>
-<meta name="description" content="A Minecraft server crafting minigames powered by command blocks.">
-<meta name="keywords" content="Minecraft, Minigames, Vanilla, Server">
+<title>Nether Arcade – Socials</title>
 <link rel="icon" href="logo.png">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
 <style>
@@ -13,10 +11,8 @@
   --surface: #1e1e22;
   --card: #27272c;
   --accent: #ff3c3c;
-  --accent2: #ff7a00;
   --text: #f3f3f7;
   --subtle: #9f9fa6;
-  --divider: #39ff14;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: "Inter", system-ui, sans-serif; background: var(--bg); color: var(--text); display: flex; flex-direction: column; min-height: 100vh; }
@@ -28,24 +24,14 @@ nav a { background: none; border: none; color: var(--subtle); font-size: 1rem; c
 nav a.active, nav a:hover { color: var(--accent); }
 main { flex: 1; padding: 2.5rem 1.5rem; display: flex; flex-direction: column; align-items: center; text-align: center; }
 section { width: 100%; max-width: 960px; }
-h1 { font-size: 2.5rem; font-weight: 700; letter-spacing: 0.05em; margin-bottom: 1rem; }
+h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 1rem; }
 p { color: var(--subtle); line-height: 1.6; margin-bottom: 1.5rem; }
-.divider { color: var(--divider); font-weight: 600; margin: 1.5rem 0; }
+.divider { display: flex; justify-content: center; align-items: center; margin: 1.5rem 0; font-weight: 600; }
 
-/* IP Box */
-.ip-box {
-  background: var(--card);
-  border-radius: 12px;
-  padding: 0.6rem 1rem;   /* smaller padding */
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-  cursor: pointer;
-  gap: 0.3rem;
-  transition: background 0.2s ease;
-}
-.ip-box:hover { background: var(--surface); }
-.tooltip { display:none; font-size:0.8rem; color:var(--accent); margin-top:0.3rem; }
+/* Social buttons */
+.btn { display: inline-block; background: var(--accent); color: #000; border: none; padding: 0.75rem 1.75rem; font-size: 1rem; border-radius: 10px; cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease; text-decoration: none; }
+.btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(255,60,60,0.35); }
+.social-buttons { margin-top: 2rem; display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
 footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: var(--subtle); }
 </style>
 </head>
@@ -59,23 +45,31 @@ footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: var
 
 <!-- Navigation -->
 <nav>
-  <a class="active" href="index.html">Home</a>
+  <a href="index.html">Home</a>
   <a href="about.html">Team</a>
-  <a href="mini-game.html">Mini-Game</a>
-  <a href="socials.html">Socials</a>
+  <a class="active" href="socials.html">Socials</a>
 </nav>
 
 <main>
-  <!-- HOME -->
-  <section id="home" class="active">
+  <!-- CONTACT -->
+  <section id="contact">
     <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
-    <h1>Nether Arcade</h1>
-    <p>A Minecraft server crafting <strong>minigames powered by command blocks</strong>. No mods—just vanilla ingenuity.</p>
-    <div class="ip-box" onclick="copyIP()">
-      <span>netherarcade.cold00.eu</span>
-      <div style="font-size:0.85rem; color:var(--subtle);">Java Edition only • Version 1.21.8</div>
-      <span class="tooltip" id="tip">Copied!</span>
+    <h1><i class="fa-solid fa-globe"></i> Socials</h1>
+    <p>Hit us up on our socials!</p>
+
+    <a class="btn" href="https://discord.gg/xpPTKx9FuP" target="_blank" rel="noopener noreferrer">
+      <i class="fa-brands fa-discord"></i> Join Discord
+    </a>
+
+    <div class="social-buttons">
+      <a class="btn" href="https://youtube.com/@NetherArcade" target="_blank" rel="noopener noreferrer">
+        <i class="fa-brands fa-youtube"></i> View YouTube Channel
+      </a>
+      <a class="btn" href="https://tiktok.com/@netherarcade" target="_blank" rel="noopener noreferrer">
+        <i class="fa-brands fa-tiktok"></i> View TikTok Channel
+      </a>
     </div>
+
     <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
   </section>
 </main>
@@ -85,15 +79,7 @@ footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: var
 </footer>
 
 <script>
-function copyIP() {
-  navigator.clipboard.writeText("netherarcade.cold00.eu").then(() => {
-    const tip = document.getElementById("tip");
-    tip.style.display = "block";
-    setTimeout(() => tip.style.display = "none", 1500);
-  });
-}
 document.getElementById("yr").textContent = new Date().getFullYear();
 </script>
-
 </body>
 </html>
