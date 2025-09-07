@@ -1,355 +1,185 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<title>Nether Arcade – Command-Block Minigames</title>
-<meta name="description" content="Fun for everyone" />
-<meta name="keywords" content="Minecraft, Fun" />
-<link rel="icon" href="logo.png" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+  <meta charset="UTF-8">
+  <title>Nether Arcade</title>
+  <style>
+    body {
+      background: #111;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
 
-<style>
-:root{
-  --bg:#131316; --surface:#1e1e22; --card:#27272c;
-  --accent:#ff3c3c; --text:#f3f3f7; --subtle:#9f9fa6; --good:#1ce69c;
-}
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column;min-height:100vh}
+    h1 {
+      margin-top: 1rem;
+    }
 
-/* Banner */
-.banner-wrap{position:relative;width:100%;height:260px;overflow:hidden}
-.banner-img{width:100%;height:100%;object-fit:cover}
-.banner-fade{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(19,19,22,0) 60%,var(--bg) 100%)}
+    .divider {
+      margin: 1rem 0;
+      font-size: 1.2rem;
+      color: #ff5c5c;
+    }
 
-/* Nav */
-nav{position:sticky;top:0;z-index:10;background:var(--surface);display:flex;justify-content:center;gap:1.5rem;padding:.75rem 1rem;border-bottom:1px solid var(--card)}
-nav a{color:var(--subtle);text-decoration:none;transition:color .2s;font-size:1rem}
-nav a:hover,nav a.active{color:var(--accent)}
+    /* Container for cubes */
+    .cube-row {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
 
-/* Layout */
-main{flex:1;padding:2.5rem 1.5rem;display:flex;flex-direction:column;align-items:center;text-align:center}
-h1{font-size:2.5rem;font-weight:700;letter-spacing:.05em;margin-bottom:1rem}
-p{color:var(--subtle);line-height:1.6;margin-bottom:1.5rem}
-.divider{display:flex;justify-content:center;align-items:center;gap:.25rem;margin:1.5rem 0;font-weight:600}
+    /* Cube styles */
+    .ip-version-box,
+    .counter-box,
+    .achievements-box {
+      background: #222;
+      border-radius: 10px;
+      padding: 1rem 1.5rem;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+    }
 
-/* Row with server cube, counter cube, achievements bar */
-.row-wrap{
-  display:flex;justify-content:center;align-items:stretch;gap:1rem;flex-wrap:wrap;
-  width:100%;max-width:980px;margin-top:1rem;
-}
+    .ip-version-box {
+      min-width: 260px;
+      text-align: left;
+    }
 
-/* Server info: ONE cube (IP + copy + version together) */
-.ip-version-box{
-  background:var(--card);border-radius:12px;padding:1rem 1.25rem;min-width:290px;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;
-  flex:0 1 520px; /* centered block */
-}
-.ip-line{display:flex;align-items:center;gap:.5rem;font-size:1.05rem}
-.ip-line strong{font-weight:700}
-.copy{cursor:pointer}
-.version{color:var(--subtle);font-size:.95rem}
+    .counter-box {
+      min-width: 60px;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
 
-/* Counter: separate cube */
-.counter-box{
-  width:64px;min-width:64px;height:64px;background:var(--surface);border-radius:12px;
-  display:flex;justify-content:center;align-items:center;font-weight:800;font-size:1.25rem;
-}
+    .achievements-box {
+      min-width: 150px;
+      font-size: 0.85rem;
+      text-align: left;
+    }
 
-/* Achievements: small slim bar */
-.achievements{
-  background:var(--surface);border:1px solid var(--card);border-radius:12px;
-  padding:.75rem;min-width:180px;max-width:220px;text-align:left;
-}
-.achievements h4{font-size:.95rem;margin-bottom:.5rem}
-.trophy{display:flex;align-items:center;gap:.4rem;background:#202026;border:1px solid #2c2c33;border-radius:9px;padding:.4rem .55rem;font-size:.85rem;margin-bottom:.4rem}
-.trophy i{color:var(--good)}
+    .copy {
+      cursor: pointer;
+      margin-left: 0.5rem;
+    }
 
-/* Stats + buttons */
-#stats{margin-top:1rem;font-size:.9rem;color:var(--subtle);font-weight:600}
-#resetBtn{display:none;background:#000;color:#fff;border:none;padding:.55rem 1rem;border-radius:8px;cursor:pointer;margin-top:.8rem;transition:transform .2s}
-#resetBtn:hover{transform:scale(1.05)}
+    /* Flying star */
+    .flying-star {
+      position: fixed;
+      bottom: 50px;
+      left: -40px;
+      font-size: 2rem;
+      color: gold;
+      cursor: pointer;
+      animation: fly 8s linear forwards;
+    }
 
-/* Red clickable divider star */
-#star{color:var(--accent);cursor:pointer}
-
-/* Floating Star (unlocked at 150k after buying for 75k) */
-.floating-star{
-  position:fixed;top:55%;left:-60px;font-size:28px;line-height:1;user-select:none;cursor:pointer;
-  color:#4da3ff;opacity:.95;display:none;animation:floatAcross 60s linear infinite;z-index:20;
-}
-@keyframes floatAcross{from{transform:translateX(0)}to{transform:translateX(calc(100vw + 120px))}}
-
-/* Buy Star chip */
-#buyStarBtn{
-  display:none;background:var(--surface);border:1px solid var(--card);color:var(--text);
-  padding:.35rem .6rem;border-radius:999px;font-size:.85rem;cursor:pointer;margin-top:.6rem
-}
-
-/* Modal (Star Shop) */
-.modal-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:30}
-.modal{
-  display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
-  width:min(520px,92vw);background:var(--surface);color:var(--text);
-  border:1px solid var(--card);border-radius:14px;padding:1rem;z-index:31;text-align:left;
-}
-.modal header{display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem}
-.modal header h2{font-size:1.25rem}
-.modal .close{cursor:pointer;border:none;background:transparent;color:var(--subtle);font-size:1.1rem}
-.shop-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.6rem;margin-top:.5rem}
-.shop-item{background:var(--card);border-radius:10px;padding:.75rem;border:1px solid #2f2f36}
-.shop-item h4{margin-bottom:.25rem;font-size:1rem}
-.shop-item p{margin:.2rem 0 .5rem;font-size:.9rem;color:var(--subtle)}
-.shop-item button{background:var(--accent);color:#000;border:none;border-radius:8px;padding:.4rem .7rem;cursor:pointer}
-
-/* Footer */
-footer{text-align:center;padding:1.5rem 1rem;font-size:.8rem;color:var(--subtle)}
-</style>
+    @keyframes fly {
+      from { left: -40px; }
+      to { left: 100vw; }
+    }
+  </style>
 </head>
 <body>
-
-<!-- Banner -->
-<div class="banner-wrap">
-  <img class="banner-img" src="banner.jpg" alt="Nether Arcade Banner" loading="lazy">
-  <div class="banner-fade"></div>
-</div>
-
-<!-- Navigation -->
-<nav>
-  <a class="active" href="index.html">Home</a>
-  <a href="about.html">Team</a>
-  <a href="socials.html">Socials</a>
-</nav>
-
-<main>
-  <div class="divider" style="color:#1ce69c;">─────────﹒˗ˏˋ <span id="star" title="Click to gain points">✩</span> ˎˊ˗﹒─────────</div>
+  <div class="divider">────────﹒˗ˏˋ ✩ ˎˊ˗﹒────────</div>
 
   <h1>Nether Arcade</h1>
   <p>A Minecraft server crafting <strong>minigames powered by command blocks</strong>. No mods—just vanilla ingenuity.</p>
 
-  <!-- Row: centered server cube + counter cube + achievements bar -->
-  <div class="row-wrap">
-    <!-- ONE cube: IP + copy + version -->
+  <!-- Server Info + Counter + Achievements -->
+  <div class="cube-row">
+    <!-- Server Info Cube -->
     <div class="ip-version-box">
-      <div class="ip-line">
+      <div>
         <strong>netherarcade.cold00.eu</strong>
-        <span class="copy" onclick="copyToClipboard('netherarcade.cold00.eu')" title="Copy IP">📋</span>
+        <span class="copy" onclick="copyToClipboard('netherarcade.cold00.eu')">📋</span>
       </div>
-      <div class="version">Java Edition only • Version 1.21.8</div>
-      <!-- Buy star chip below the main info (appears only when eligible) -->
-      <button id="buyStarBtn" title="Unlock the floating star for 75,000 (one time)">Unlock Star (75k)</button>
+      <div style="color:#aaa; font-size:0.9rem;">Java Edition only • Version 1.21.8</div>
     </div>
 
-    <!-- Separate cube: counter -->
-    <div class="counter-box" id="counter" aria-live="polite">0</div>
+    <!-- Counter Cube -->
+    <div class="counter-box" id="counter">0</div>
 
-    <!-- Small achievements bar -->
-    <aside class="achievements">
-      <h4>Achievements</h4>
-      <div id="trophies"></div>
-    </aside>
-  </div>
-
-  <!-- Stats + reset -->
-  <div id="stats">Click Value: 0.5 | Idle CPM: 0 | 30 sec</div>
-  <button id="resetBtn">Reset</button>
-
-  <!-- Floating star (appears after purchase) -->
-  <div id="floatingStar" class="floating-star" title="Open Star Shop">✦</div>
-
-  <!-- Star Shop modal -->
-  <div id="starShopBackdrop" class="modal-backdrop"></div>
-  <div id="starShopModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="starShopTitle">
-    <header>
-      <h2 id="starShopTitle">Star Shop</h2>
-      <button class="close" onclick="closeStarShop()" aria-label="Close">✕</button>
-    </header>
-    <p style="color:var(--subtle);margin-bottom:.5rem;">
-      Spend your star upgrades here. (Click the floating ✦ to open this shop any time.)
-    </p>
-    <div class="shop-grid">
-      <div class="shop-item">
-        <h4>New Star Icon</h4>
-        <p>Cosmetic: changes the floating star look.</p>
-        <button onclick="buyShopItem('icon')">Buy</button>
-      </div>
-      <div class="shop-item">
-        <h4>+1 Click Value</h4>
-        <p>Permanent +1 to normal click value.</p>
-        <button onclick="buyShopItem('clickPlus1')">Buy</button>
-      </div>
-      <div class="shop-item">
-        <h4>Double Star Reward</h4>
-        <p>Future star rewards x2 (if you add them later).</p>
-        <button onclick="buyShopItem('doubleStar')">Buy</button>
-      </div>
-      <div class="shop-item">
-        <h4>Cooldown to 15s</h4>
-        <p>Further reduce idle tick interval to 15s (one-time).</p>
-        <button onclick="buyShopItem('cooldown15')">Buy</button>
-      </div>
+    <!-- Achievements Cube -->
+    <div class="achievements-box" id="achievements">
+      <strong>Achievements</strong>
+      <ul id="ach-list" style="margin:0.5rem 0 0; padding-left:1rem;"></ul>
     </div>
   </div>
 
-  <!-- Bottom divider -->
-  <div class="divider" style="color:#1ce69c;">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
-</main>
+  <!-- Stats -->
+  <div id="stats" style="margin-top:1rem; font-size:0.9rem; color:#aaa; font-weight:600;">
+    Click Value: 0.5 | Idle CPM: 0 | 30 sec
+  </div>
 
-<footer>
-  &copy; <span id="yr"></span> Nether Arcade • Not affiliated with Mojang
-</footer>
+  <div class="divider">────────﹒˗ˏˋ ✩ ˎˊ˗﹒────────</div>
 
-<script>
-// ---------- State ----------
-let counter = 0;
-let clickValue = 0.5;     // grows via early milestones up to 2, then stays 2
-let idleCPM = 0;          // increases +5 per 25k reset; persists through 100k reset
-let intervalTime = 30000; // 30s default; becomes 20s once at 100k reset (one-time)
-let resetAvailable = false;
+  <script>
+    let counter = 0;
+    let clickValue = 0.5;
+    let idleCPM = 0;
+    let cooldown = 30;
+    let achievements = [];
+    let starUnlocked = false;
+    let stars = 0;
 
-let did100kReset = false; // one-time flag
-let floatingStarUnlocked = false; // unlocked by paying 75k at >=150k
+    const counterEl = document.getElementById('counter');
+    const statsEl = document.getElementById('stats');
+    const achList = document.getElementById('ach-list');
 
-// Achievements (persist in this session)
-const earned = new Set(); // "reset1","5k","25k","50k","starBuy"
-const trophiesEl = document.getElementById('trophies');
+    // Click handler for the red ✩ star
+    document.querySelectorAll('.divider')[0].addEventListener('click', () => {
+      counter += clickValue;
+      updateUI();
+      checkMilestones();
+    });
 
-function addTrophy(key, label){
-  if(earned.has(key)) return;
-  earned.add(key);
-  const div = document.createElement('div');
-  div.className = 'trophy';
-  div.innerHTML = `<i class="fa-solid fa-trophy"></i><span>${label}</span>`;
-  trophiesEl.appendChild(div);
-}
+    function updateUI() {
+      counterEl.textContent = Math.floor(counter);
+      statsEl.textContent = `Click Value: ${clickValue} | Idle CPM: ${idleCPM} | ${cooldown} sec`;
+    }
 
-// ---------- Milestones ----------
-const milestones = [
-  { limit:10,    apply:()=>{ clickValue = Math.max(clickValue,1); } },
-  { limit:100,   apply:()=>{ clickValue = Math.max(clickValue,1.5); idleCPM = Math.max(idleCPM,15); } },
-  { limit:1000,  apply:()=>{ clickValue = Math.max(clickValue,2); } },
-  { limit:5000,  apply:()=>{ idleCPM = Math.max(idleCPM,30); addTrophy('5k','5,000: So far to go!'); } },
-  { limit:10000, apply:()=>{ idleCPM = Math.max(idleCPM,45); } },
-  // 25k loop handled via reset button; trophy there
-  // 50k trophy
-  // 100k one-time reset changes interval to 20s
-  // 150k unlock star purchase chip
-];
+    function addAchievement(name) {
+      if (!achievements.includes(name)) {
+        achievements.push(name);
+        const li = document.createElement('li');
+        li.textContent = name;
+        achList.appendChild(li);
+      }
+    }
 
-// ---------- UI Elements ----------
-const counterEl   = document.getElementById('counter');
-const statsEl     = document.getElementById('stats');
-const resetBtn    = document.getElementById('resetBtn');
-const buyStarBtn  = document.getElementById('buyStarBtn');
-const floatStarEl = document.getElementById('floatingStar');
+    function checkMilestones() {
+      if (counter >= 5000 && !achievements.includes("So far to go!")) addAchievement("So far to go!");
+      if (counter >= 25000 && !achievements.includes("Quarter of 100k!")) addAchievement("Quarter of 100k!");
+      if (counter >= 50000 && !achievements.includes("Halfway There!")) addAchievement("Halfway There!");
+      if (counter >= 150000 && !starUnlocked) {
+        starUnlocked = true;
+        addAchievement("Blue Star ✦ Unlocked!");
+        spawnStarLoop();
+      }
+    }
 
-// ---------- Core UI / helpers ----------
-function updateUI(){
-  counterEl.textContent = Math.floor(counter);
-  const secLabel = intervalTime===30000 ? '30 sec' : '20 sec';
-  statsEl.textContent = `Click Value: ${clickValue} | Idle CPM: ${idleCPM} | ${secLabel}`;
-  checkMilestonesAndButtons();
-}
+    // Flying star spawner
+    function spawnStarLoop() {
+      setInterval(() => {
+        const star = document.createElement('div');
+        star.textContent = '✦';
+        star.className = 'flying-star';
+        star.onclick = () => {
+          stars++;
+          star.remove();
+          addAchievement(`Star Coin collected! (Total: ${stars})`);
+        };
+        document.body.appendChild(star);
+        setTimeout(() => star.remove(), 8000);
+      }, 60000); // 1 star per minute
+    }
 
-function copyToClipboard(text){ navigator.clipboard.writeText(text); alert('Copied: '+text); }
-document.getElementById('yr').textContent = new Date().getFullYear();
+    function copyToClipboard(text) {
+      navigator.clipboard.writeText(text);
+      alert("Copied: " + text);
+    }
 
-// Divider red star: adds normal points
-document.getElementById('star').addEventListener('click', () => {
-  counter += clickValue;
-  updateUI();
-});
-
-// Idle tick
-setInterval(() => { counter += idleCPM; updateUI(); }, () => intervalTime);
-
-// But setInterval takes a number, not a function; do the standard approach:
-setInterval(() => { counter += idleCPM; updateUI(); }, intervalTime);
-
-// Check milestones + show proper buttons
-function checkMilestonesAndButtons(){
-  // apply linear milestones
-  milestones.forEach(m => { if(counter >= m.limit) m.apply(); });
-
-  // 25k loop availability
-  if(counter >= 25000){
-    resetAvailable = true;
-    resetBtn.style.display = 'inline-block';
-  }else if(!did100kReset){ // still hide until first major milestones
-    resetBtn.style.display = 'none';
-  }
-
-  // 50k trophy
-  if(counter >= 50000) addTrophy('50k','50,000 – Halfway There!');
-
-  // 150k shows buy-star chip if not yet unlocked
-  if(counter >= 150000 && !floatingStarUnlocked){
-    buyStarBtn.style.display = 'inline-block';
-  }
-}
-
-// Reset logic:
-// - At >=25k: can reset ANYTIME; adds +5 to idleCPM; counter -> 0 (loop). Repeatable.
-// - At >=100k: a ONE-TIME reset that permanently reduces interval to 20s; idleCPM is preserved.
-//   (You can still keep doing 25k loops afterwards.)
-resetBtn.addEventListener('click', () => {
-  if(counter >= 100000 && !did100kReset){
-    // One-time prestige reset: shorten interval to 20s, preserve idleCPM, reset counter
-    did100kReset = true;
-    counter = 0;
-    intervalTime = 20000;
-    addTrophy('reset1','Reset! First reset done');
     updateUI();
-    alert('Prestige reset complete: cooldown reduced to 20s!');
-    return;
-  }
-
-  if(counter >= 25000){
-    // 25k loop: +5 idle CPM, reset counter
-    idleCPM += 5;
-    counter = 0;
-    addTrophy('25k','25,000: Quarter of 100k!');
-    updateUI();
-    return;
-  }
-
-  alert('You need at least 25,000 to use the reset loop (or 100,000 for prestige).');
-});
-
-// 150k star purchase: costs 75k, no full reset; unlock floating star
-buyStarBtn.addEventListener('click', () => {
-  if(floatingStarUnlocked) return;
-  if(counter >= 75000){
-    counter -= 75000;
-    floatingStarUnlocked = true;
-    floatStarEl.style.display = 'block';
-    buyStarBtn.style.display = 'none';
-    addTrophy('starBuy','Star! Purchased floating star');
-    updateUI();
-  }else{
-    alert('Not enough points (need 75,000).');
-  }
-});
-
-// Floating star opens the shop; does not add points
-floatStarEl.addEventListener('click', openStarShop);
-
-const shopModal = document.getElementById('starShopModal');
-const shopBackdrop = document.getElementById('starShopBackdrop');
-function openStarShop(){
-  shopModal.style.display = 'block';
-  shopBackdrop.style.display = 'block';
-}
-function closeStarShop(){
-  shopModal.style.display = 'none';
-  shopBackdrop.style.display = 'none';
-}
-function buyShopItem(key){
-  // Placeholder hook for your real purchase logic
-  alert('Purchased: ' + key);
-}
-
-// Initial UI
-updateUI();
-</script>
+  </script>
 </body>
 </html>
