@@ -1,89 +1,104 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<title>Nether Arcade – Mini-Game</title>
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="icon" href="logo.png" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
-
+<meta charset="UTF-8">
+<title>Nether Arcade – Mini Game</title>
+<link rel="icon" href="logo.png">
 <style>
-:root{
-  --bg:#131316; --surface:#1e1e22; --card:#27272c;
-  --accent:#ff3c3c; --text:#f3f3f7; --subtle:#9f9fa6; --neon:#1ce69c;
+:root {
+  --bg: #131316;
+  --surface: #1e1e22;
+  --card: #27272c;
+  --accent: #ff3c3c;
+  --text: #f3f3f7;
+  --subtle: #9f9fa6;
 }
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column;min-height:100vh}
-.banner-wrap{position:relative;width:100%;height:220px;overflow:hidden}
-.banner-img{width:100%;height:100%;object-fit:cover}
-.banner-fade{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(19,19,22,0) 55%,var(--bg))}
-nav{position:sticky;top:0;z-index:10;background:var(--surface);display:flex;justify-content:center;gap:1.2rem;padding:0.7rem 1rem;border-bottom:1px solid var(--card)}
-nav a{color:var(--subtle);text-decoration:none;font-weight:600}
-nav a:hover,nav a.active{color:var(--accent)}
-main{flex:1;padding:2rem 1rem;display:flex;flex-direction:column;align-items:center}
-section{width:100%;max-width:1100px}
-
-/* divider (green cats) */
-.divider{display:flex;justify-content:center;align-items:center;gap:.35rem;margin:1.2rem 0;font-weight:700;color:var(--neon)}
-
-/* layout */
-.grid{display:grid;grid-template-columns:1.35fr .8fr .95fr;gap:1rem}
-@media (max-width:1000px){.grid{grid-template-columns:1fr}}
-.col{background:var(--surface);border:1px solid var(--card);border-radius:14px;padding:1rem}
-
-/* counter panel */
-.counter-wrap{display:flex;align-items:center;justify-content:space-between;gap:1rem;background:var(--card);border-radius:12px;padding:0.9rem 1rem}
-.counter-box{min-width:74px;height:74px;border-radius:12px;background:var(--surface);display:flex;align-items:center;justify-content:center;font-size:1.4rem;font-weight:800}
-.statline{margin-top:.6rem;color:var(--subtle);font-weight:600;font-size:.95rem}
-
-/* big star clicker */
-.playbox{display:flex;flex-direction:column;align-items:center;gap:1rem;text-align:center}
-.big-star{font-size:64px;cursor:pointer;user-select:none;line-height:1;color:#ff3c3c;filter:drop-shadow(0 2px 0 rgba(0,0,0,.35))}
-.big-star:active{transform:scale(.96)}
-
-/* upgrades */
-.shop{display:grid;grid-template-columns:1fr;gap:.6rem;margin-top:.5rem}
-.item{display:flex;gap:.8rem;align-items:flex-start;background:var(--card);border:1px solid var(--card);border-radius:12px;padding:.8rem}
-.item h4{font-size:1rem}
-.item p{color:var(--subtle);font-size:.9rem;margin-top:.15rem}
-.item .cost{margin-left:auto;text-align:right;font-weight:700}
-.item button{margin-left:.6rem;background:var(--accent);color:#000;border:none;border-radius:10px;padding:.5rem .8rem;cursor:pointer}
-.item button:disabled{opacity:.5;cursor:not-allowed}
-
-/* achievements */
-.trophies{display:grid;grid-template-columns:repeat(2,1fr);gap:.5rem}
-@media (max-width:1000px){.trophies{grid-template-columns:1fr 1fr}}
-.badge{background:var(--card);border:1px solid var(--card);border-radius:10px;padding:.55rem .7rem;font-size:.9rem;display:flex;align-items:center;gap:.5rem;color:var(--text)}
-.badge.lock{opacity:.45}
-.badge i{color:var(--neon)}
-
-/* toast */
-.toast{position:fixed;right:16px;bottom:16px;background:var(--surface);border:1px solid var(--card);padding:.8rem 1rem;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,.35);opacity:0;transform:translateY(8px);transition:all .25s ease;pointer-events:none}
-.toast.show{opacity:1;transform:translateY(0)}
-
-/* small buttons row */
-.row{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:.6rem}
-.small{background:#000;color:#fff;border:1px solid #333;border-radius:10px;padding:.45rem .7rem;cursor:pointer}
-.small.red{background:#2a1313;border-color:#3b1515;color:#ffb5b5}
-
-/* subtle headers */
-h2{font-size:1.2rem;margin-bottom:.5rem}
-h3{font-size:1.05rem;margin:.2rem 0 .35rem 0;color:var(--subtle);font-weight:700}
-
-/* mini helper text */
-.mini{font-size:.85rem;color:var(--subtle)}
-footer{text-align:center;color:var(--subtle);padding:1.3rem 1rem}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: "Inter", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  text-align: center;
+}
+nav {
+  background: var(--surface);
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--card);
+}
+nav a {
+  color: var(--subtle);
+  text-decoration: none;
+  font-size: 1rem;
+  transition: color 0.2s;
+}
+nav a:hover, nav a.active { color: var(--accent); }
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 1rem;
+}
+h1 { font-size: 2rem; margin-bottom: 1rem; }
+#counter {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin: 1rem 0;
+}
+button {
+  background: var(--accent);
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  border-radius: 12px;
+  cursor: pointer;
+  color: #000;
+  margin: 0.5rem;
+}
+button:hover { opacity: 0.85; }
+.shop, .achievements {
+  background: var(--card);
+  padding: 1rem;
+  border-radius: 12px;
+  margin-top: 1.5rem;
+  width: 100%;
+  max-width: 600px;
+}
+.shop h2, .achievements h2 {
+  margin-bottom: 0.8rem;
+}
+.shop-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+  border: 1px solid var(--surface);
+  border-radius: 8px;
+}
+.achievement {
+  background: var(--surface);
+  padding: 0.5rem;
+  margin: 0.4rem 0;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+footer {
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.8rem;
+  color: var(--subtle);
+}
 </style>
 </head>
 <body>
 
-<!-- Banner -->
-<div class="banner-wrap">
-  <img class="banner-img" src="banner.jpg" alt="Banner" loading="lazy"/>
-  <div class="banner-fade"></div>
-</div>
-
-<!-- Nav -->
 <nav>
   <a href="index.html">Home</a>
   <a href="about.html">Team</a>
@@ -92,270 +107,100 @@ footer{text-align:center;color:var(--subtle);padding:1.3rem 1rem}
 </nav>
 
 <main>
-  <section>
-    <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
-    <div class="grid">
+  <h1>Clicker Mini-Game</h1>
+  <p>Click the star to earn points and buy upgrades!</p>
+  
+  <div id="counter">0</div>
+  <button onclick="clickStar()">✩ Click</button>
 
-      <!-- PLAY / COUNTER -->
-      <div class="col">
-        <div class="playbox">
-          <h2>Click the Star</h2>
-          <div class="counter-wrap" style="width:100%">
-            <div>
-              <div style="font-weight:800;font-size:1.05rem">Count</div>
-              <div class="mini">Your total points</div>
-            </div>
-            <div class="counter-box" id="counter">0</div>
-          </div>
+  <div id="stats">Click Value: 1 | Idle: 0 /10s</div>
 
-          <div class="statline" id="statline">Click Value: 0.5 | Idle: 0/sec | Cooldown: 1s</div>
-
-          <div id="bigStar" class="big-star" title="Click to earn points">✩</div>
-
-          <div class="row">
-            <button class="small" id="saveBtn"><i class="fa-regular fa-floppy-disk"></i> Save</button>
-            <button class="small red" id="resetBtn"><i class="fa-solid fa-rotate-left"></i> Hard Reset</button>
-          </div>
-        </div>
-
-        <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
-
-        <div class="col" style="background:transparent;border-color:transparent;padding:0">
-          <h3>Notes</h3>
-          <p class="mini">
-            • Achievements are trophies (no stat boost).<br/>
-            • Upgrades scale in price as you buy more.<br/>
-            • Your progress auto-saves often (you can also press Save).<br/>
-          </p>
-        </div>
-      </div>
-
-      <!-- SHOP -->
-      <div class="col">
-        <h2><i class="fa-solid fa-store"></i> Upgrades</h2>
-        <div class="shop" id="shop">
-          <!-- Items injected by JS -->
-        </div>
-      </div>
-
-      <!-- ACHIEVEMENTS -->
-      <div class="col">
-        <h2><i class="fa-regular fa-trophy"></i> Achievements</h2>
-        <div id="achList" class="trophies">
-          <!-- Badges injected by JS -->
-        </div>
-      </div>
-
+  <div class="shop">
+    <h2>Shop</h2>
+    <div class="shop-item">
+      <span>+1 per click (Cost: 50)</span>
+      <button onclick="buyClickUpgrade()">Buy</button>
     </div>
+    <div class="shop-item">
+      <span>+5 idle every 10s (Cost: 200)</span>
+      <button onclick="buyIdleUpgrade()">Buy</button>
+    </div>
+  </div>
 
-    <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
-  </section>
+  <div class="achievements">
+    <h2>Achievements</h2>
+    <div id="achievements-list"></div>
+  </div>
 </main>
 
 <footer>
-  © <span id="yr"></span> Nether Arcade • Not affiliated with Mojang
+  &copy; <span id="yr"></span> Nether Arcade • Not affiliated with Mojang
 </footer>
 
-<!-- Toast -->
-<div id="toast" class="toast"></div>
-
 <script>
-/* ---------- State ---------- */
-const STORE_KEY = "na_minigame_v1";
-let state = {
-  points: 0,
-  perClick: 0.5,
-  perSec: 0,
-  lastTick: Date.now(),
-  items: {},    // itemId -> count
-  ach: {},      // achId -> bool
+const state = {
+  count: 0,
+  clickValue: 1,
+  idleValue: 0, // per 10 seconds
+  achievements: []
 };
 
-const items = [
-  { id:"clickA", name:"+0.5 / click", desc:"Practice makes perfect.", base:15,  type:"click", val:0.5,  scale:1.15 },
-  { id:"clickB", name:"+1 / click",   desc:"Heavier fingertips.",    base:75,  type:"click", val:1,    scale:1.18 },
-  { id:"idleA",  name:"+1 / sec",     desc:"Little helpers.",        base:50,  type:"idle",  val:1,    scale:1.17 },
-  { id:"idleB",  name:"+5 / sec",     desc:"Bigger crew.",           base:600, type:"idle",  val:5,    scale:1.2  },
-  { id:"burst",  name:"Burst x2",     desc:"10s double click value.",base:400, type:"burst", val:10,   scale:1.25 },
-];
-
 const achievements = [
-  { id:"firstClick", name:"First Click!",  tip:"You clicked the star once.",         test:s=>s.totalClicks>=1 },
-  { id:"ten",        name:"Ten Up",        tip:"Reach 10 total points.",             test:s=>s.points>=10 },
-  { id:"hundred",    name:"Triple Digits", tip:"Reach 100 total points.",            test:s=>s.points>=100 },
-  { id:"thousand",   name:"1,000!",        tip:"Four digits club.",                  test:s=>s.points>=1000 },
-  { id:"idle5",      name:"Automation",    tip:"Reach 5/sec idle income.",           test:s=>s.perSec>=5 },
-  { id:"shopper",    name:"First Buy",     tip:"Purchase any upgrade.",              test:s=>Object.values(s.items).some(c=>c>0) },
-  { id:"rich",       name:"5,000 Banked",  tip:"Stack 5k points at once.",           test:s=>s.points>=5000 },
+  { id: "firstClick", text: "First Click!", condition: () => state.count >= 1 },
+  { id: "reset", text: "Reset! Reset for the first time", condition: () => false }, // Placeholder for future reset logic
+  { id: "5000", text: "5000: So far to go!", condition: () => state.count >= 5000 },
+  { id: "25000", text: "25,000: Quarter of 100,000", condition: () => state.count >= 25000 },
+  { id: "50000", text: "50,000 – Halfway There!", condition: () => state.count >= 50000 },
+  { id: "100000", text: "100,000: Centurion!", condition: () => state.count >= 100000 },
+  { id: "150000", text: "150,000: You unlocked Prestige!", condition: () => state.count >= 150000 }
 ];
 
-state.totalClicks = 0;
-state.burstUntil = 0;
+function updateUI() {
+  document.getElementById("counter").textContent = state.count;
+  document.getElementById("stats").textContent =
+    `Click Value: ${state.clickValue} | Idle: ${state.idleValue} /10s`;
 
-/* ---------- Helpers ---------- */
-const $ = sel => document.querySelector(sel);
-const plural = (n, w) => n===1 ? w : w+"s";
-function fmt(n){ return Math.floor(n).toLocaleString(); }
-function costOf(item){
-  const owned = state.items[item.id] || 0;
-  return Math.floor(item.base * Math.pow(item.scale, owned));
-}
-function toast(msg){
-  const t = $("#toast");
-  t.textContent = msg;
-  t.classList.add("show");
-  setTimeout(()=>t.classList.remove("show"), 1600);
-}
-function save(){
-  localStorage.setItem(STORE_KEY, JSON.stringify(state));
-  toast("Progress saved");
-}
-function load(){
-  const raw = localStorage.getItem(STORE_KEY);
-  if(!raw) return;
-  try{
-    const obj = JSON.parse(raw);
-    state = { ...state, ...obj };
-  }catch(e){}
-}
-
-/* ---------- Rendering ---------- */
-function renderStats(){
-  const now = Date.now();
-  const activeBurst = now < state.burstUntil;
-  const effClick = activeBurst ? state.perClick*2 : state.perClick;
-  $("#counter").textContent = fmt(state.points);
-  $("#statline").textContent = `Click Value: ${effClick} | Idle: ${state.perSec}/sec | Cooldown: 1s${activeBurst ? " (Burst!)":""}`;
-}
-
-function renderShop(){
-  const wrap = $("#shop");
-  wrap.innerHTML = "";
-  items.forEach(item=>{
-    const owned = state.items[item.id] || 0;
-    const cost = costOf(item);
-    const can = state.points >= cost;
-    const el = document.createElement("div");
-    el.className = "item";
-    el.innerHTML = `
-      <div>
-        <h4>${item.name} <span class="mini">• Owned: ${owned}</span></h4>
-        <p>${item.desc}</p>
-      </div>
-      <div class="cost">${fmt(cost)}</div>
-      <button ${can?"":"disabled"} data-buy="${item.id}">Buy</button>
-    `;
-    wrap.appendChild(el);
-  });
-}
-
-function renderAchievements(){
-  const wrap = $("#achList");
-  wrap.innerHTML = "";
-  achievements.forEach(a=>{
-    const done = !!state.ach[a.id];
-    const div = document.createElement("div");
-    div.className = "badge" + (done?"":" lock");
-    div.innerHTML = `<i class="fa-regular fa-star"></i> ${a.name}`;
-    div.title = a.tip;
-    wrap.appendChild(div);
-  });
-}
-
-/* ---------- Game Loop ---------- */
-let lastFrame = Date.now();
-function tick(){
-  const now = Date.now();
-  const dt = Math.max(0, (now - lastFrame) / 1000); // seconds since last frame
-  lastFrame = now;
-
-  // passive income
-  state.points += state.perSec * dt;
-
-  // achievement checks
-  achievements.forEach(a=>{
-    if(!state.ach[a.id] && a.test(state)){
-      state.ach[a.id] = true;
-      toast(`Achievement: ${a.name}`);
+  // Check for achievements
+  achievements.forEach(a => {
+    if (a.condition() && !state.achievements.includes(a.id)) {
+      state.achievements.push(a.id);
+      const el = document.createElement("div");
+      el.className = "achievement";
+      el.textContent = a.text;
+      document.getElementById("achievements-list").appendChild(el);
     }
   });
-
-  renderStats();
-  maybeAutoSave();
-
-  requestAnimationFrame(tick);
 }
 
-/* ---------- Interactions ---------- */
-$("#bigStar").addEventListener("click", ()=>{
-  const now = Date.now();
-  const eff = (now < state.burstUntil) ? state.perClick*2 : state.perClick;
-  state.points += eff;
-  state.totalClicks += 1;
-  // achievement first click
-  if(!state.ach.firstClick && achievements[0].test(state)){
-    state.ach.firstClick = true; toast("Achievement: First Click!");
-  }
-  renderStats();
-});
+function clickStar() {
+  state.count += state.clickValue;
+  updateUI();
+}
 
-$("#shop").addEventListener("click", (e)=>{
-  const id = e.target?.dataset?.buy;
-  if(!id) return;
-  const item = items.find(i=>i.id===id);
-  const price = costOf(item);
-  if(state.points < price) return;
-
-  state.points -= price;
-  state.items[id] = (state.items[id]||0) + 1;
-
-  if(item.type==="click") state.perClick += item.val;
-  if(item.type==="idle")  state.perSec   += item.val;
-  if(item.type==="burst") state.burstUntil = Date.now() + (item.val*1000);
-
-  // first buy achievement
-  if(!state.ach.shopper && achievements.find(a=>a.id==="shopper").test(state)){
-    state.ach.shopper = true; toast("Achievement: First Buy");
-  }
-
-  renderShop();
-  renderStats();
-});
-
-$("#saveBtn").addEventListener("click", save);
-$("#resetBtn").addEventListener("click", ()=>{
-  if(!confirm("Hard reset your mini-game progress?")) return;
-  localStorage.removeItem(STORE_KEY);
-  state = {
-    points:0, perClick:0.5, perSec:0, lastTick:Date.now(),
-    items:{}, ach:{}, totalClicks:0, burstUntil:0
-  };
-  renderShop(); renderAchievements(); renderStats();
-  toast("Progress reset");
-});
-
-/* ---------- Auto Save ---------- */
-let saveTimer = 0;
-function maybeAutoSave(){
-  const now = Date.now();
-  if(now - saveTimer > 5000){ // every ~5s
-    saveTimer = now;
-    localStorage.setItem(STORE_KEY, JSON.stringify(state));
+function buyClickUpgrade() {
+  if (state.count >= 50) {
+    state.count -= 50;
+    state.clickValue += 1;
+    updateUI();
   }
 }
 
-/* ---------- Init ---------- */
-load();
-renderShop();
-renderAchievements();
-renderStats();
-requestAnimationFrame(tick);
-document.getElementById("yr").textContent = new Date().getFullYear();
-</script>
-</body>
-</html>
+function buyIdleUpgrade() {
+  if (state.count >= 200) {
+    state.count -= 200;
+    state.idleValue += 5;
+    updateUI();
+  }
+}
+
+// Idle income every 10 seconds
+setInterval(() => {
+  state.count += state.idleValue;
+  updateUI();
+}, 10000);
 
 document.getElementById("yr").textContent = new Date().getFullYear();
+updateUI();
 </script>
 </body>
 </html>
