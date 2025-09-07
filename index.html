@@ -6,14 +6,12 @@
   <meta name="description" content="Fun for everyone">
   <meta name="keywords" content="Minecraft, Fun">
   <link rel="icon" href="logo.png">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
   <style>
     :root {
       --bg: #131316;
       --surface: #1e1e22;
       --card: #27272c;
       --accent: #ff3c3c;
-      --accent2: #ff7a00;
       --text: #f3f3f7;
       --subtle: #9f9fa6;
     }
@@ -55,11 +53,37 @@
       align-items: center;
       text-align: center;
     }
-    .box {
+    .divider {
+      margin: 1.5rem 0;
+      font-weight: 600;
+      color: var(--subtle);
+    }
+    .ip-box {
       background: var(--card);
       padding: 1rem 1.5rem;
       border-radius: 12px;
-      margin: 1rem 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      position: relative;
+      cursor: pointer;
+      max-width: 320px;
+    }
+    .ip-box svg {
+      width: 18px;
+      height: 18px;
+      fill: var(--text);
+    }
+    .tooltip {
+      display: none;
+      position: absolute;
+      bottom: -1.5rem;
+      background: var(--surface);
+      color: var(--text);
+      padding: 0.25rem 0.5rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
     }
     footer {
       text-align: center;
@@ -76,19 +100,29 @@
   <a class="active" href="index.html">Home</a>
   <a href="about.html">Team</a>
   <a href="socials.html">Socials</a>
-  <a href="minigame.html">Mini-Game</a> <!-- 🔹 New tab -->
+  <a href="minigame.html">Mini-Game</a>
 </nav>
 
 <main>
-  <h1>Nether Arcade</h1>
-  <p>A Minecraft server crafting <strong>minigames powered by command blocks</strong>. No mods—just vanilla ingenuity.</p>
+  <!-- HOME -->
+  <section id="home" class="active">
+    <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
 
-  <!-- Server Info Cube -->
-  <div class="box server" style="display:flex; align-items:center; gap:0.5rem; justify-content:center; font-size:1.1rem;">
-    <strong>netherarcade.cold00.eu</strong>
-    <span style="cursor:pointer;" onclick="copyToClipboard('netherarcade.cold00.eu')">📋</span>
-    <span style="color:#aaa; font-size:0.9rem;">Java Edition only • Version 1.21.8</span>
-  </div>
+    <h1>Nether Arcade</h1>
+    <p>A Minecraft server crafting <strong>minigames powered by command blocks</strong>. No mods—just vanilla ingenuity.</p>
+
+    <!-- Server Info Cube -->
+    <div class="ip-box" onclick="copyIP()">
+      <span>netherarcade.cold00.eu</span>
+      <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+      <span class="tooltip" id="tip">Copied!</span>
+      <span style="color: var(--subtle); font-size: 0.85rem; margin-top:0.5rem;">
+        Java Edition only • Version 1.21.8
+      </span>
+    </div>
+
+    <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
+  </section>
 </main>
 
 <footer>
@@ -96,9 +130,11 @@
 </footer>
 
 <script>
-function copyToClipboard(text){
-  navigator.clipboard.writeText(text);
-  alert("Copied: " + text);
+function copyIP() {
+  navigator.clipboard.writeText("netherarcade.cold00.eu");
+  const tip = document.getElementById("tip");
+  tip.style.display = "inline-block";
+  setTimeout(() => tip.style.display = "none", 1000);
 }
 document.getElementById("yr").textContent = new Date().getFullYear();
 </script>
