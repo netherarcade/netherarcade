@@ -1,185 +1,470 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Nether Arcade</title>
-  <style>
-    body {
-      background: #111;
-      color: #fff;
-      font-family: Arial, sans-serif;
-      text-align: center;
-    }
+<meta charset="UTF-8" />
+<title>Nether Arcade – Command-Block Minigames</title>
+<meta name="description" content="Fun for everyone">
+<meta name="keywords" content="Minecraft, Fun">
+<link rel="icon" href="logo.png">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
 
-    h1 {
-      margin-top: 1rem;
-    }
+<style>
+:root{
+  --bg:#131316; --surface:#1e1e22; --card:#27272c;
+  --accent:#ff3c3c; --accent2:#1ce69c;
+  --text:#f3f3f7; --subtle:#9f9fa6;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column}
 
-    .divider {
-      margin: 1rem 0;
-      font-size: 1.2rem;
-      color: #ff5c5c;
-    }
+/* Banner */
+.banner-wrap{position:relative;width:100%;height:260px;overflow:hidden}
+.banner-img{width:100%;height:100%;object-fit:cover}
+.banner-fade{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(19,19,22,0) 60%,var(--bg) 100%)}
 
-    /* Container for cubes */
-    .cube-row {
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      gap: 1rem;
-      margin-top: 1.5rem;
-    }
+/* Nav */
+nav{position:sticky;top:0;z-index:10;background:var(--surface);display:flex;justify-content:center;gap:1.5rem;padding:.75rem 1rem;border-bottom:1px solid var(--card)}
+nav a{color:var(--subtle);text-decoration:none}
+nav a:hover,nav a.active{color:var(--accent)}
 
-    /* Cube styles */
-    .ip-version-box,
-    .counter-box,
-    .achievements-box {
-      background: #222;
-      border-radius: 10px;
-      padding: 1rem 1.5rem;
-      box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
-    }
+/* Layout */
+main{flex:1;padding:2.5rem 1rem;display:flex;flex-direction:column;align-items:center;text-align:center}
+h1{font-size:2.5rem;font-weight:800;letter-spacing:.05em;margin:.75rem 0}
+p{color:var(--subtle);line-height:1.6}
 
-    .ip-version-box {
-      min-width: 260px;
-      text-align: left;
-    }
+/* Pretty divider with clickable star */
+.divider{display:flex;align-items:center;justify-content:center;gap:.4rem;margin:1rem 0;font-weight:700}
+#clickStar{color:var(--accent);cursor:pointer;user-select:none}
 
-    .counter-box {
-      min-width: 60px;
-      font-size: 1.5rem;
-      font-weight: bold;
-    }
+/* Center row with cubes */
+.row{display:grid;grid-template-columns:1fr auto auto;gap:1rem;align-items:stretch;margin-top:1.25rem;max-width:960px;width:100%}
+@media (max-width:840px){ .row{grid-template-columns:1fr;justify-items:center} }
 
-    .achievements-box {
-      min-width: 150px;
-      font-size: 0.85rem;
-      text-align: left;
-    }
+.box{background:var(--card);border-radius:12px;padding:1rem 1.25rem;display:flex;flex-direction:column;justify-content:center;gap:.5rem;min-height:70px}
+.box.small{min-width:90px;align-items:center;justify-content:center}
+.box.label{font-size:.9rem;color:var(--subtle)}
+.box strong{font-weight:800}
 
-    .copy {
-      cursor: pointer;
-      margin-left: 0.5rem;
-    }
+/* Server cube contents */
+.serverline{display:flex;align-items:center;justify-content:center;gap:.5rem;font-size:1.05rem}
+.copy{cursor:pointer}
 
-    /* Flying star */
-    .flying-star {
-      position: fixed;
-      bottom: 50px;
-      left: -40px;
-      font-size: 2rem;
-      color: gold;
-      cursor: pointer;
-      animation: fly 8s linear forwards;
-    }
+/* Counter cube */
+.counter{font-weight:900;font-size:1.35rem}
 
-    @keyframes fly {
-      from { left: -40px; }
-      to { left: 100vw; }
-    }
-  </style>
+/* Achievements pill + modal */
+#achBtn{background:var(--surface);border:none;color:var(--text);padding:.6rem .9rem;border-radius:10px;cursor:pointer}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;padding:1rem}
+.modal .panel{background:var(--surface);max-width:560px;width:100%;border-radius:14px;padding:1rem 1.2rem;box-shadow:0 12px 40px rgba(0,0,0,.45)}
+.panel h3{margin-bottom:.6rem}
+.trophies{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:.6rem}
+.trophy{background:var(--card);border:1px dashed #3a3a41;border-radius:10px;padding:.6rem .7rem;text-align:left;font-size:.9rem}
+.trophy.done{border-style:solid}
+
+/* Stats + actions */
+.stats{margin-top:.75rem;color:var(--subtle);font-weight:600}
+.actions{margin-top:.6rem;display:flex;gap:.5rem;flex-wrap:wrap;justify-content:center}
+.btn{background:var(--accent);color:#000;border:none;padding:.55rem 1.1rem;border-radius:10px;cursor:pointer}
+.btn.secondary{background:#000;color:#fff}
+
+/* Flying star */
+.flying-star{position:fixed;top:0;left:-60px;font-size:28px;pointer-events:auto;cursor:pointer;user-select:none;z-index:20;display:none}
+
+/* Star shop */
+.shop{display:none}
+.shop .panel{max-width:520px}
+.shop-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.6rem;margin-top:.5rem}
+.card{background:var(--card);border-radius:12px;padding:.75rem;text-align:left}
+.card h4{margin:.25rem 0 .35rem 0}
+.card p{font-size:.9rem;margin:0 0 .6rem 0}
+.card button{width:100%}
+.badge{display:inline-block;background:#0f0f13;color:#d8d8de;border:1px solid #323239;border-radius:999px;padding:.15rem .5rem;font-size:.75rem}
+
+/* Footer */
+footer{text-align:center;padding:1.5rem 1rem;font-size:.8rem;color:var(--subtle)}
+</style>
 </head>
 <body>
-  <div class="divider">────────﹒˗ˏˋ ✩ ˎˊ˗﹒────────</div>
+
+<!-- Banner -->
+<div class="banner-wrap">
+  <img class="banner-img" src="banner.jpg" alt="Nether Arcade Banner" loading="lazy">
+  <div class="banner-fade"></div>
+</div>
+
+<!-- Nav -->
+<nav>
+  <a class="active" href="index.html">Home</a>
+  <a href="about.html">Team</a>
+  <a href="socials.html">Socials</a>
+</nav>
+
+<main>
+  <!-- Top green divider + clickable red star -->
+  <div class="divider" style="color:var(--accent2);">
+    ─────────﹒˗ˏˋ <span id="clickStar">✩</span> ˎˊ˗﹒─────────
+  </div>
 
   <h1>Nether Arcade</h1>
   <p>A Minecraft server crafting <strong>minigames powered by command blocks</strong>. No mods—just vanilla ingenuity.</p>
 
-  <!-- Server Info + Counter + Achievements -->
-  <div class="cube-row">
-    <!-- Server Info Cube -->
-    <div class="ip-version-box">
-      <div>
+  <!-- The three cubes row -->
+  <div class="row">
+    <!-- Cube 1: Server (IP + copy + version) all in ONE cube, centered -->
+    <div class="box" id="serverBox">
+      <div class="serverline">
         <strong>netherarcade.cold00.eu</strong>
-        <span class="copy" onclick="copyToClipboard('netherarcade.cold00.eu')">📋</span>
+        <span class="copy" title="Copy IP" onclick="copyToClipboard('netherarcade.cold00.eu')">📋</span>
       </div>
-      <div style="color:#aaa; font-size:0.9rem;">Java Edition only • Version 1.21.8</div>
+      <div class="box label">Java Edition only • Version 1.21.8</div>
     </div>
 
-    <!-- Counter Cube -->
-    <div class="counter-box" id="counter">0</div>
+    <!-- Cube 2: Counter -->
+    <div class="box small">
+      <div class="box label">Count</div>
+      <div class="counter" id="counter">0</div>
+    </div>
 
-    <!-- Achievements Cube -->
-    <div class="achievements-box" id="achievements">
-      <strong>Achievements</strong>
-      <ul id="ach-list" style="margin:0.5rem 0 0; padding-left:1rem;"></ul>
+    <!-- Cube 3: Achievements (opens modal) -->
+    <div class="box small">
+      <button id="achBtn" title="View Achievements">
+        <i class="fa-solid fa-trophy"></i>
+        <span id="achCount" style="margin-left:.35rem">0</span>
+      </button>
+      <div class="box label">Achievements</div>
     </div>
   </div>
 
-  <!-- Stats -->
-  <div id="stats" style="margin-top:1rem; font-size:0.9rem; color:#aaa; font-weight:600;">
-    Click Value: 0.5 | Idle CPM: 0 | 30 sec
+  <!-- Stats + buttons -->
+  <div class="stats" id="stats">Click Value: 0.5 | Idle CPM: 0 | 30 sec</div>
+  <div class="actions">
+    <button class="btn secondary" id="loopBtn" style="display:none">Reset @25k (+5 Idle)</button>
+    <button class="btn secondary" id="prestigeBtn" style="display:none">Prestige @100k (20s)</button>
+    <button class="btn" id="buyStarBtn" style="display:none">Buy Blue Star @150k (cost 75k)</button>
   </div>
 
-  <div class="divider">────────﹒˗ˏˋ ✩ ˎˊ˗﹒────────</div>
+  <!-- Bottom divider (red star still adds normal points) -->
+  <div class="divider" style="color:var(--accent2);margin-top:1rem;">
+    ───────﹒˗ˏˋ <span id="clickStar2" style="color:var(--accent);cursor:pointer;">✩</span> ˎˊ˗﹒──────
+  </div>
+</main>
 
-  <script>
-    let counter = 0;
-    let clickValue = 0.5;
-    let idleCPM = 0;
-    let cooldown = 30;
-    let achievements = [];
-    let starUnlocked = false;
-    let stars = 0;
+<footer>
+  &copy; <span id="yr"></span> Nether Arcade &nbsp;•&nbsp; Not affiliated with Mojang
+</footer>
 
-    const counterEl = document.getElementById('counter');
-    const statsEl = document.getElementById('stats');
-    const achList = document.getElementById('ach-list');
+<!-- Achievements modal -->
+<div class="modal" id="achModal" aria-hidden="true">
+  <div class="panel">
+    <h3><i class="fa-solid fa-trophy"></i> Achievements</h3>
+    <div class="trophies" id="trophyGrid"></div>
+    <div style="margin-top:.8rem;display:flex;justify-content:flex-end;gap:.5rem">
+      <span class="badge" id="starCoinBadge">Star Coins: 0</span>
+      <button class="btn secondary" onclick="closeAch()">Close</button>
+    </div>
+  </div>
+</div>
 
-    // Click handler for the red ✩ star
-    document.querySelectorAll('.divider')[0].addEventListener('click', () => {
-      counter += clickValue;
-      updateUI();
-      checkMilestones();
+<!-- Star Shop modal (opens by clicking the flying star) -->
+<div class="modal shop" id="shopModal" aria-hidden="true">
+  <div class="panel">
+    <h3><i class="fa-solid fa-star"></i> Star Shop</h3>
+    <div class="shop-grid">
+      <div class="card" id="shopIconCard">
+        <span class="badge">Cost: 5 ✦</span>
+        <h4>New Star Icon</h4>
+        <p>Change the red divider star to a premium icon.</p>
+        <button class="btn" onclick="buyItem('icon')">Buy</button>
+      </div>
+      <div class="card" id="shopClickCard">
+        <span class="badge">Cost: 10 ✦</span>
+        <h4>+1 Click Value</h4>
+        <p>Permanently increase your click value by +1.</p>
+        <button class="btn" onclick="buyItem('click')">Buy</button>
+      </div>
+      <div class="card" id="shopDoubleCard">
+        <span class="badge">Cost: 50 ✦</span>
+        <h4>Double Star Coins</h4>
+        <p>Flying star now gives ✦×2 per click.</p>
+        <button class="btn" onclick="buyItem('double')">Buy</button>
+      </div>
+      <div class="card" id="shopCdCard">
+        <span class="badge">Cost: 100 ✦</span>
+        <h4>15s Cooldown</h4>
+        <p>Reduce the idle tick from 20s/30s down to 15s (permanent).</p>
+        <button class="btn" onclick="buyItem('cd15')">Buy</button>
+      </div>
+    </div>
+    <div style="margin-top:.8rem;display:flex;justify-content:flex-end;gap:.5rem">
+      <span class="badge" id="shopCoinBadge">Star Coins: 0</span>
+      <button class="btn secondary" onclick="closeShop()">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Flying star (appears after buying at 150k) -->
+<div id="flyStar" class="flying-star">✦</div>
+
+<script>
+/* ---------- Persistent state ---------- */
+const save = (k,v)=>localStorage.setItem(k,JSON.stringify(v));
+const load = (k,d)=>{try{const v=JSON.parse(localStorage.getItem(k));return v??d;}catch{return d;}};
+
+const state = {
+  counter: 0,
+  clickValue: 0.5,
+  idleBase: 0,              // from milestones reached
+  loopBonus: load('loopBonus',0), // +5 per 25k loop
+  intervalMs: load('intervalMs',30000), // 30s default; prestige -> 20000; shop -> 15000
+  prestiged: load('prestiged',false),
+  maxEver: load('maxEver',0),
+
+  // 150k star system
+  starUnlocked: load('starUnlocked',false),
+  starCoins: load('starCoins',0),
+  coinMultiplier: load('coinMultiplier',1),
+  starIconUpgraded: load('starIconUpgraded',false),
+
+  // Achievements set
+  ach: new Set(load('ach',[]))
+};
+
+function persist(){
+  save('loopBonus',state.loopBonus);
+  save('intervalMs',state.intervalMs);
+  save('prestiged',state.prestiged);
+  save('maxEver',state.maxEver);
+  save('starUnlocked',state.starUnlocked);
+  save('starCoins',state.starCoins);
+  save('coinMultiplier',state.coinMultiplier);
+  save('starIconUpgraded',state.starIconUpgraded);
+  save('ach',[...state.ach]);
+}
+
+/* ---------- UI refs ---------- */
+const counterEl = document.getElementById('counter');
+const statsEl = document.getElementById('stats');
+const loopBtn = document.getElementById('loopBtn');
+const prestigeBtn = document.getElementById('prestigeBtn');
+const buyStarBtn = document.getElementById('buyStarBtn');
+const achBtn = document.getElementById('achBtn');
+const achModal = document.getElementById('achModal');
+const shopModal = document.getElementById('shopModal');
+const achCount = document.getElementById('achCount');
+const trophyGrid = document.getElementById('trophyGrid');
+const starCoinBadge = document.getElementById('starCoinBadge');
+const shopCoinBadge = document.getElementById('shopCoinBadge');
+const clickStar = document.getElementById('clickStar');
+const clickStar2 = document.getElementById('clickStar2');
+const flyStar = document.getElementById('flyStar');
+
+/* ---------- Milestones (base, not loop) ---------- */
+function applyMilestones(){
+  const c = state.counter;
+  // click increases
+  if (c >= 1000) state.clickValue = Math.max(state.clickValue, 2);
+  else if (c >= 100) state.clickValue = Math.max(state.clickValue, 1.5);
+  else if (c >= 10) state.clickValue = Math.max(state.clickValue, 1);
+  // idle base
+  if (c >= 25000) state.idleBase = 50;
+  else if (c >= 10000) state.idleBase = 45;
+  else if (c >= 5000) state.idleBase = 30;
+  else if (c >= 100) state.idleBase = 15;
+  else state.idleBase = 0;
+
+  // one-time achievement markers
+  if (c >= 5000) unlockAch('5k: so far to go!');
+  if (c >= 25000) unlockAch('25k: quarter of 100k');
+  if (c >= 50000) unlockAch('50k: Halfway There !');
+}
+
+/* ---------- Achievements ---------- */
+const allAch = [
+  'Reset! (first loop)',
+  '5k: so far to go!',
+  '25k: quarter of 100k',
+  '50k: Halfway There !',
+  'Prestige @100k',
+  'Star! (Blue star unlocked)'
+];
+
+function unlockAch(label){
+  if (!state.ach.has(label)){
+    state.ach.add(label);
+    persist();
+    refreshAchievementsUI();
+  }
+}
+
+function refreshAchievementsUI(){
+  achCount.textContent = state.ach.size;
+  starCoinBadge.textContent = `Star Coins: ${state.starCoins}`;
+  trophyGrid.innerHTML = '';
+  for (const label of allAch){
+    const div = document.createElement('div');
+    div.className = 'trophy'+(state.ach.has(label) ? ' done':'');
+    div.innerHTML = `<strong>${label}</strong>`;
+    trophyGrid.appendChild(div);
+  }
+}
+
+achBtn.addEventListener('click', ()=>{ achModal.style.display='flex'; refreshAchievementsUI(); });
+function closeAch(){ achModal.style.display='none'; }
+
+/* ---------- Actions ---------- */
+function copyToClipboard(text){
+  navigator.clipboard.writeText(text).then(()=>alert('Copied: '+text));
+}
+
+function updateStats(){
+  const idle = state.idleBase + state.loopBonus; // total idle
+  const sec = state.intervalMs/1000;
+  counterEl.textContent = Math.floor(state.counter);
+  statsEl.textContent = `Click Value: ${state.clickValue} | Idle CPM: ${idle} | ${sec} sec`;
+  // buttons visibility
+  loopBtn.style.display = state.counter>=25000 ? 'inline-block' : 'none';
+  prestigeBtn.style.display = (!state.prestiged && state.counter>=100000) ? 'inline-block':'none';
+  buyStarBtn.style.display = (!state.starUnlocked && state.counter>=150000) ? 'inline-block':'none';
+}
+
+function addCount(amount){
+  state.counter += amount;
+  if (state.counter > state.maxEver){ state.maxEver = state.counter; }
+  applyMilestones();
+  updateStats();
+  persist();
+}
+
+/* Clickable red divider star adds normal points */
+clickStar.addEventListener('click', ()=>addCount(state.clickValue));
+clickStar2.addEventListener('click', ()=>addCount(state.clickValue));
+
+/* Idle ticker */
+let idleTimer = setInterval(()=>tickIdle(), state.intervalMs);
+function resetIdleTimer(){
+  clearInterval(idleTimer);
+  idleTimer = setInterval(()=>tickIdle(), state.intervalMs);
+}
+function tickIdle(){
+  const perMinute = state.idleBase + state.loopBonus;
+  if (perMinute>0){
+    const perTick = perMinute; // we add CPM once per interval
+    addCount(perTick);
+  }else{
+    updateStats();
+  }
+}
+
+/* Loop reset @25k: +5 Idle CPM (stacking), keep everything else */
+document.getElementById('loopBtn').addEventListener('click', ()=>{
+  if (state.counter >= 25000){
+    state.counter = 0;
+    state.loopBonus += 5;
+    unlockAch('Reset! (first loop)');
+    applyMilestones(); // base stays 50 after reaching 25k at least once
+    updateStats();
+    persist();
+  }
+});
+
+/* Prestige @100k (one-time): sets cooldown to 20s permanently */
+document.getElementById('prestigeBtn').addEventListener('click', ()=>{
+  if (state.counter >= 100000 && !state.prestiged){
+    state.counter = 0;
+    state.prestiged = true;
+    state.intervalMs = 20000;
+    unlockAch('Prestige @100k');
+    updateStats(); persist(); resetIdleTimer();
+  }
+});
+
+/* Buy blue star @150k (cost 75k, no full reset) */
+document.getElementById('buyStarBtn').addEventListener('click', ()=>{
+  if (state.counter >= 150000 && !state.starUnlocked){
+    state.counter -= 75000; // only lose 75k
+    state.starUnlocked = true;
+    unlockAch('Star! (Blue star unlocked)');
+    startFlyingStar();
+    updateStats(); persist();
+  }
+});
+
+/* Flying star behavior (spawns every 60s) */
+let flyTimer = null;
+function startFlyingStar(){
+  if (flyTimer) return;
+  flyStar.style.display = 'block';
+  const spawn = ()=>{
+    // random Y between 35% and 70% of viewport
+    const y = Math.floor(window.innerHeight* (0.35 + Math.random()*0.35));
+    const duration = 8000 + Math.random()*4000; // 8-12s per pass
+    flyStar.style.top = y+'px';
+    flyStar.style.left = '-60px';
+    flyStar.style.transition = 'none';
+    requestAnimationFrame(()=>{
+      flyStar.style.transition = `left ${duration}ms linear`;
+      flyStar.style.left = (window.innerWidth + 60)+'px';
     });
+  };
+  spawn();
+  flyTimer = setInterval(spawn, 60000); // every 1 minute
+}
 
-    function updateUI() {
-      counterEl.textContent = Math.floor(counter);
-      statsEl.textContent = `Click Value: ${clickValue} | Idle CPM: ${idleCPM} | ${cooldown} sec`;
-    }
+/* Clicking flying star: gain coins & open shop */
+flyStar.addEventListener('click', ()=>{
+  const gain = 1 * state.coinMultiplier;
+  state.starCoins += gain;
+  persist();
+  openShop();
+});
+function openShop(){ shopModal.style.display='flex'; updateShop(); }
+function closeShop(){ shopModal.style.display='none'; }
+function updateShop(){
+  shopCoinBadge.textContent = `Star Coins: ${state.starCoins}`;
+  // disable purchased items
+  document.querySelector('#shopIconCard button').disabled = state.starIconUpgraded;
+  document.querySelector('#shopDoubleCard button').disabled = (state.coinMultiplier>1);
+  // cooldown to 15s can be bought only if >15000
+  document.querySelector('#shopCdCard button').disabled = (state.intervalMs<=15000);
+}
 
-    function addAchievement(name) {
-      if (!achievements.includes(name)) {
-        achievements.push(name);
-        const li = document.createElement('li');
-        li.textContent = name;
-        achList.appendChild(li);
-      }
-    }
+/* Buying shop items (one-time) */
+function buyItem(key){
+  const costs = {icon:5, click:10, double:50, cd15:100};
+  const can = state.starCoins >= costs[key];
+  if (!can) return;
 
-    function checkMilestones() {
-      if (counter >= 5000 && !achievements.includes("So far to go!")) addAchievement("So far to go!");
-      if (counter >= 25000 && !achievements.includes("Quarter of 100k!")) addAchievement("Quarter of 100k!");
-      if (counter >= 50000 && !achievements.includes("Halfway There!")) addAchievement("Halfway There!");
-      if (counter >= 150000 && !starUnlocked) {
-        starUnlocked = true;
-        addAchievement("Blue Star ✦ Unlocked!");
-        spawnStarLoop();
-      }
-    }
+  if (key==='icon' && !state.starIconUpgraded){
+    state.starIconUpgraded = true;
+    document.getElementById('clickStar').textContent = '★';
+    document.getElementById('clickStar2').textContent = '★';
+  }
+  if (key==='click'){
+    state.clickValue += 1;
+  }
+  if (key==='double' && state.coinMultiplier===1){
+    state.coinMultiplier = 2;
+  }
+  if (key==='cd15' && state.intervalMs>15000){
+    state.intervalMs = 15000;
+    resetIdleTimer();
+  }
+  state.starCoins -= costs[key];
+  persist();
+  updateShop();
+  refreshAchievementsUI();
+}
 
-    // Flying star spawner
-    function spawnStarLoop() {
-      setInterval(() => {
-        const star = document.createElement('div');
-        star.textContent = '✦';
-        star.className = 'flying-star';
-        star.onclick = () => {
-          stars++;
-          star.remove();
-          addAchievement(`Star Coin collected! (Total: ${stars})`);
-        };
-        document.body.appendChild(star);
-        setTimeout(() => star.remove(), 8000);
-      }, 60000); // 1 star per minute
-    }
+/* Init */
+document.getElementById('yr').textContent = new Date().getFullYear();
+applyMilestones();
+updateStats();
+refreshAchievementsUI();
 
-    function copyToClipboard(text) {
-      navigator.clipboard.writeText(text);
-      alert("Copied: " + text);
-    }
-
-    updateUI();
-  </script>
+// If star already unlocked from previous session, resume its behavior
+if (state.starUnlocked){ startFlyingStar(); }
+// If star icon upgrade was bought earlier, reflect it
+if (state.starIconUpgraded){ document.getElementById('clickStar').textContent='★'; document.getElementById('clickStar2').textContent='★'; }
+</script>
 </body>
 </html>
