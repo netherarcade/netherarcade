@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Nether Arcade – Our Team</title>
+<title>Nether Arcade – About Us</title>
 <link rel="icon" href="logo.png">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
 <style>
+/* same CSS from index.html */
 :root {
   --bg: #131316;
   --surface: #1e1e22;
@@ -20,31 +21,24 @@ body { font-family: "Inter", system-ui, sans-serif; background: var(--bg); color
 .banner-img { width: 100%; height: 100%; object-fit: cover; }
 .banner-fade { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(19,19,22,0) 60%, var(--bg) 100%); }
 nav { position: sticky; top: 0; z-index: 10; background: var(--surface); display: flex; justify-content: center; gap: 1.5rem; padding: 0.75rem 1rem; border-bottom: 1px solid var(--card); }
-nav a { background: none; border: none; color: var(--subtle); font-size: 1rem; cursor: pointer; text-decoration: none; transition: color 0.2s ease; }
+nav a { color: var(--subtle); text-decoration: none; font-size: 1rem; transition: color 0.2s ease; }
 nav a.active, nav a:hover { color: var(--accent); }
 main { flex: 1; padding: 2.5rem 1.5rem; display: flex; flex-direction: column; align-items: center; text-align: center; }
 section { width: 100%; max-width: 960px; }
 h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 1rem; }
 p { color: var(--subtle); line-height: 1.6; margin-bottom: 1.5rem; }
-.divider { display: flex; justify-content: center; align-items: center; margin: 1.5rem 0; font-weight: 600; }
+.divider { margin: 1.5rem 0; }
 
-/* Team layout */
+/* Team Section */
 .team-wrap { display: flex; flex-direction: column; gap: 2rem; }
-.team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 1rem; }
+.team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 1rem; }
 .member { background: var(--card); border-radius:12px; padding:1rem; }
 .member .name { font-weight:700; margin-bottom:0.2rem; }
 .member .role { font-size:0.85rem; color: var(--accent); margin-bottom:0.5rem; }
-.fav-divider { height:3px; width:100%; border-radius:4px; margin-bottom:0.5rem; }
-.member-info { font-size:0.85rem; line-height:1.3; color: var(--text); margin-bottom:0.5rem; opacity:0; max-height:0; overflow:hidden; transition: opacity 0.3s ease, max-height 0.3s ease; }
-.member:hover .member-info { opacity:1; max-height:500px; }
-.member-reviews { display:grid; gap:0.4rem; margin-bottom:0.5rem; }
+.member-info { font-size:0.85rem; color: var(--text); margin-bottom:0.5rem; }
+.member-reviews { display:grid; gap:0.4rem; }
 .pill { background: var(--surface); padding:0.4rem 0.6rem; border-radius:8px; font-size:0.9rem; color: var(--text); }
 
-/* Server Reviews */
-.server-reviews { display:flex; flex-direction:column; gap:1.5rem; margin-top:2rem; text-align:left; }
-.server-email-box { background: var(--bg); border-radius:10px; padding:0.8rem; cursor:pointer; }
-.server-email-box ul { padding-left:1.2rem; margin-top:0.5rem; }
-.server-review-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(120px,1fr)); gap:0.5rem 1rem; }
 footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: var(--subtle); }
 </style>
 </head>
@@ -59,7 +53,7 @@ footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: var
 <!-- Navigation -->
 <nav>
   <a href="index.html">Home</a>
-  <a class="active" href="about.html">Team</a>
+  <a class="active" href="about.html">About Us</a>
   <a href="socials.html">Socials</a>
 </nav>
 
@@ -75,12 +69,7 @@ footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: var
         <div class="member">
           <div class="name">Ded Bob</div>
           <div class="role">Owner</div>
-          <div class="fav-divider" style="background:#4da3ff;"></div>
-          <div class="member-info">
-            <div>──────﹒˗ˏˋ ✩ ˎˊ˗﹒──────</div>
-            <p>Hi, I’m Ded Bob (Map1111)! I love working with commands and building with friends. Feel free to join the Discord if you have any questions!</p>
-            <div>──────﹒˗ˏˋ ✩ ˎˊ˗﹒──────</div>
-          </div>
+          <div class="member-info">Hi, I’m Ded Bob (Map1111)! I love working with commands and building with friends.</div>
           <div class="member-reviews">
             <div class="pill">[Empty Review 1]</div>
             <div class="pill">[Empty Review 2]</div>
@@ -91,12 +80,7 @@ footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: var
         <div class="member">
           <div class="name">Vanilama</div>
           <div class="role">Command Engineer</div>
-          <div class="fav-divider" style="background:#d64a4a;"></div>
-          <div class="member-info">
-            <div>──────﹒˗ˏˋ ✩ ˎˊ˗﹒──────</div>
-            <p>Hi, I’m Vanilama (Vanilama-Modded). I handle the command-only systems for Minigames.</p>
-            <div>──────﹒˗ˏˋ ✩ ˎˊ˗﹒──────</div>
-          </div>
+          <div class="member-info">Hi, I’m Vanilama (Vanilama-Modded). I handle the command-only systems for Minigames.</div>
           <div class="member-reviews">
             <div class="pill">[Empty Review 1]</div>
             <div class="pill">[Empty Review 2]</div>
@@ -107,12 +91,7 @@ footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: var
         <div class="member">
           <div class="name">Simsom</div>
           <div class="role">Builder</div>
-          <div class="fav-divider" style="background:#ff3c3c;"></div>
-          <div class="member-info">
-            <div>──────﹒˗ˏˋ ✩ ˎˊ˗﹒──────</div>
-            <p>Yo, I’m Simson! I like building, PvP, and minigames, I also made the map-art.</p>
-            <div>──────﹒˗ˏˋ ✩ ˎˊ˗﹒──────</div>
-          </div>
+          <div class="member-info">Yo, I’m Simson! I like building, PvP, and minigames, I also made the map-art.</div>
           <div class="member-reviews">
             <div class="pill">[Empty Review 1]</div>
             <div class="pill">[Empty Review 2]</div>
@@ -123,12 +102,7 @@ footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: var
         <div class="member">
           <div class="name">Ridderbeo</div>
           <div class="role">Builder</div>
-          <div class="fav-divider" style="background:#1ce69c;"></div>
-          <div class="member-info">
-            <div>──────﹒˗ˏˋ ✩ ˎˊ˗﹒──────</div>
-            <p>I handle aesthetics and lore-related content, I love interacting with people, so you will definitely meet me!</p>
-            <div>──────﹒˗ˏˋ ✩ ˎˊ˗﹒──────</div>
-          </div>
+          <div class="member-info">I handle aesthetics and lore-related content, I love interacting with people!</div>
           <div class="member-reviews">
             <div class="pill">[Empty Review 1]</div>
             <div class="pill">[Empty Review 2]</div>
@@ -136,39 +110,13 @@ footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: var
           </div>
         </div>
       </div>
-
-      <aside class="server-reviews">
-        <div class="server-email-box">
-          <p><i class="fa-solid fa-envelope"></i> Send your server reviews to: <a href="mailto:netherarcade@gmail.com" style="color:#ff3c3c; text-decoration:underline;">netherarcade@gmail.com</a> </p>
-          <ul>
-            <li>Keep it kind and respectful.</li>
-            <li>No spam or advertising.</li>
-            <li>Constructive criticism only.</li>
-            <li>Breaking the rules may result in a ban from the server.</li>
-          </ul>
-        </div>
-
-        <h3>Server Reviews</h3>
-        <div class="server-review-grid">
-          <div class="pill">This server is amazing!</div>
-          <div class="pill">[Empty Review 2]</div>
-          <div class="pill">[Empty Review 3]</div>
-          <div class="pill">[Empty Review 4]</div>
-          <div class="pill">[Empty Review 5]</div>
-          <div class="pill">[Empty Review 6]</div>
-          <div class="pill">[Empty Review 7]</div>
-          <div class="pill">[Empty Review 8]</div>
-          <div class="pill">[Empty Review 9]</div>
-          <div class="pill">[Empty Review 10]</div>
-        </div>
-        <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
-      </aside>
     </div>
+    <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
   </section>
 </main>
 
 <footer>
-  &copy; <span id="yr"></span> Nether Arcade &nbsp;•&nbsp; Not affiliated with Mojang
+  &copy; <span id="yr"></span> Nether Arcade • Not affiliated with Mojang
 </footer>
 
 <script>
