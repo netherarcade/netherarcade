@@ -3,112 +3,45 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nether Arcade - Home</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0d0d0d;
-      color: white;
-      text-align: center;
-    }
-
-    nav {
-      margin: 1rem 0;
-    }
-
-    nav a {
-      color: white;
-      margin: 0 1rem;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    nav a:hover {
-      text-decoration: underline;
-    }
-
-    .divider {
-      color: #39ff14; /* Fluorescent green */
-      margin: 1.5rem 0;
-      font-weight: bold;
-    }
-
-    .ip-box {
-      background: #1a1a1a;
-      border: 2px solid #39ff14;
-      border-radius: 10px;
-      padding: 1rem;
-      margin: 1rem auto;
-      width: fit-content;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-
-    .ip-box:hover {
-      background: #262626;
-    }
-
-    .ip-box svg {
-      width: 18px;
-      height: 18px;
-      fill: white;
-      vertical-align: middle;
-      margin-left: 5px;
-    }
-
-    .tooltip {
-      display: none;
-      font-size: 0.8rem;
-      color: #39ff14;
-      margin-top: 0.3rem;
-    }
-
-    .show {
-      display: block;
-    }
-  </style>
+  <title>Nether Arcade</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Navigation -->
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="about.html">About Us</a>
-    <a href="mini-game.html">Mini-Game</a>
-    <a href="socials.html">Socials</a>
-  </nav>
+  <!-- Banner -->
+  <header class="banner">
+    <img src="banner.png" alt="Nether Arcade Banner">
+    <nav class="navbar">
+      <ul>
+        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="about.html">Team</a></li>
+        <li><a href="mini-game.html">Mini-Game</a></li>
+        <li><a href="socials.html">Socials</a></li>
+      </ul>
+    </nav>
+  </header>
 
+  <!-- HOME -->
   <main>
-    <!-- HOME -->
     <section id="home" class="active">
-      <div class="divider">────────﹒˗ˏˋ ✩ ˎˊ˗﹒────────</div>
+      <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
       <h1>Nether Arcade</h1>
       <p>A Minecraft server crafting <strong>minigames powered by command blocks</strong>. No mods—just vanilla ingenuity.</p>
-
-      <!-- Server IP Box -->
       <div class="ip-box" onclick="copyIP()">
         <span>netherarcade.cold00.eu</span>
         <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
-        <div style="color: #aaa; font-size: 0.85rem; margin-top:0.5rem;">
-          Java Edition only • Version 1.21.8
-        </div>
         <span class="tooltip" id="tip">Copied!</span>
+        <span style="color: var(--subtle); font-size: 0.85rem; margin-top:0.5rem;">Java Edition only • Version 1.21.8</span>
       </div>
-
-      <div class="divider">────────﹒˗ˏˋ ✩ ˎˊ˗﹒────────</div>
+      <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
     </section>
   </main>
-
-  <footer style="margin-top:2rem; font-size:0.8rem; color:#666;">
-    © 2025 Nether Arcade • Not affiliated with Mojang
-  </footer>
 
   <script>
     function copyIP() {
       navigator.clipboard.writeText("netherarcade.cold00.eu");
-      let tooltip = document.getElementById("tip");
-      tooltip.classList.add("show");
-      setTimeout(() => tooltip.classList.remove("show"), 1500);
+      let tip = document.getElementById("tip");
+      tip.style.opacity = 1;
+      setTimeout(() => { tip.style.opacity = 0; }, 1500);
     }
   </script>
 </body>
