@@ -2,47 +2,80 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nether Arcade</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Nether Arcade – Home</title>
+  <meta name="description" content="Minecraft Minigame Server">
+  <meta name="keywords" content="Minecraft, Minigames, Fun">
+  <link rel="icon" href="logo.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <style>
+    :root {
+      --bg: #131316;
+      --surface: #1e1e22;
+      --card: #27272c;
+      --accent: #ff3c3c;
+      --accent2: #ff7a00;
+      --text: #f3f3f7;
+      --subtle: #9f9fa6;
+      --green: #00ff80;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: "Inter", system-ui, sans-serif; background: var(--bg); color: var(--text); display: flex; flex-direction: column; min-height: 100vh; }
+    .banner-wrap { position: relative; width: 100%; height: 260px; overflow: hidden; }
+    .banner-img { width: 100%; height: 100%; object-fit: cover; }
+    .banner-fade { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(19,19,22,0) 60%, var(--bg) 100%); }
+    nav { position: sticky; top: 0; z-index: 10; background: var(--surface); display: flex; justify-content: center; gap: 1.5rem; padding: 0.75rem 1rem; border-bottom: 1px solid var(--card); }
+    nav a { color: var(--subtle); font-size: 1rem; text-decoration: none; transition: color 0.2s ease; }
+    nav a.active, nav a:hover { color: var(--accent); }
+    main { flex: 1; padding: 2.5rem 1.5rem; display: flex; flex-direction: column; align-items: center; text-align: center; }
+    section { width: 100%; max-width: 760px; }
+    h1 { font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem; }
+    p { color: var(--subtle); line-height: 1.6; margin-bottom: 1.5rem; }
+    .divider { display: flex; justify-content: center; align-items: center; margin: 1.5rem 0; color: var(--green); font-weight: 600; text-shadow: 0 0 8px var(--green); }
+    .ip-box { background: var(--card); border-radius: 12px; padding: 1.5rem; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease; }
+    .ip-box:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,255,128,0.3); }
+    .ip-box span { font-size: 1.2rem; font-weight: 600; }
+    .tooltip { opacity: 0; transition: opacity 0.2s ease; font-size: 0.85rem; color: var(--accent); }
+  </style>
 </head>
 <body>
-  <!-- Banner -->
-  <header class="banner">
-    <img src="banner.png" alt="Nether Arcade Banner">
-    <nav class="navbar">
-      <ul>
-        <li><a href="index.html" class="active">Home</a></li>
-        <li><a href="about.html">Team</a></li>
-        <li><a href="mini-game.html">Mini-Game</a></li>
-        <li><a href="socials.html">Socials</a></li>
-      </ul>
-    </nav>
-  </header>
 
-  <!-- HOME -->
-  <main>
-    <section id="home" class="active">
-      <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
-      <h1>Nether Arcade</h1>
-      <p>A Minecraft server crafting <strong>minigames powered by command blocks</strong>. No mods—just vanilla ingenuity.</p>
-      <div class="ip-box" onclick="copyIP()">
-        <span>netherarcade.cold00.eu</span>
-        <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
-        <span class="tooltip" id="tip">Copied!</span>
-        <span style="color: var(--subtle); font-size: 0.85rem; margin-top:0.5rem;">Java Edition only • Version 1.21.8</span>
-      </div>
-      <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
-    </section>
-  </main>
+<!-- Banner -->
+<div class="banner-wrap">
+  <img class="banner-img" src="banner.jpg" alt="Nether Arcade Banner" loading="lazy">
+  <div class="banner-fade"></div>
+</div>
 
-  <script>
-    function copyIP() {
-      navigator.clipboard.writeText("netherarcade.cold00.eu");
-      let tip = document.getElementById("tip");
-      tip.style.opacity = 1;
-      setTimeout(() => { tip.style.opacity = 0; }, 1500);
-    }
-  </script>
+<!-- Navigation -->
+<nav>
+  <a class="active" href="index.html">Home</a>
+  <a href="about.html">Team</a>
+  <a href="mini-game.html">Mini-Game</a>
+  <a href="socials.html">Socials</a>
+</nav>
+
+<main>
+  <section id="home">
+    <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
+    <h1>Nether Arcade</h1>
+    <p>A Minecraft server crafting <strong>minigames powered by command blocks</strong>. No mods—just vanilla ingenuity.</p>
+
+    <div class="ip-box" onclick="copyIP()">
+      <span>netherarcade.cold00.eu</span>
+      <div style="font-size:0.85rem; color:var(--subtle);">Java Edition only • Version 1.21.8</div>
+      <span class="tooltip" id="tip">Copied!</span>
+    </div>
+
+    <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
+  </section>
+</main>
+
+<script>
+  function copyIP() {
+    navigator.clipboard.writeText("netherarcade.cold00.eu");
+    let tip = document.getElementById("tip");
+    tip.style.opacity = 1;
+    setTimeout(() => { tip.style.opacity = 0; }, 1500);
+  }
+</script>
 </body>
 </html>
