@@ -34,8 +34,29 @@ p { color: var(--subtle); line-height: 1.6; margin-bottom: 1.5rem; }
 .divider { display: flex; justify-content: center; align-items: center; gap: 0.25rem; margin: 1.5rem 0; font-weight: 600; }
 
 /* IP/Version & Counter */
-.ip-version-box { display:flex; flex-direction:column; align-items:center; gap:0.3rem; padding:1rem 1.5rem; background:var(--card); border-radius:10px; flex:1; }
-.counter-box { width: 60px; min-width:60px; height: 60px; background: var(--surface); color: var(--text); display: flex; justify-content: center; align-items: center; border-radius: 10px; font-weight: 700; font-size:1.3rem; }
+.ip-version-box {
+  display:flex; 
+  flex-direction:column; 
+  align-items:center; 
+  gap:0.3rem; 
+  padding:0.7rem 1rem; /* 🔹 smaller cube size */
+  background:var(--card); 
+  border-radius:10px; 
+  flex:1; 
+}
+.counter-box {
+  width: 50px; /* 🔹 smaller cube size */
+  min-width:50px;
+  height: 50px;
+  background: var(--surface);
+  color: var(--text);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size:1.1rem;
+}
 
 /* Reset button */
 #resetBtn { display:none; background:#000; color:#fff; border:none; padding:0.5rem 1rem; border-radius:8px; cursor:pointer; margin-top:0.8rem; transition: transform 0.2s; }
@@ -111,7 +132,7 @@ footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: var
     <!-- Star -->
     <div id="bottom-divider" class="divider" style="margin-top:1.5rem;">
       <span style="color:#1ce69c;">──────﹒˗ˏˋ</span>
-      <span id="star" class="star-button">✩</span>
+      <span id="star" class="star-button" style="color:#ff3c3c; cursor:pointer;">✩</span> <!-- 🔹 red star -->
       <span style="color:#1ce69c;">ˎˊ˗﹒──────</span>
     </div>
   </section>
