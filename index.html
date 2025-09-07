@@ -30,12 +30,22 @@
       text-decoration: none;
     }
 
+    nav a:hover {
+      color: #f39c12;
+    }
+
     main {
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 1rem;
       margin-top: 1.5rem;
+    }
+
+    .separator {
+      margin: 1rem 0;
+      font-size: 1.2rem;
+      color: #f39c12;
     }
 
     .box {
@@ -47,7 +57,17 @@
       min-width: 260px;
     }
 
+    .row {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      width: 100%;
+      max-width: 500px;
+    }
+
     .box.small {
+      flex: 1;
       min-width: 160px;
     }
 
@@ -71,7 +91,6 @@
     }
 
     #stats {
-      margin-top: 0.5rem;
       font-size: 0.9rem;
       color: #aaa;
       font-weight: 600;
@@ -86,12 +105,18 @@
 
   <!-- Nav -->
   <nav>
-    <a href="#">Home</a>
-    <a href="#">Team</a>
-    <a href="#">Socials</a>
+    <a href="index.html">Home</a>
+    <a href="team.html">Team</a>
+    <a href="socials.html">Socials</a>
   </nav>
 
   <main>
+    <!-- Separator -->
+    <div class="separator">────────﹒˗ˏˋ ✩ ˎˊ˗﹒────────</div>
+
+    <h2>Nether Arcade</h2>
+    <p>A Minecraft server crafting <b>minigames powered by command blocks</b>. No mods—just vanilla ingenuity.</p>
+
     <!-- Server Info -->
     <div class="box server">
       <div class="serverline">
@@ -101,25 +126,28 @@
       <div style="color:#aaa; font-size:0.9rem;">Java Edition only • Version 1.21.8</div>
     </div>
 
-    <!-- Counter -->
-    <div class="box small">
-      <div class="box label">Count</div>
-      <div class="counter" id="counter">0</div>
-    </div>
-
-    <!-- Achievements -->
-    <div class="box small">
-      <button id="achBtn" title="View Achievements" style="background:none;border:none;color:white;font-size:1.2rem;cursor:pointer;">
-        <i class="fa-solid fa-trophy"></i>
-        <span id="achCount" style="margin-left:.35rem">0</span>
-      </button>
-      <div class="box label">Achievements</div>
+    <!-- Count + Achievements Row -->
+    <div class="row">
+      <div class="box small">
+        <div class="label">Count</div>
+        <div class="counter" id="counter">0</div>
+      </div>
+      <div class="box small">
+        <button id="achBtn" title="View Achievements" style="background:none;border:none;color:white;font-size:1.2rem;cursor:pointer;">
+          <i class="fa-solid fa-trophy"></i>
+          <span id="achCount" style="margin-left:.35rem">0</span>
+        </button>
+        <div class="label">Achievements</div>
+      </div>
     </div>
 
     <!-- Stats -->
-    <div id="stats" class="box label">
+    <div class="box" id="stats">
       Click Value: 0.5 | Idle CPM: 0 | 30 sec
     </div>
+
+    <!-- Separator -->
+    <div class="separator">────────﹒˗ˏˋ ✩ ˎˊ˗﹒────────</div>
   </main>
 
   <footer style="margin-top:2rem; font-size:0.8rem; color:#777;">
