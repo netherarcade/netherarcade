@@ -172,14 +172,14 @@ document.getElementById("star").addEventListener("click", () => {
 // Reset button
 document.getElementById("resetBtn").addEventListener("click", () => {
   let milestone = milestones.find(m => !m.used && counter >= m.limit);
-  if(!milestone && counter >= 25000) {
-    counter = 0;
-    clickValue += 2;
-    resetAvailable = false;
-    document.getElementById("resetBtn").style.display="none";
-    updateUI();
-    return;
-  }
+ if(!milestone && counter >= 25000) {
+  counter = 0;
+  idleCPM += 5;   // ✅ only Idle CPM increases
+  resetAvailable = false;
+  document.getElementById("resetBtn").style.display="none";
+  updateUI();
+  return;
+}
   if(milestone && !milestone.used) {
     counter = 0;
     milestone.used = true;
