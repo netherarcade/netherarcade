@@ -1,1 +1,115 @@
-mini game
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Nether Arcade – Mini-Game</title>
+<link rel="icon" href="logo.png">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+<style>
+:root {
+  --bg: #131316;
+  --surface: #1e1e22;
+  --card: #27272c;
+  --accent: #ff3c3c;
+  --text: #f3f3f7;
+  --subtle: #9f9fa6;
+  --star: #00ff99;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: "Inter", system-ui, sans-serif; background: var(--bg); color: var(--text); display: flex; flex-direction: column; min-height: 100vh; }
+.banner-wrap { position: relative; width: 100%; height: 260px; overflow: hidden; }
+.banner-img { width: 100%; height: 100%; object-fit: cover; }
+.banner-fade { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(19,19,22,0) 60%, var(--bg) 100%); }
+nav { position: sticky; top: 0; z-index: 10; background: var(--surface); display: flex; justify-content: center; gap: 1.5rem; padding: 0.75rem 1rem; border-bottom: 1px solid var(--card); }
+nav a { color: var(--subtle); font-size: 1rem; text-decoration: none; transition: color 0.2s ease; }
+nav a.active, nav a:hover { color: var(--accent); }
+main { flex: 1; padding: 2rem 1rem; display: flex; flex-direction: column; align-items: center; text-align: center; }
+section { width: 100%; max-width: 700px; }
+h1 { font-size: 2rem; font-weight: 700; margin-bottom: 1rem; }
+.divider { color: var(--star); display: flex; justify-content: center; margin: 1.5rem 0; font-weight: 600; }
+
+/* Mini-Game */
+#game-box { background: var(--card); padding: 2rem; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.4); }
+#star-btn { font-size: 3rem; cursor: pointer; color: var(--star); transition: transform 0.15s ease; }
+#star-btn:hover { transform: scale(1.2); }
+#score { margin-top: 1rem; font-size: 1.2rem; }
+.progress-wrap { margin-top: 1.5rem; width: 100%; background: var(--surface); border-radius: 8px; overflow: hidden; }
+.progress-bar { height: 18px; background: var(--accent); width: 0%; transition: width 0.3s ease; }
+.achievements { margin-top: 1.5rem; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.95rem; text-align: left; }
+
+/* Footer */
+footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: var(--subtle); }
+</style>
+</head>
+<body>
+
+<!-- Banner -->
+<div class="banner-wrap">
+  <img class="banner-img" src="banner.jpg" alt="Nether Arcade Banner" loading="lazy">
+  <div class="banner-fade"></div>
+</div>
+
+<!-- Navigation -->
+<nav>
+  <a href="index.html">Home</a>
+  <a href="about.html">Team</a>
+  <a href="socials.html">Socials</a>
+  <a class="active" href="mini-game.html">Mini-Game</a>
+</nav>
+
+<main>
+  <section id="minigame">
+    <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
+    <h1><i class="fa-solid fa-gamepad"></i> Click the Star!</h1>
+    <p>Earn points by clicking the ✩ and unlock achievements as you progress!</p>
+
+    <div id="game-box">
+      <div id="star-btn">✩</div>
+      <div id="score">Score: <span id="points">0</span></div>
+      <div class="progress-wrap">
+        <div class="progress-bar" id="progress"></div>
+      </div>
+      <div class="achievements" id="achievements"></div>
+    </div>
+
+    <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
+  </section>
+</main>
+
+<footer>
+  &copy; <span id="yr"></span> Nether Arcade &nbsp;•&nbsp; Not affiliated with Mojang
+</footer>
+
+<script>
+let points = 0;
+const starBtn = document.getElementById("star-btn");
+const pointsDisplay = document.getElementById("points");
+const progressBar = document.getElementById("progress");
+const achievementsBox = document.getElementById("achievements");
+
+const milestones = [10, 25, 50, 100, 250, 500];
+const unlocked = new Set();
+
+starBtn.addEventListener("click", () => {
+  points++;
+  pointsDisplay.textContent = points;
+
+  // Update progress
+  let progress = (points % 100) / 100 * 100;
+  progressBar.style.width = progress + "%";
+
+  // Unlock achievements
+  milestones.forEach(m => {
+    if (points >= m && !unlocked.has(m)) {
+      unlocked.add(m);
+      const div = document.createElement("div");
+      div.textContent = `★ Achievement unlocked: ${m} points!`;
+      achievementsBox.appendChild(div);
+    }
+  });
+});
+
+document.getElementById("yr").textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
