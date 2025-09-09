@@ -244,7 +244,13 @@ let upgrades = [
       score = 0;
       clickValue = 1;
       cps = 0;
-      upgrades.forEach(u => { u.owned = 0; u.cost = Math.max(10, Math.floor(u.cost / Math.pow(1.5, u.owned))); });
+      upgrades = [
+  { id: "click1", name: "+0.5 / click", cost: 10,   value: 0.5, type: "click", owned: 0, desc: "Practice makes perfect." },
+  { id: "click2", name: "+1 / click",    cost: 75,   value: 1,   type: "click", owned: 0, desc: "Heavier fingertips." },
+  { id: "cps1",   name: "+1 / sec",      cost: 100,  value: 1,   type: "cps",   owned: 0, desc: "Little helpers." },
+  { id: "cps5",   name: "+5 / sec",      cost: 600,  value: 5,   type: "cps",   owned: 0, desc: "Bigger crew." },
+  { id: "burst",  name: "Burst x2",      cost: 2000, value: 2,   type: "burst", owned: 0, desc: "Permanently doubles click value (stackable)." }
+];
       saveGame();
       updateDisplay();
     }
