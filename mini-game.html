@@ -220,7 +220,7 @@ let upgrades = [
   }
 
   function updateDisplay() {
-    document.getElementById("score").textContent = score.toFixed(3);
+    document.getElementById("score").textContent = score.toFixed(1);
     document.getElementById("clickValue").textContent = clickValue;
     document.getElementById("idleValue").textContent = cps * prestigeMult;
     document.getElementById("prestigeMult").textContent = prestigeMult + "x";
