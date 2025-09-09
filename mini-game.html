@@ -121,7 +121,6 @@
       <p>• Achievements are trophies (no stat boost).</p>
       <p>• Upgrades scale in price as you buy more.</p>
       <p>• Your progress auto-saves often (you can also press Save).</p>
-      <p>• Prestige resets progress but doubles your idle/sec income permanently.</p>
     </div>
   </div>
 
@@ -152,14 +151,17 @@ let upgrades = [
 ];
 
 
-  let achievements = [
-    { id: "first", name: "First Click", condition: () => score >= 1 },
-    { id: "ten", name: "Ten Up", condition: () => score >= 10 },
-    { id: "hundred", name: "Triple Digits", condition: () => score >= 100 },
-    { id: "thousand", name: "1,000!", condition: () => score >= 1000 },
-    { id: "auto", name: "Automation", condition: () => cps >= 10 },
-    { id: "banked", name: "5,000 Banked", condition: () => score >= 5000 }
-  ];
+ let achievements = [
+  { id: "first", name: "First Click", condition: () => score >= 1 },
+  { id: "ten", name: "Ten Up", condition: () => score >= 10 },
+  { id: "hundred", name: "Triple Digits", condition: () => score >= 100 },
+  { id: "thousand", name: "1,000!", condition: () => score >= 1000 },
+  { id: "auto", name: "Automation", condition: () => cps >= 10 },
+  { id: "banked", name: "5,000 Banked", condition: () => score >= 5000 },
+  { id: "ones", name: "A Lot of Ones", condition: () => score >= 111111 },
+  { id: "money", name: "Money Money", condition: () => score >= 500000 }
+];
+
 
   // Load save
   if (localStorage.getItem("starSave")) {
