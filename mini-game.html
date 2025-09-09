@@ -3,60 +3,82 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fun Clicker Game</title>
+  <title>Nether Clicker</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       text-align: center;
-      background: linear-gradient(120deg, #89f7fe, #66a6ff);
-      color: #333;
+      background: #0d0d0d;
+      color: #e0e0e0;
+      margin: 0;
+      padding: 0;
     }
     h1 {
-      margin-top: 20px;
+      margin: 20px 0;
+      color: #fff;
+      text-shadow: 0 0 8px #00ff99;
+    }
+    #scoreBox {
+      background: #1a1a1a;
+      display: inline-block;
+      padding: 15px 30px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      font-size: 18px;
+      box-shadow: 0 0 12px rgba(0, 255, 153, 0.4);
     }
     #clickBtn {
-      width: 150px;
-      height: 150px;
+      width: 160px;
+      height: 160px;
       border-radius: 50%;
-      border: none;
-      background: gold;
-      font-size: 24px;
+      border: 2px solid #00ff99;
+      background: #111;
+      font-size: 22px;
+      color: #00ff99;
       cursor: pointer;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-      transition: transform 0.1s;
+      box-shadow: 0 0 15px #00ff99;
+      transition: transform 0.1s, box-shadow 0.3s;
     }
     #clickBtn:active {
       transform: scale(0.9);
+      box-shadow: 0 0 25px #00ff99;
     }
     .shop {
-      margin-top: 30px;
+      margin-top: 40px;
+    }
+    .shop h2 {
+      color: #fff;
+      text-shadow: 0 0 6px #00ff99;
     }
     .upgrade {
-      margin: 10px;
-      padding: 10px;
-      background: white;
+      margin: 12px;
+      padding: 12px 20px;
+      background: #1a1a1a;
       border-radius: 10px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      box-shadow: 0 0 10px rgba(0, 255, 153, 0.2);
       cursor: pointer;
       display: inline-block;
+      transition: background 0.3s, box-shadow 0.3s;
     }
     .upgrade:hover {
-      background: #f1f1f1;
+      background: #222;
+      box-shadow: 0 0 20px rgba(0, 255, 153, 0.5);
     }
   </style>
 </head>
 <body>
-  <h1>✨ Fun Clicker Game ✨</h1>
-  <p>Clicks: <span id="score">0</span></p>
+  <h1>🔥 Nether Clicker 🔥</h1>
+  <div id="scoreBox">Clicks: <span id="score">0</span></div>
+  <br>
   <button id="clickBtn">Click!</button>
 
   <div class="shop">
     <h2>Shop</h2>
     <div class="upgrade" onclick="buyUpgrade('cursor')">
-      🖱️ Cursor (+1 per second) – Cost: <span id="cursorCost">50</span>
+      🖱️ Cursor (+1/sec) – Cost: <span id="cursorCost">50</span>
     </div>
     <div class="upgrade" onclick="buyUpgrade('factory')">
-      🏭 Factory (+10 per second) – Cost: <span id="factoryCost">500</span>
+      🏭 Factory (+10/sec) – Cost: <span id="factoryCost">500</span>
     </div>
   </div>
 
