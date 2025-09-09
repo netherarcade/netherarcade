@@ -3,126 +3,194 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nether Clicker</title>
+  <title>Nether Clicker Deluxe</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      text-align: center;
       background: #0d0d0d;
       color: #e0e0e0;
       margin: 0;
-      padding: 0;
+      padding: 20px;
+      display: flex;
+      gap: 20px;
     }
-    h1 {
-      margin: 20px 0;
-      color: #fff;
-      text-shadow: 0 0 8px #00ff99;
-    }
-    #scoreBox {
+    .panel {
       background: #1a1a1a;
-      display: inline-block;
-      padding: 15px 30px;
+      padding: 20px;
       border-radius: 12px;
-      margin-bottom: 20px;
-      font-size: 18px;
-      box-shadow: 0 0 12px rgba(0, 255, 153, 0.4);
+      flex: 1;
+      box-shadow: 0 0 12px rgba(0, 255, 153, 0.2);
     }
-    #clickBtn {
-      width: 160px;
-      height: 160px;
-      border-radius: 50%;
-      border: 2px solid #00ff99;
-      background: #111;
-      font-size: 22px;
-      color: #00ff99;
-      cursor: pointer;
-      box-shadow: 0 0 15px #00ff99;
-      transition: transform 0.1s, box-shadow 0.3s;
-    }
-    #clickBtn:active {
-      transform: scale(0.9);
-      box-shadow: 0 0 25px #00ff99;
-    }
-    .shop {
-      margin-top: 40px;
-    }
-    .shop h2 {
+    h2 {
       color: #fff;
       text-shadow: 0 0 6px #00ff99;
     }
-    .upgrade {
-      margin: 12px;
-      padding: 12px 20px;
-      background: #1a1a1a;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0, 255, 153, 0.2);
+    #bigClick {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 2px solid #00ff99;
+      background: #111;
+      color: #00ff99;
+      font-size: 20px;
       cursor: pointer;
-      display: inline-block;
-      transition: background 0.3s, box-shadow 0.3s;
+      margin: 20px 0;
+      box-shadow: 0 0 15px #00ff99;
+      transition: transform 0.1s, box-shadow 0.3s;
     }
-    .upgrade:hover {
+    #bigClick:active {
+      transform: scale(0.9);
+      box-shadow: 0 0 25px #00ff99;
+    }
+    .upgrade, .achievement, .btn {
+      background: #111;
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .upgrade:hover, .btn:hover {
       background: #222;
-      box-shadow: 0 0 20px rgba(0, 255, 153, 0.5);
+    }
+    .btn {
+      text-align: center;
+      color: #ff5555;
+      font-weight: bold;
+      border: 2px solid #ff5555;
+    }
+    .achievement.locked {
+      opacity: 0.4;
+    }
+    .achievement.unlocked {
+      color: #00ff99;
+      text-shadow: 0 0 6px #00ff99;
     }
   </style>
 </head>
 <body>
-  <h1>🔥 Nether Clicker 🔥</h1>
-  <div id="scoreBox">Clicks: <span id="score">0</span></div>
-  <br>
-  <button id="clickBtn">Click!</button>
+  <!-- Main Panel -->
+  <div class="panel" style="flex:2">
+    <h2>Click the Flame</h2>
+    <p>🔥 Count: <span id="score">0</span></p>
+    <p>Click Value: <span id="clickValue">1</span> | Idle: <span id="idleValue">0</span>/sec</p>
+    <button id="bigClick">🔥</button>
+    <div class="btn" onclick="prestige()" id="resetBtn" style="display:none">⚡ Prestige Reset</div>
+  </div>
 
-  <div class="shop">
-    <h2>Shop</h2>
-    <div class="upgrade" onclick="buyUpgrade('cursor')">
-      🖱️ Cursor (+1/sec) – Cost: <span id="cursorCost">50</span>
-    </div>
-    <div class="upgrade" onclick="buyUpgrade('factory')">
-      🏭 Factory (+10/sec) – Cost: <span id="factoryCost">500</span>
-    </div>
+  <!-- Upgrades Panel -->
+  <div class="panel">
+    <h2>Upgrades</h2>
+    <div id="upgrades"></div>
+  </div>
+
+  <!-- Achievements Panel -->
+  <div class="panel">
+    <h2>Achievements</h2>
+    <div id="achievements"></div>
   </div>
 
   <script>
     let score = 0;
-    let cps = 0; // clicks per second
-    let upgrades = {
-      cursor: { cost: 50, value: 1, owned: 0 },
-      factory: { cost: 500, value: 10, owned: 0 }
-    };
+    let clickValue = 1;
+    let cps = 0;
+    let multiplier = 1;
 
-    // Load saved data
-    if (localStorage.getItem("clickerSave")) {
-      let save = JSON.parse(localStorage.getItem("clickerSave"));
+    let upgrades = [
+      { id: "tap", name: "+1 / click", cost: 20, value: 1, type: "click", owned: 0, desc: "Stronger fingers." },
+      { id: "helper", name: "+1 / sec", cost: 100, value: 1, type: "cps", owned: 0, desc: "Little helpers." },
+      { id: "machine", name: "+5 / sec", cost: 500, value: 5, type: "cps", owned: 0, desc: "Big machine." },
+      { id: "powerTap", name: "+5 / click", cost: 1000, value: 5, type: "click", owned: 0, desc: "Mighty strike." }
+    ];
+
+    let achievements = [
+      { id: "first", name: "First Click!", condition: () => score >= 1 },
+      { id: "hundred", name: "100 Points!", condition: () => score >= 100 },
+      { id: "thousand", name: "1,000 Points!", condition: () => score >= 1000 },
+      { id: "bigClick", name: "Power Clicker", condition: () => clickValue >= 10 },
+      { id: "idle", name: "Idle Master", condition: () => cps >= 20 }
+    ];
+
+    // Load save
+    if (localStorage.getItem("deluxeSave")) {
+      let save = JSON.parse(localStorage.getItem("deluxeSave"));
       score = save.score;
+      clickValue = save.clickValue;
       cps = save.cps;
+      multiplier = save.multiplier;
       upgrades = save.upgrades;
-      updateDisplay();
     }
 
-    document.getElementById("clickBtn").addEventListener("click", () => {
-      score++;
+    // Render upgrades
+    function renderUpgrades() {
+      let container = document.getElementById("upgrades");
+      container.innerHTML = "";
+      upgrades.forEach(u => {
+        let div = document.createElement("div");
+        div.className = "upgrade";
+        div.innerHTML = `<span>${u.name} (Owned: ${u.owned})<br><small>${u.desc}</small></span><span>${u.cost}</span>`;
+        div.onclick = () => buyUpgrade(u.id);
+        container.appendChild(div);
+      });
+    }
+
+    // Render achievements
+    function renderAchievements() {
+      let container = document.getElementById("achievements");
+      container.innerHTML = "";
+      achievements.forEach(a => {
+        let unlocked = a.condition();
+        let div = document.createElement("div");
+        div.className = "achievement " + (unlocked ? "unlocked" : "locked");
+        div.textContent = a.name;
+        container.appendChild(div);
+      });
+    }
+
+    document.getElementById("bigClick").addEventListener("click", () => {
+      score += clickValue * multiplier;
       updateDisplay();
       saveGame();
     });
 
-    function buyUpgrade(type) {
-      if (score >= upgrades[type].cost) {
-        score -= upgrades[type].cost;
-        upgrades[type].owned++;
-        cps += upgrades[type].value;
-        upgrades[type].cost = Math.floor(upgrades[type].cost * 1.5);
+    function buyUpgrade(id) {
+      let u = upgrades.find(x => x.id === id);
+      if (score >= u.cost) {
+        score -= u.cost;
+        u.owned++;
+        if (u.type === "click") clickValue += u.value * multiplier;
+        if (u.type === "cps") cps += u.value * multiplier;
+        u.cost = Math.floor(u.cost * 1.5);
+        updateDisplay();
+        saveGame();
+      }
+    }
+
+    function prestige() {
+      if (score >= 100000) {
+        multiplier += 0.5; // boost per prestige
+        score = 0;
+        clickValue = 1;
+        cps = 0;
+        upgrades.forEach(u => { u.owned = 0; u.cost = Math.floor(u.cost/ (u.id === "tap" ? 1 : 1)); });
+        alert("Prestige! Multiplier is now x" + multiplier);
         updateDisplay();
         saveGame();
       }
     }
 
     function updateDisplay() {
-      document.getElementById("score").innerText = score;
-      document.getElementById("cursorCost").innerText = upgrades.cursor.cost;
-      document.getElementById("factoryCost").innerText = upgrades.factory.cost;
+      document.getElementById("score").textContent = score;
+      document.getElementById("clickValue").textContent = clickValue;
+      document.getElementById("idleValue").textContent = cps;
+      document.getElementById("resetBtn").style.display = score >= 100000 ? "block" : "none";
+      renderUpgrades();
+      renderAchievements();
     }
 
-    // Passive income loop
     setInterval(() => {
       score += cps;
       updateDisplay();
@@ -130,12 +198,12 @@
     }, 1000);
 
     function saveGame() {
-      localStorage.setItem("clickerSave", JSON.stringify({
-        score: score,
-        cps: cps,
-        upgrades: upgrades
+      localStorage.setItem("deluxeSave", JSON.stringify({
+        score, clickValue, cps, multiplier, upgrades
       }));
     }
+
+    updateDisplay();
   </script>
 </body>
 </html>
