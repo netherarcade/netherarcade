@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nether Clicker Deluxe</title>
+  <title>Click the Star</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -19,30 +19,51 @@
       padding: 20px;
       border-radius: 12px;
       flex: 1;
-      box-shadow: 0 0 12px rgba(0, 255, 153, 0.2);
+      box-shadow: 0 0 12px rgba(0,0,0,0.5);
     }
     h2 {
       color: #fff;
       text-shadow: 0 0 6px #00ff99;
     }
-    #bigClick {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      border: 2px solid #00ff99;
-      background: #111;
-      color: #00ff99;
-      font-size: 20px;
+    .center {
+      flex: 2;
+      text-align: center;
+    }
+    #starBtn {
+      font-size: 60px;
+      color: #ff3333;
       cursor: pointer;
+      transition: transform 0.1s;
       margin: 20px 0;
-      box-shadow: 0 0 15px #00ff99;
-      transition: transform 0.1s, box-shadow 0.3s;
     }
-    #bigClick:active {
+    #starBtn:active {
       transform: scale(0.9);
-      box-shadow: 0 0 25px #00ff99;
     }
-    .upgrade, .achievement, .btn {
+    .stats {
+      margin: 10px 0;
+    }
+    .btn {
+      background: #111;
+      margin: 5px;
+      padding: 8px 15px;
+      border-radius: 6px;
+      cursor: pointer;
+      border: none;
+      font-weight: bold;
+    }
+    .saveBtn {
+      background: #222;
+      color: #00ff99;
+    }
+    .resetBtn {
+      background: #222;
+      color: #ff5555;
+    }
+    .prestigeBtn {
+      background: #222;
+      color: #ffcc00;
+    }
+    .upgrade {
       background: #111;
       margin: 10px 0;
       padding: 10px;
@@ -50,35 +71,58 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+    }
+    .upgrade button {
+      background: #ff3333;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 5px;
       cursor: pointer;
-      transition: background 0.3s;
     }
-    .upgrade:hover, .btn:hover {
-      background: #222;
+    .upgrade button:hover {
+      background: #ff5555;
     }
-    .btn {
-      text-align: center;
-      color: #ff5555;
-      font-weight: bold;
-      border: 2px solid #ff5555;
+    .achievement {
+      background: #111;
+      margin: 6px 0;
+      padding: 8px;
+      border-radius: 6px;
     }
-    .achievement.locked {
+    .locked {
       opacity: 0.4;
     }
-    .achievement.unlocked {
+    .unlocked {
       color: #00ff99;
       text-shadow: 0 0 6px #00ff99;
+    }
+    .notes {
+      margin-top: 20px;
+      font-size: 12px;
+      color: #aaa;
+      text-align: left;
     }
   </style>
 </head>
 <body>
-  <!-- Main Panel -->
-  <div class="panel" style="flex:2">
-    <h2>Click the Flame</h2>
-    <p>🔥 Count: <span id="score">0</span></p>
-    <p>Click Value: <span id="clickValue">1</span> | Idle: <span id="idleValue">0</span>/sec</p>
-    <button id="bigClick">🔥</button>
-    <div class="btn" onclick="prestige()" id="resetBtn" style="display:none">⚡ Prestige Reset</div>
+
+  <!-- Center Panel -->
+  <div class="panel center">
+    <h2>Click the Star</h2>
+    <div class="stats">
+      <p><b>Count:</b> <span id="score">0</span></p>
+      <p>Click Value: <span id="clickValue">1</span> | Idle: <span id="idleValue">0</span>/sec | Prestige Multiplier: <span id="prestigeMult">1x</span></p>
+    </div>
+    <div id="starBtn">★</div>
+    <button class="btn saveBtn" onclick="saveGame()">💾 Save</button>
+    <button class="btn resetBtn" onclick="hardReset()">🗑 Hard Reset</button>
+    <button class="btn prestigeBtn" id="prestigeBtn" style="display:none;" onclick="prestige()">🌟 Prestige</button>
+    <div class="notes">
+      <p>• Achievements are trophies (no stat boost).</p>
+      <p>• Upgrades scale in price as you buy more.</p>
+      <p>• Your progress auto-saves often (you can also press Save).</p>
+      <p>• Prestige resets progress but doubles your idle/sec income permanently.</p>
+    </div>
   </div>
 
   <!-- Upgrades Panel -->
@@ -93,117 +137,132 @@
     <div id="achievements"></div>
   </div>
 
-  <script>
-    let score = 0;
-    let clickValue = 1;
-    let cps = 0;
-    let multiplier = 1;
+<script>
+  let score = 0;
+  let clickValue = 1;
+  let cps = 0;
+  let prestigeMult = 1;
 
-    let upgrades = [
-      { id: "tap", name: "+1 / click", cost: 20, value: 1, type: "click", owned: 0, desc: "Stronger fingers." },
-      { id: "helper", name: "+1 / sec", cost: 100, value: 1, type: "cps", owned: 0, desc: "Little helpers." },
-      { id: "machine", name: "+5 / sec", cost: 500, value: 5, type: "cps", owned: 0, desc: "Big machine." },
-      { id: "powerTap", name: "+5 / click", cost: 1000, value: 5, type: "click", owned: 0, desc: "Mighty strike." }
-    ];
+  let upgrades = [
+    { id: "click1", name: "+0.5 / click", cost: 10, value: 0.5, type: "click", owned: 0, desc: "Practice makes perfect." },
+    { id: "click2", name: "+1 / click", cost: 50, value: 1, type: "click", owned: 0, desc: "Heavier fingertips." },
+    { id: "cps1", name: "+1 / sec", cost: 100, value: 1, type: "cps", owned: 0, desc: "Little helpers." },
+    { id: "cps5", name: "+5 / sec", cost: 500, value: 5, type: "cps", owned: 0, desc: "Bigger crew." },
+    { id: "burst", name: "Burst x2", cost: 1000, value: 2, type: "burst", owned: 0, desc: "10s double click value." }
+  ];
 
-    let achievements = [
-      { id: "first", name: "First Click!", condition: () => score >= 1 },
-      { id: "hundred", name: "100 Points!", condition: () => score >= 100 },
-      { id: "thousand", name: "1,000 Points!", condition: () => score >= 1000 },
-      { id: "bigClick", name: "Power Clicker", condition: () => clickValue >= 10 },
-      { id: "idle", name: "Idle Master", condition: () => cps >= 20 }
-    ];
+  let achievements = [
+    { id: "first", name: "First Click", condition: () => score >= 1 },
+    { id: "ten", name: "Ten Up", condition: () => score >= 10 },
+    { id: "hundred", name: "Triple Digits", condition: () => score >= 100 },
+    { id: "thousand", name: "1,000!", condition: () => score >= 1000 },
+    { id: "auto", name: "Automation", condition: () => cps >= 10 },
+    { id: "banked", name: "5,000 Banked", condition: () => score >= 5000 }
+  ];
 
-    // Load save
-    if (localStorage.getItem("deluxeSave")) {
-      let save = JSON.parse(localStorage.getItem("deluxeSave"));
-      score = save.score;
-      clickValue = save.clickValue;
-      cps = save.cps;
-      multiplier = save.multiplier;
-      upgrades = save.upgrades;
-    }
+  // Load save
+  if (localStorage.getItem("starSave")) {
+    let save = JSON.parse(localStorage.getItem("starSave"));
+    score = save.score;
+    clickValue = save.clickValue;
+    cps = save.cps;
+    upgrades = save.upgrades;
+    prestigeMult = save.prestigeMult || 1;
+  }
 
-    // Render upgrades
-    function renderUpgrades() {
-      let container = document.getElementById("upgrades");
-      container.innerHTML = "";
-      upgrades.forEach(u => {
-        let div = document.createElement("div");
-        div.className = "upgrade";
-        div.innerHTML = `<span>${u.name} (Owned: ${u.owned})<br><small>${u.desc}</small></span><span>${u.cost}</span>`;
-        div.onclick = () => buyUpgrade(u.id);
-        container.appendChild(div);
-      });
-    }
+  // Render upgrades
+  function renderUpgrades() {
+    let container = document.getElementById("upgrades");
+    container.innerHTML = "";
+    upgrades.forEach(u => {
+      let div = document.createElement("div");
+      div.className = "upgrade";
+      div.innerHTML = `<div><b>${u.name}</b> (Owned: ${u.owned})<br><small>${u.desc}</small></div><div>${u.cost} <button>Buy</button></div>`;
+      div.querySelector("button").onclick = () => buyUpgrade(u.id);
+      container.appendChild(div);
+    });
+  }
 
-    // Render achievements
-    function renderAchievements() {
-      let container = document.getElementById("achievements");
-      container.innerHTML = "";
-      achievements.forEach(a => {
-        let unlocked = a.condition();
-        let div = document.createElement("div");
-        div.className = "achievement " + (unlocked ? "unlocked" : "locked");
-        div.textContent = a.name;
-        container.appendChild(div);
-      });
-    }
+  // Render achievements
+  function renderAchievements() {
+    let container = document.getElementById("achievements");
+    container.innerHTML = "";
+    achievements.forEach(a => {
+      let unlocked = a.condition();
+      let div = document.createElement("div");
+      div.className = "achievement " + (unlocked ? "unlocked" : "locked");
+      div.textContent = a.name;
+      container.appendChild(div);
+    });
+  }
 
-    document.getElementById("bigClick").addEventListener("click", () => {
-      score += clickValue * multiplier;
+  document.getElementById("starBtn").addEventListener("click", () => {
+    score += clickValue;
+    updateDisplay();
+    saveGame();
+  });
+
+  function buyUpgrade(id) {
+    let u = upgrades.find(x => x.id === id);
+    if (score >= u.cost) {
+      score -= u.cost;
+      u.owned++;
+      if (u.type === "click") clickValue += u.value;
+      if (u.type === "cps") cps += u.value;
+      if (u.type === "burst") clickValue *= u.value; // simple burst effect
+      u.cost = Math.floor(u.cost * 1.5);
       updateDisplay();
       saveGame();
-    });
-
-    function buyUpgrade(id) {
-      let u = upgrades.find(x => x.id === id);
-      if (score >= u.cost) {
-        score -= u.cost;
-        u.owned++;
-        if (u.type === "click") clickValue += u.value * multiplier;
-        if (u.type === "cps") cps += u.value * multiplier;
-        u.cost = Math.floor(u.cost * 1.5);
-        updateDisplay();
-        saveGame();
-      }
     }
+  }
 
-    function prestige() {
-      if (score >= 100000) {
-        multiplier += 0.5; // boost per prestige
+  function updateDisplay() {
+    document.getElementById("score").textContent = score.toFixed(3);
+    document.getElementById("clickValue").textContent = clickValue;
+    document.getElementById("idleValue").textContent = cps * prestigeMult;
+    document.getElementById("prestigeMult").textContent = prestigeMult + "x";
+    document.getElementById("prestigeBtn").style.display = score >= 100000 ? "inline-block" : "none";
+    renderUpgrades();
+    renderAchievements();
+  }
+
+  setInterval(() => {
+    score += cps * prestigeMult;
+    updateDisplay();
+    saveGame();
+  }, 1000);
+
+  function saveGame() {
+    localStorage.setItem("starSave", JSON.stringify({ score, clickValue, cps, upgrades, prestigeMult }));
+  }
+
+  function hardReset() {
+    if (confirm("Are you sure you want to reset?")) {
+      score = 0;
+      clickValue = 1;
+      cps = 0;
+      upgrades.forEach(u => { u.owned = 0; u.cost = Math.max(10, Math.floor(u.cost / Math.pow(1.5, u.owned))); });
+      saveGame();
+      updateDisplay();
+    }
+  }
+
+  function prestige() {
+    if (score >= 100000) {
+      if (confirm("Prestige? This will reset everything but double your idle/sec permanently!")) {
         score = 0;
         clickValue = 1;
         cps = 0;
-        upgrades.forEach(u => { u.owned = 0; u.cost = Math.floor(u.cost/ (u.id === "tap" ? 1 : 1)); });
-        alert("Prestige! Multiplier is now x" + multiplier);
-        updateDisplay();
+        upgrades.forEach(u => { u.owned = 0; u.cost = Math.max(10, Math.floor(u.cost / Math.pow(1.5, u.owned))); });
+        prestigeMult *= 2;
         saveGame();
+        updateDisplay();
       }
     }
+  }
 
-    function updateDisplay() {
-      document.getElementById("score").textContent = score;
-      document.getElementById("clickValue").textContent = clickValue;
-      document.getElementById("idleValue").textContent = cps;
-      document.getElementById("resetBtn").style.display = score >= 100000 ? "block" : "none";
-      renderUpgrades();
-      renderAchievements();
-    }
+  updateDisplay();
+</script>
 
-    setInterval(() => {
-      score += cps;
-      updateDisplay();
-      saveGame();
-    }, 1000);
-
-    function saveGame() {
-      localStorage.setItem("deluxeSave", JSON.stringify({
-        score, clickValue, cps, multiplier, upgrades
-      }));
-    }
-
-    updateDisplay();
-  </script>
 </body>
 </html>
