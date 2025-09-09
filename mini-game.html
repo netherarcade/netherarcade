@@ -1,349 +1,159 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<title>Nether Arcade – Mini-Game</title>
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="icon" href="logo.png" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
-
-<style>
-:root{
-  --bg:#131316; --surface:#1e1e22; --card:#27272c;
-  --text:#f3f3f7; --subtle:#9f9fa6; --accent:#ff3c3c; --green:#1ce69c;
-}
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Inter,system-ui,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column;min-height:100vh}
-
-/* Banner */
-.banner-wrap{position:relative;width:100%;height:200px;overflow:hidden}
-.banner-img{width:100%;height:100%;object-fit:cover}
-.banner-fade{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(19,19,22,0) 60%,var(--bg) 100%)}
-
-/* Nav */
-nav{position:sticky;top:0;z-index:10;background:var(--surface);display:flex;justify-content:center;gap:1.25rem;padding:.7rem 1rem;border-bottom:1px solid var(--card)}
-nav a{color:var(--subtle);text-decoration:none;font-weight:600}
-nav a:hover,nav a.active{color:var(--accent)}
-
-/* Main */
-main{flex:1;display:flex;flex-direction:column;align-items:center;padding:2rem 1rem}
-section{width:100%;max-width:980px;text-align:center}
-
-/* Divider */
-.divider{display:flex;justify-content:center;gap:.35rem;margin:1.25rem 0;font-weight:700;color:var(--green)}
-
-/* Layout cubes */
-.grid{display:grid;grid-template-columns:1fr 280px;gap:1rem;align-items:start}
-@media (max-width:900px){.grid{grid-template-columns:1fr}}
-.box{background:var(--card);border:1px solid #2f2f36;border-radius:12px;padding:1rem}
-.box h2{font-size:1rem;margin-bottom:.6rem;color:#fff;text-transform:uppercase;letter-spacing:.08em}
-
-/* Game header */
-h1{font-size:2rem;margin:.25rem 0 .5rem}
-p.lead{color:var(--subtle)}
-
-/* Big red star button */
-.star-btn{display:inline-flex;align-items:center;justify-content:center;width:120px;height:120px;border-radius:16px;background:var(--surface);border:2px solid #3a3a42;cursor:pointer;transition:transform .08s ease}
-.star-btn span{font-size:3rem;line-height:1;color:var(--accent)}
-.star-btn:active{transform:scale(.97)}
-
-/* Stats row */
-.stats{display:flex;gap:.75rem;flex-wrap:wrap;justify-content:center;margin-top:1rem}
-.tag{background:#1a1a1f;border:1px solid #2c2c32;border-radius:8px;padding:.4rem .6rem;font-size:.95rem;color:#d7d7dd}
-
-/* Upgrades */
-.upgrades{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:.75rem;margin-top:1rem}
-.upgrade{display:flex;flex-direction:column;align-items:flex-start;gap:.4rem;background:var(--surface);border:1px solid #33343c;border-radius:10px;padding:.75rem;text-align:left}
-.upgrade strong{font-size:.95rem}
-.upgrade small{color:var(--subtle)}
-.upgrade button{margin-top:.25rem;background:var(--accent);color:#000;border:none;border-radius:8px;padding:.5rem .75rem;cursor:pointer}
-.upgrade button:disabled{opacity:.5;cursor:not-allowed}
-
-/* Achievements */
-.achv-wrap{display:flex;flex-direction:column;gap:.6rem}
-.achv{display:flex;align-items:center;justify-content:space-between;background:var(--surface);border:1px solid #33343c;border-radius:8px;padding:.5rem .6rem}
-.achv .name{display:flex;align-items:center;gap:.5rem}
-.badge{font-size:.8rem;background:#0f0f12;border:1px solid #2f2f36;border-radius:999px;padding:.25rem .5rem;color:#bfc0c7}
-.badge.ok{background:#0d211a;border-color:#174c3b;color:#7debb5}
-
-/* Right column cards */
-.side-box{position:sticky;top:72px}
-.side-box .box+.box{margin-top:1rem}
-
-/* Footer */
-footer{text-align:center;color:var(--subtle);padding:1.25rem 1rem}
-</style>
+  <meta charset="UTF-8">
+  <title>Nether Arcade – Mini-Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #131316;
+      color: #f3f3f7;
+      text-align: center;
+      padding: 2rem;
+    }
+    .btn {
+      background: #ff3c3c;
+      color: #fff;
+      border: none;
+      padding: 1rem 2rem;
+      margin: 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1.2rem;
+      transition: background 0.2s ease;
+    }
+    .btn:hover {
+      background: #d62f2f;
+    }
+    .stats {
+      margin-top: 1.5rem;
+      font-size: 1.2rem;
+    }
+    .achievements {
+      margin-top: 2rem;
+      padding: 1rem;
+      background: #1e1e22;
+      border-radius: 8px;
+    }
+    .achievements h2 {
+      margin-bottom: 1rem;
+    }
+    .achievement {
+      margin: 0.3rem 0;
+      color: #9f9fa6;
+    }
+    .achievement.unlocked {
+      color: #4caf50;
+      font-weight: bold;
+    }
+    .save-buttons {
+      margin-top: 2rem;
+    }
+  </style>
 </head>
 <body>
+  <h1>🍪 Nether Arcade Clicker</h1>
+  <button class="btn" onclick="clickCookie()">Click Me!</button>
+  <div class="stats">
+    <p><strong>Points:</strong> <span id="count">0</span></p>
+    <p><strong>Per Click:</strong> <span id="perClick">1</span></p>
+    <p><strong>Idle:</strong> <span id="idle">0</span> / 10 sec</p>
+  </div>
 
-<!-- Banner -->
-<div class="banner-wrap">
-  <img class="banner-img" src="banner.jpg" alt="Nether Arcade Banner" loading="lazy" />
-  <div class="banner-fade"></div>
-</div>
+  <div class="save-buttons">
+    <button class="btn" onclick="saveGame()">💾 Save</button>
+    <button class="btn" onclick="loadGame()">📂 Load</button>
+  </div>
 
-<!-- Nav -->
-<nav>
-  <a href="index.html">Home</a>
-  <a href="about.html">Team</a>
-  <a href="socials.html">Socials</a>
-  <a class="active" href="mini-game.html">Mini-Game</a>
-  <a href="https://tester-f4444.web.app/login.html">Login</a>
-</nav>
-<!-- Firebase SDKs for showing user info and logout -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-  import {
-    getAuth,
-    onAuthStateChanged,
-    signOut
-  } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+  <div class="achievements">
+    <h2>Achievements</h2>
+    <div id="achievements-list"></div>
+  </div>
 
-  // Your Firebase config
-  const firebaseConfig = {
-    apiKey: "AIzaSyAHWjE1igMxmPQ65hivDN7ioNsBSB7nl7U",
-    authDomain: "tester-f4444.firebaseapp.com",
-    projectId: "tester-f4444",
-    storageBucket: "tester-f4444.firebasestorage.app",
-    messagingSenderId: "588985084600",
-    appId: "1:588985084600:web:64816acb4d654f9a4ae24d"
-  };
+  <script>
+    let count = 0;
+    let clickValue = 1;
+    let idlePer10Sec = 0;
+    let achievements = [];
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-
-  const userInfoDiv = document.getElementById("user-info");
-
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      const name = user.displayName || user.email;
-
-      userInfoDiv.innerHTML = `
-        <div style="background: #1e1e22; padding: 6px 12px; border-radius: 6px; display: inline-block;">
-          👤 <strong>${name}</strong>
-          <button id="logoutBtn" style="margin-left: 10px; padding: 3px 8px; font-size: 0.9rem;">Logout</button>
-        </div>
-      `;
-
-      // Logout
-      document.getElementById("logoutBtn").addEventListener("click", () => {
-        signOut(auth).then(() => {
-          window.location.reload();
-        });
-      });
-
-    } else {
-      // Not logged in
-      userInfoDiv.innerHTML = `
-        <a href="Login/index.html" style="color: var(--subtle); background: #1e1e22; padding: 6px 12px; border-radius: 6px; text-decoration: none;">
-          🔒 Login
-        </a>
-      `;
-    }
-  });
-</script>
-<main>
-  <section>
-    <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
-    <h1><i class="fa-solid fa-gamepad"></i> Mini-Game</h1>
-    <p class="lead">Click the star, buy upgrades, and unlock achievements. Idle income pays out every 10 seconds.</p><br>
-
-    <div class="grid">
-      <!-- Left: Game -->
-      <div class="box">
-        <h2>Play</h2>
-
-        <!-- Star click -->
-        <button class="star-btn" id="starBtn" aria-label="Click to earn points">
-          <span>✩</span>
-        </button>
-
-        <!-- Stats -->
-        <div class="stats" id="statsRow">
-          <span class="tag">Points: <strong id="points">0</strong></span>
-          <span class="tag">Click: <strong id="clickVal">1</strong></span>
-          <span class="tag">Idle: <strong id="idleVal">0</strong>/10s</span>
-          <span class="tag">Next idle tick: <strong id="tickLeft">10s</strong></span>
-        </div>
-
-        <!-- Upgrades -->
-        <div class="upgrades" id="upgrades">
-          <!-- filled by JS -->
-        </div>
-      </div>
-
-      <!-- Right: Achievements & Info -->
-      <div class="side-box">
-        <div class="box">
-          <h2>Achievements</h2>
-          <div class="achv-wrap" id="achievements">
-            <!-- filled by JS -->
-          </div>
-        </div>
-
-        <div class="box">
-          <h2>Info</h2>
-          <p style="color:var(--subtle);line-height:1.4">
-            • Idle pays <strong>/10s</strong>.<br>
-            • Buy upgrades to boost click and idle.<br>
-            • Achievements unlock automatically and stay unlocked.
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
-  </section>
-</main>
-
-<footer>
-  &copy; <span id="yr"></span> Nether Arcade • Not affiliated with Mojang
-</footer>
-
-<script>
-/* ====== State ====== */
-let points = 0;
-let totalClicks = 0;
-let totalIdleEarned = 0;
-
-let clickValue = 1;
-let idlePerTick = 0;     // amount awarded each tick
-const TICK_SECONDS = 10; // run idle every 10s
-let tickCountdown = TICK_SECONDS;
-
-/* ====== DOM ====== */
-const elPoints = document.getElementById('points');
-const elClickVal = document.getElementById('clickVal');
-const elIdleVal  = document.getElementById('idleVal');
-const elTickLeft = document.getElementById('tickLeft');
-document.getElementById('yr').textContent = new Date().getFullYear();
-
-/* ====== Upgrades ====== */
-const upgrades = [
-  { id:'clk1',  name:'+1 Click',        desc:'Increase click value by 1',         cost:50,   apply:()=>{ clickValue+=1; } },
-  { id:'clk5',  name:'+5 Click',        desc:'Increase click value by 5',         cost:500,  apply:()=>{ clickValue+=5; } },
-  { id:'idle1', name:'+10 Idle/10s',    desc:'Earn +10 points every 10s',         cost:150,  apply:()=>{ idlePerTick+=10; } },
-  { id:'idle2', name:'+100 Idle/10s',   desc:'Earn +100 points every 10s',        cost:2500, apply:()=>{ idlePerTick+=100; } },
-  { id:'mix1',  name:'Combo Pack',      desc:'+2 Click & +25 Idle/10s',           cost:1200, apply:()=>{ clickValue+=2; idlePerTick+=25; } },
-  { id:'mix2',  name:'Mega Combo',      desc:'+10 Click & +200 Idle/10s',         cost:15000,apply:()=>{ clickValue+=10; idlePerTick+=200; } }
-];
-
-/* Build upgrade cards */
-const upgradesWrap = document.getElementById('upgrades');
-function renderUpgrades(){
-  upgradesWrap.innerHTML = '';
-  upgrades.forEach(u=>{
-    const card = document.createElement('div');
-    card.className = 'upgrade';
-    card.innerHTML = `
-      <strong>${u.name}</strong>
-      <small>${u.desc}</small>
-      <small>Cost: <span class="badge">${u.cost}</span></small>
-      <button id="btn-${u.id}">Buy</button>
-    `;
-    upgradesWrap.appendChild(card);
-    const btn = card.querySelector('button');
-    btn.addEventListener('click', ()=>{
-      if(points < u.cost) return;
-      points -= u.cost;
-      u.apply();
-      // Gentle price growth after each purchase
-      u.cost = Math.ceil(u.cost * 1.35);
-      renderUpgrades();
-      updateStats();
+    function clickCookie() {
+      count += clickValue;
+      updateUI();
       checkAchievements();
-    });
-  });
-}
-
-/* ====== Achievements ====== */
-/* Existing ones + extras (kept simple, no prestige) */
-const achievements = [
-  // Click-based
-  { id:'a_click_1',    name:'First Click',       cond:()=> totalClicks >= 1,     note:'1 click' },
-  { id:'a_click_10',   name:'Click Beginner',    cond:()=> totalClicks >= 10,    note:'10 clicks' },
-  { id:'a_click_100',  name:'Click Apprentice',  cond:()=> totalClicks >= 100,   note:'100 clicks' },
-  { id:'a_safe',       name:'Safe',              cond:()=> totalClicks >= 1000,  note:'1,000 clicks' },
-
-  // Points-based (your originals + extras)
-  { id:'a_pts_100',    name:'Getting Started',   cond:()=> points >= 100,        note:'100 points' },
-  { id:'a_pts_1k',     name:'On a Roll',         cond:()=> points >= 1000,       note:'1,000 points' },
-  { id:'a_pts_10k',    name:'Big Clicker',       cond:()=> points >= 10000,      note:'10,000 points' },
-  { id:'a_pts_25k',    name:'Quarter to 100k',   cond:()=> points >= 25000,      note:'25,000 points' },
-  { id:'a_pts_50k',    name:'Halfway There!',    cond:()=> points >= 50000,      note:'50,000 points' },
-  { id:'a_pts_100k',   name:'Point Tycoon',      cond:()=> points >= 100000,     note:'100,000 points' },
-
-  // Idle
-  { id:'a_idle_earn',  name:'Idle Beginner',     cond:()=> totalIdleEarned >= 100, note:'Earn 100 from idle' }
-];
-
-const achvWrap = document.getElementById('achievements');
-const unlocked = new Set();
-
-function renderAchievements(){
-  achvWrap.innerHTML = '';
-  achievements.forEach(a=>{
-    const ok = unlocked.has(a.id);
-    const row = document.createElement('div');
-    row.className = 'achv';
-    row.innerHTML = `
-      <div class="name">
-        <i class="fa-solid fa-trophy" style="color:${ok?'#7debb5':'#777'}"></i>
-        <div>
-          <div>${a.name}</div>
-          <small style="color:var(--subtle)">${a.note}</small>
-        </div>
-      </div>
-      <span class="badge ${ok?'ok':''}">${ok?'Unlocked':'Locked'}</span>
-    `;
-    achvWrap.appendChild(row);
-  });
-}
-function checkAchievements(){
-  let changed = false;
-  achievements.forEach(a=>{
-    if(!unlocked.has(a.id) && a.cond()){
-      unlocked.add(a.id);
-      changed = true;
     }
-  });
-  if(changed) renderAchievements();
-}
 
-/* ====== Game logic ====== */
-function updateStats(){
-  elPoints.textContent = Math.floor(points);
-  elClickVal.textContent = clickValue;
-  elIdleVal.textContent  = idlePerTick;
-}
+    // Idle income every 10 seconds
+    setInterval(() => {
+      count += idlePer10Sec;
+      updateUI();
+      checkAchievements();
+    }, 10000);
 
-document.getElementById('starBtn').addEventListener('click', ()=>{
-  points += clickValue;
-  totalClicks += 1;
-  updateStats();
-  checkAchievements();
-});
+    function updateUI() {
+      document.getElementById("count").textContent = count;
+      document.getElementById("perClick").textContent = clickValue;
+      document.getElementById("idle").textContent = idlePer10Sec;
+    }
 
-function tick(){
-  // 1-second heartbeat to show countdown
-  tickCountdown -= 1;
-  if(tickCountdown <= 0){
-    // pay idle
-    points += idlePerTick;
-    totalIdleEarned += idlePerTick;
-    tickCountdown = TICK_SECONDS;
-    updateStats();
+    function checkAchievements() {
+      const achievementList = document.getElementById("achievements-list");
+      achievementList.innerHTML = "";
+
+      const list = [
+        { name: "First Click!", condition: () => count >= 1 },
+        { name: "100 Points!", condition: () => count >= 100 },
+        { name: "1,000 Points!", condition: () => count >= 1000 },
+        { name: "10 Clicks!", condition: () => count >= 10 },
+        { name: "Safe Player (used Save button)", condition: () => achievements.includes("Safe Player") },
+      ];
+
+      list.forEach(a => {
+        const unlocked = a.condition();
+        if (unlocked && !achievements.includes(a.name)) {
+          achievements.push(a.name);
+        }
+        const div = document.createElement("div");
+        div.className = "achievement" + (achievements.includes(a.name) ? " unlocked" : "");
+        div.textContent = a.name;
+        achievementList.appendChild(div);
+      });
+    }
+
+    // Save / Load system
+    function saveGame() {
+      const gameData = {
+        count,
+        clickValue,
+        idlePer10Sec,
+        achievements,
+      };
+      localStorage.setItem("netherArcadeSave", JSON.stringify(gameData));
+      if (!achievements.includes("Safe Player")) {
+        achievements.push("Safe Player");
+      }
+      alert("Game saved!");
+      checkAchievements();
+    }
+
+    function loadGame() {
+      const saved = localStorage.getItem("netherArcadeSave");
+      if (saved) {
+        const data = JSON.parse(saved);
+        count = data.count || 0;
+        clickValue = data.clickValue || 1;
+        idlePer10Sec = data.idlePer10Sec || 0;
+        achievements = data.achievements || [];
+        updateUI();
+        checkAchievements();
+        alert("Game loaded!");
+      } else {
+        alert("No save found.");
+      }
+    }
+
+    // First UI update
+    updateUI();
     checkAchievements();
-  }
-  elTickLeft.textContent = `${tickCountdown}s`;
-}
-setInterval(tick, 1000);
-
-/* Init */
-renderUpgrades();
-renderAchievements();
-updateStats();
-</script>
+  </script>
 </body>
 </html>
