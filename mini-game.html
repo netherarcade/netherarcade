@@ -2,158 +2,118 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Nether Arcade – Mini-Game</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fun Clicker Game</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #131316;
-      color: #f3f3f7;
       text-align: center;
-      padding: 2rem;
+      background: linear-gradient(120deg, #89f7fe, #66a6ff);
+      color: #333;
     }
-    .btn {
-      background: #ff3c3c;
-      color: #fff;
+    h1 {
+      margin-top: 20px;
+    }
+    #clickBtn {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
       border: none;
-      padding: 1rem 2rem;
-      margin: 1rem;
-      border-radius: 8px;
+      background: gold;
+      font-size: 24px;
       cursor: pointer;
-      font-size: 1.2rem;
-      transition: background 0.2s ease;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      transition: transform 0.1s;
     }
-    .btn:hover {
-      background: #d62f2f;
+    #clickBtn:active {
+      transform: scale(0.9);
     }
-    .stats {
-      margin-top: 1.5rem;
-      font-size: 1.2rem;
+    .shop {
+      margin-top: 30px;
     }
-    .achievements {
-      margin-top: 2rem;
-      padding: 1rem;
-      background: #1e1e22;
-      border-radius: 8px;
+    .upgrade {
+      margin: 10px;
+      padding: 10px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      cursor: pointer;
+      display: inline-block;
     }
-    .achievements h2 {
-      margin-bottom: 1rem;
-    }
-    .achievement {
-      margin: 0.3rem 0;
-      color: #9f9fa6;
-    }
-    .achievement.unlocked {
-      color: #4caf50;
-      font-weight: bold;
-    }
-    .save-buttons {
-      margin-top: 2rem;
+    .upgrade:hover {
+      background: #f1f1f1;
     }
   </style>
 </head>
 <body>
-  <h1>🍪 Nether Arcade Clicker</h1>
-  <button class="btn" onclick="clickCookie()">Click Me!</button>
-  <div class="stats">
-    <p><strong>Points:</strong> <span id="count">0</span></p>
-    <p><strong>Per Click:</strong> <span id="perClick">1</span></p>
-    <p><strong>Idle:</strong> <span id="idle">0</span> / 10 sec</p>
-  </div>
+  <h1>✨ Fun Clicker Game ✨</h1>
+  <p>Clicks: <span id="score">0</span></p>
+  <button id="clickBtn">Click!</button>
 
-  <div class="save-buttons">
-    <button class="btn" onclick="saveGame()">💾 Save</button>
-    <button class="btn" onclick="loadGame()">📂 Load</button>
-  </div>
-
-  <div class="achievements">
-    <h2>Achievements</h2>
-    <div id="achievements-list"></div>
+  <div class="shop">
+    <h2>Shop</h2>
+    <div class="upgrade" onclick="buyUpgrade('cursor')">
+      🖱️ Cursor (+1 per second) – Cost: <span id="cursorCost">50</span>
+    </div>
+    <div class="upgrade" onclick="buyUpgrade('factory')">
+      🏭 Factory (+10 per second) – Cost: <span id="factoryCost">500</span>
+    </div>
   </div>
 
   <script>
-    let count = 0;
-    let clickValue = 1;
-    let idlePer10Sec = 0;
-    let achievements = [];
+    let score = 0;
+    let cps = 0; // clicks per second
+    let upgrades = {
+      cursor: { cost: 50, value: 1, owned: 0 },
+      factory: { cost: 500, value: 10, owned: 0 }
+    };
 
-    function clickCookie() {
-      count += clickValue;
-      updateUI();
-      checkAchievements();
+    // Load saved data
+    if (localStorage.getItem("clickerSave")) {
+      let save = JSON.parse(localStorage.getItem("clickerSave"));
+      score = save.score;
+      cps = save.cps;
+      upgrades = save.upgrades;
+      updateDisplay();
     }
 
-    // Idle income every 10 seconds
+    document.getElementById("clickBtn").addEventListener("click", () => {
+      score++;
+      updateDisplay();
+      saveGame();
+    });
+
+    function buyUpgrade(type) {
+      if (score >= upgrades[type].cost) {
+        score -= upgrades[type].cost;
+        upgrades[type].owned++;
+        cps += upgrades[type].value;
+        upgrades[type].cost = Math.floor(upgrades[type].cost * 1.5);
+        updateDisplay();
+        saveGame();
+      }
+    }
+
+    function updateDisplay() {
+      document.getElementById("score").innerText = score;
+      document.getElementById("cursorCost").innerText = upgrades.cursor.cost;
+      document.getElementById("factoryCost").innerText = upgrades.factory.cost;
+    }
+
+    // Passive income loop
     setInterval(() => {
-      count += idlePer10Sec;
-      updateUI();
-      checkAchievements();
-    }, 10000);
+      score += cps;
+      updateDisplay();
+      saveGame();
+    }, 1000);
 
-    function updateUI() {
-      document.getElementById("count").textContent = count;
-      document.getElementById("perClick").textContent = clickValue;
-      document.getElementById("idle").textContent = idlePer10Sec;
-    }
-
-    function checkAchievements() {
-      const achievementList = document.getElementById("achievements-list");
-      achievementList.innerHTML = "";
-
-      const list = [
-        { name: "First Click!", condition: () => count >= 1 },
-        { name: "100 Points!", condition: () => count >= 100 },
-        { name: "1,000 Points!", condition: () => count >= 1000 },
-        { name: "10 Clicks!", condition: () => count >= 10 },
-        { name: "Safe Player (used Save button)", condition: () => achievements.includes("Safe Player") },
-      ];
-
-      list.forEach(a => {
-        const unlocked = a.condition();
-        if (unlocked && !achievements.includes(a.name)) {
-          achievements.push(a.name);
-        }
-        const div = document.createElement("div");
-        div.className = "achievement" + (achievements.includes(a.name) ? " unlocked" : "");
-        div.textContent = a.name;
-        achievementList.appendChild(div);
-      });
-    }
-
-    // Save / Load system
     function saveGame() {
-      const gameData = {
-        count,
-        clickValue,
-        idlePer10Sec,
-        achievements,
-      };
-      localStorage.setItem("netherArcadeSave", JSON.stringify(gameData));
-      if (!achievements.includes("Safe Player")) {
-        achievements.push("Safe Player");
-      }
-      alert("Game saved!");
-      checkAchievements();
+      localStorage.setItem("clickerSave", JSON.stringify({
+        score: score,
+        cps: cps,
+        upgrades: upgrades
+      }));
     }
-
-    function loadGame() {
-      const saved = localStorage.getItem("netherArcadeSave");
-      if (saved) {
-        const data = JSON.parse(saved);
-        count = data.count || 0;
-        clickValue = data.clickValue || 1;
-        idlePer10Sec = data.idlePer10Sec || 0;
-        achievements = data.achievements || [];
-        updateUI();
-        checkAchievements();
-        alert("Game loaded!");
-      } else {
-        alert("No save found.");
-      }
-    }
-
-    // First UI update
-    updateUI();
-    checkAchievements();
   </script>
 </body>
 </html>
