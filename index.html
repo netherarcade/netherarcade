@@ -1,360 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Click the Star</title>
-  <style>
-    body {
-      background: #111;
-      color: #fff;
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-    nav {
-      background: #000;
-      padding: 10px;
-    }
-    nav a {
-      color: #0f0;
-      margin-right: 15px;
-      text-decoration: none;
-    }
-    .container {
-      display: flex;
-      justify-content: space-between;
-      padding: 20px;
-    }
-    .panel {
-      background: #1a1a1a;
-      border-radius: 10px;
-      padding: 15px;
-      width: 32%;
-      box-shadow: 0px 0px 10px rgba(0,0,0,0.5);
-    }
-    h2 {
-      color: #0f0;
-    }
-    button {
-      background: red;
-      color: #fff;
-      border: none;
-      padding: 5px 10px;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    button:disabled {
-      background: #444;
-      cursor: not-allowed;
-    }
-    .shop-star {
-      color: gold;
-      font-size: 22px;
-    }
-    .toggle-on {
-      background: green;
-    }
-    .toggle-off {
-      background: red;
-    }
-    #star {
-      font-size: 60px;
-      color: red;
-      cursor: pointer;
-      text-shadow: 0 0 10px #f33;
-    }
-    .achievement {
-      background: #222;
-      margin: 5px 0;
-      padding: 5px;
-      border-radius: 5px;
-      color: #aaa;
-    }
-    .achievement.unlocked {
-      color: #fff;
-      background: #333;
-    }
-    .game-buttons button {
-      margin-right: 10px;
-      padding: 8px 15px;
-    }
-  </style>
+<meta charset="UTF-8">
+<title>Nether Arcade – Home</title>
+<link rel="icon" href="logo.png">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+<style>
+:root {
+  --bg: #131316;
+  --surface: #1e1e22;
+  --card: #27272c;
+  --accent: #ff3c3c;
+  --text: #f3f3f7;
+  --subtle: #9f9fa6;
+  --green: #00ff88;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: "Inter", system-ui, sans-serif; background: var(--bg); color: var(--text); display: flex; flex-direction: column; min-height: 100vh; }
+.banner-wrap { position: relative; width: 100%; height: 260px; overflow: hidden; }
+.banner-img { width: 100%; height: 100%; object-fit: cover; }
+.banner-fade { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(19,19,22,0) 60%, var(--bg) 100%); }
+nav { position: sticky; top: 0; z-index: 10; background: var(--surface); display: flex; justify-content: center; gap: 1.5rem; padding: 0.75rem 1rem; border-bottom: 1px solid var(--card); }
+nav a { background: none; border: none; color: var(--subtle); font-size: 1rem; cursor: pointer; text-decoration: none; transition: color 0.2s ease; }
+nav a.active, nav a:hover { color: var(--accent); }
+main { flex: 1; padding: 2.5rem 1.5rem; display: flex; flex-direction: column; align-items: center; text-align: center; }
+section { width: 100%; max-width: 960px; }
+h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 1rem; }
+p { color: var(--subtle); line-height: 1.6; margin-bottom: 1.5rem; }
+.divider { color: var(--green); display: flex; justify-content: center; align-items: center; margin: 1.5rem 0; font-weight: 600; }
+
+/* Server IP Box */
+.ip-box { background: var(--card); border-radius: 12px; padding: 1.2rem; text-align: center; font-size: 1.2rem; font-weight: 600; cursor: pointer; position: relative; }
+.ip-box:hover { background: var(--surface); }
+.tooltip { position: absolute; bottom: -1.5rem; left: 50%; transform: translateX(-50%); background: var(--accent); color: #000; padding: 0.3rem 0.6rem; border-radius: 6px; font-size: 0.75rem; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+.ip-box.copied .tooltip { opacity: 1; }
+
+footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: var(--subtle); }
+</style>
 </head>
 <body>
 
-<nav>
-  <a href="#">Home</a>
-  <a href="#">Team</a>
-  <a href="#">Mini-Game</a>
-  <a href="#">Socials</a>
-</nav>
-
-<div class="container">
-
-  <!-- Main Game Panel -->
-  <div class="panel" style="width: 40%;">
-    <h2>Click the Star</h2>
-    <p id="count">Count: 0</p>
-    <p id="stats"></p>
-    <div id="star" onclick="clickStar()">★</div>
-    <br>
-    <div class="game-buttons">
-      <button onclick="saveGame()">💾 Save</button>
-      <button onclick="hardReset()">❌ Hard Reset</button>
-      <button onclick="prestige()">🌟 Prestige</button>
-    </div>
-    <p style="font-size:12px; color:#aaa;">
-      • Achievements are trophies (no stat boost).<br>
-      • Upgrades scale in price as you buy more.<br>
-      • Your progress auto-saves often.<br>
-      • Prestige resets progress but doubles idle/sec permanently.<br>
-      • Reach Infinity to unlock Endless cosmetic rewards.<br>
-    </p>
-  </div>
-
-  <!-- Shop Panel -->
-  <div class="panel">
-    <h2><span class="shop-star">⭐</span> Shop</h2>
-    <p id="starCount">Stars: 0</p>
-    <button onclick="tradeForStar()">Trade 50T → +1 Star</button>
-    <div id="starUpgrades"></div>
-    <div id="autoPrestigeToggle"></div>
-  </div>
-
-  <!-- Upgrades & Achievements Panel -->
-  <div class="panel">
-    <h2>Upgrades</h2>
-    <div id="upgradeList"></div>
-    <h2>Achievements</h2>
-    <div id="achievements"></div>
-  </div>
-
+<!-- Banner -->
+<div class="banner-wrap">
+  <img class="banner-img" src="banner.jpg" alt="Nether Arcade Banner" loading="lazy">
+  <div class="banner-fade"></div>
 </div>
 
+<!-- Navigation -->
+<nav>
+  <a class="active" href="index.html">Home</a>
+  <a href="about.html">Team</a>
+  <a href="mini-game.html">Mini-Game</a>
+  <a href="socials.html">Socials</a>
+  <a href="https://tester-f4444.web.app/login.html">Login</a>
+</nav>
+
+<main>
+  <section id="home">
+    <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
+    <h1><i class="fa-solid fa-fire"></i> Welcome to Nether Arcade</h1>
+    <p>Fun minigames, creative builds, and a great community await you!</p>
+
+    <!-- Server IP Box -->
+    <div class="ip-box" onclick="copyIP()">
+      <span>netherarcade.cold00.eu</span>
+      <div style="font-size:0.85rem; color:var(--subtle);">Java Edition only • Version 1.21.8</div>
+      <span class="tooltip" id="tip">Copied!</span>
+    </div>
+
+    <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
+  </section>
+</main>
+
+<footer>
+  &copy; <span id="yr"></span> Nether Arcade &nbsp;•&nbsp; Not affiliated with Mojang
+</footer>
+
 <script>
-  // ================= Number Formatter =================
-  function formatNumber(num) {
-    if (num < 1000) return num.toString();
-    let units = ["", "K", "M", "B", "T", "Qa", "Qi", "Sx", "Sp", "Oc", "No", "Dc"];
-    let unitIndex = 0;
-    while (num >= 1000 && unitIndex < units.length - 1) {
-      num /= 1000;
-      unitIndex++;
-    }
-    return num.toFixed(2) + units[unitIndex];
-  }
-
-  // ================= Game State =================
-  let count = 0;
-  let clickValue = 1;
-  let idleValue = 0;
-  let prestigeMultiplier = 1;
-  let stars = 0;
-  let autoPrestigeUnlocked = false;
-  let autoPrestigeEnabled = false;
-
-  // Normal upgrades
-  let upgrades = [
-    { name: "+0.5 / click", baseCost: 45, cost: 45, value: 0.5, type: "click", amount: 0 },
-    { name: "+1 / click", baseCost: 150, cost: 150, value: 1, type: "click", amount: 0 },
-    { name: "+1 / sec", baseCost: 100, cost: 100, value: 1, type: "idle", amount: 0 },
-    { name: "+5 / sec", baseCost: 500, cost: 500, value: 5, type: "idle", amount: 0 },
-    { name: "Burst x2", baseCost: 1000, cost: 1000, value: 2, type: "burst", amount: 0 }
-  ];
-
-  // Star Shop upgrades
-  let shopUpgrades = [
-    { name: "Guiding Light", cost: 2, owned: 0, desc: "Start with +Idle/sec × Prestige multiplier." },
-    { name: "Celestial Clicks", cost: 5, owned: 0, desc: "Permanently double click value." },
-    { name: "Ascendant Cycle", cost: 10, owned: 0, desc: "Unlock auto prestige toggle." },
-    { name: "Efficient Universe", cost: 15, owned: 0, desc: "5% cheaper upgrades." }
-  ];
-
-  // Achievements
-  let achievements = [
-    { name: "First Click", unlocked: false, condition: () => count >= 1 },
-    { name: "Ten Up", unlocked: false, condition: () => count >= 10 },
-    { name: "Triple Digits", unlocked: false, condition: () => count >= 100 },
-    { name: "1,000!", unlocked: false, condition: () => count >= 1000 },
-    { name: "Automation", unlocked: false, condition: () => idleValue > 0 },
-    { name: "5,000 Banked", unlocked: false, condition: () => count >= 5000 },
-    { name: "A Lot of Ones", unlocked: false, condition: () => count === 1111 },
-    { name: "Money Money", unlocked: false, condition: () => count >= 100000 }
-  ];
-
-  // ================= Game Functions =================
-  function clickStar() {
-    count += clickValue;
-    updateDisplay();
-  }
-
-  function buyUpgrade(index) {
-    let u = upgrades[index];
-    if (count >= u.cost) {
-      count -= u.cost;
-      u.amount++;
-      if (u.type === "click") clickValue += u.value;
-      if (u.type === "idle") idleValue += u.value;
-      if (u.type === "burst") clickValue *= u.value;
-      u.cost = Math.floor(u.cost * 1.5); // Price scaling
-      renderUpgrades();
-      updateDisplay();
-    }
-  }
-
-  function tradeForStar() {
-    let tradeCost = 5e13; // 50T
-    if (count >= tradeCost) {
-      count -= tradeCost;
-      stars++;
-      renderShop();
-      updateDisplay();
-    }
-  }
-
-  function buyStarUpgrade(index) {
-    let u = shopUpgrades[index];
-    if (stars >= u.cost && u.owned === 0) {
-      stars -= u.cost;
-      u.owned = 1;
-      if (u.name === "Celestial Clicks") clickValue *= 2;
-      if (u.name === "Ascendant Cycle") {
-        autoPrestigeUnlocked = true;
-        renderAutoPrestigeToggle();
-      }
-      renderShop();
-      updateDisplay();
-    }
-  }
-
-  function prestige() {
-    if (count < 1e6) return; // Needs 1M
-    prestigeMultiplier *= 2;
-    count = 0;
-    clickValue = 1;
-    idleValue = 0;
-    upgrades.forEach(u => {
-      u.amount = 0;
-      u.cost = u.baseCost;
-    });
-    renderUpgrades();
-    updateDisplay();
-  }
-
-  // ================= Auto Prestige =================
-  function renderAutoPrestigeToggle() {
-    if (autoPrestigeUnlocked) {
-      document.getElementById("autoPrestigeToggle").innerHTML =
-        `<p>Auto Prestige: 
-        <button onclick="toggleAutoPrestige()" class="${autoPrestigeEnabled ? 'toggle-on' : 'toggle-off'}">
-          ${autoPrestigeEnabled ? "ON" : "OFF"}
-        </button></p>`;
-    }
-  }
-
-  function toggleAutoPrestige() {
-    autoPrestigeEnabled = !autoPrestigeEnabled;
-    renderAutoPrestigeToggle();
-  }
-
-  // ================= Rendering =================
-  function renderUpgrades() {
-    let html = "";
-    upgrades.forEach((u, i) => {
-      html += `<div style="margin-bottom:10px;">
-        <b>${u.name}</b> (Owned: ${u.amount})<br>
-        ${formatNumber(u.cost)} <button onclick="buyUpgrade(${i})">Buy</button>
-      </div>`;
-    });
-    document.getElementById("upgradeList").innerHTML = html;
-  }
-
-  function renderShop() {
-    document.getElementById("starCount").innerText = "Stars: " + stars;
-    let html = "";
-    shopUpgrades.forEach((u, i) => {
-      html += `<div style="margin-bottom:10px;">
-        <b>${u.name}</b> (Owned: ${u.owned})<br>
-        <small>${u.desc}</small><br>
-        ${u.cost}⭐ <button onclick="buyStarUpgrade(${i})" ${u.owned ? "disabled" : ""}>Buy</button>
-      </div>`;
-    });
-    document.getElementById("starUpgrades").innerHTML = html;
-  }
-
-  function renderAchievements() {
-    let html = "";
-    achievements.forEach(a => {
-      html += `<div class="achievement ${a.unlocked ? 'unlocked' : ''}">${a.name}</div>`;
-    });
-    document.getElementById("achievements").innerHTML = html;
-  }
-
-  function updateDisplay() {
-    document.getElementById("count").innerText = "Count: " + formatNumber(count);
-    document.getElementById("stats").innerHTML =
-      `Click Value: ${formatNumber(clickValue)} | Idle: ${formatNumber(idleValue)}/sec | Prestige Multiplier: ${formatNumber(prestigeMultiplier)}x`;
-
-    achievements.forEach(a => {
-      if (!a.unlocked && a.condition()) a.unlocked = true;
-    });
-
-    renderAchievements();
-    renderShop();
-    renderAutoPrestigeToggle();
-  }
-
-  // ================= Game Loop =================
-  setInterval(() => {
-    count += idleValue;
-    if (autoPrestigeEnabled && count >= 1e6) {
-      prestige();
-    }
-    updateDisplay();
-  }, 1000);
-
-  // ================= Save / Load =================
-  function saveGame() {
-    let save = {
-      count, clickValue, idleValue, prestigeMultiplier,
-      stars, upgrades, shopUpgrades, achievements,
-      autoPrestigeUnlocked, autoPrestigeEnabled
-    };
-    localStorage.setItem("starClickerSave", JSON.stringify(save));
-  }
-
-  function loadGame() {
-    let save = JSON.parse(localStorage.getItem("starClickerSave"));
-    if (save) {
-      count = save.count;
-      clickValue = save.clickValue;
-      idleValue = save.idleValue;
-      prestigeMultiplier = save.prestigeMultiplier;
-      stars = save.stars || 0;
-      upgrades = save.upgrades || upgrades;
-      shopUpgrades = save.shopUpgrades || shopUpgrades;
-      achievements = save.achievements || achievements;
-      autoPrestigeUnlocked = save.autoPrestigeUnlocked || false;
-      autoPrestigeEnabled = save.autoPrestigeEnabled || false;
-    }
-    renderUpgrades();
-    renderShop();
-    renderAchievements();
-    renderAutoPrestigeToggle();
-    updateDisplay();
-  }
-
-  function hardReset() {
-    if (confirm("Are you sure? This will wipe everything!")) {
-      localStorage.removeItem("starClickerSave");
-      location.reload();
-    }
-  }
-
-  // ================= Init =================
-  loadGame();
-  setInterval(saveGame, 10000); // Auto save
+function copyIP() {
+  const ip = "netherarcade.cold00.eu";
+  navigator.clipboard.writeText(ip).then(() => {
+    const box = document.querySelector(".ip-box");
+    box.classList.add("copied");
+    setTimeout(() => box.classList.remove("copied"), 2000);
+  });
+}
+document.getElementById("yr").textContent = new Date().getFullYear();
 </script>
-
 </body>
 </html>
