@@ -1,413 +1,387 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Click the Star</title>
   <style>
-    :root{
-      --bg:#0d0d0d;
-      --panel:#1a1a1a;
-      --text:#e0e0e0;
-      --accent:#00ff99;
-      --btn:#111;
-      --btn-muted:#222;
-      --danger:#ff5555;
-      --warn:#ffcc00;
-      --burst:#ff3333;
-      --endless:#7d5cff; /* cosmic purple */
-      --gold:#ffd700;
-    }
-    *{box-sizing:border-box}
-    body{
+    body {
       font-family: Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      margin:0;padding:20px;
-      display:flex;gap:20px;
-      transition: background 0.3s ease;
+      background: #0d0d0d;
+      color: #e0e0e0;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
     }
-    .panel{
-      background: var(--panel);
-      padding:20px;border-radius:12px;flex:1;
-      box-shadow:0 0 12px rgba(0,0,0,0.5);
+    nav {
+      background: #111;
+      padding: 10px 20px;
+      display: flex;
+      gap: 20px;
     }
-    h2{color:#fff;text-shadow:0 0 6px var(--accent);margin-top:0}
-    .center{flex:2;text-align:center}
-    #starWrapper{position:relative;display:inline-block}
-    #starBtn{
-      font-size:60px;cursor:pointer;margin:20px 0;
-      transition: transform 0.1s, color 0.2s, text-shadow 0.2s;
-      color: var(--burst);
-      user-select:none;
+    nav a {
+      color: #e0e0e0;
+      text-decoration: none;
     }
-    #starBtn:active{ transform: scale(0.9); }
-    /* static shooting-star cluster (Endless IV) — no animations */
-    .cluster{
-      position:absolute; left:50%; top:50%; pointer-events:none;
-      transform: translate(-50%,-50%);
-      font-size:16px; line-height:1;
-      display:none; /* shown at Endless IV+ */
-      color:#ddd;
-      text-shadow:0 0 3px #999;
+    nav a:hover {
+      color: #00ff99;
     }
-    .cluster span{margin:0 4px}
-    .stats{margin:10px 0}
-    .titleBadge{
-      margin-top:4px;font-size:14px;color:var(--accent);
-      text-shadow:0 0 6px var(--accent);
-      min-height:20px;
+    .main {
+      display: flex;
+      gap: 20px;
+      padding: 20px;
     }
-    .btn{
-      background: var(--btn); margin:5px; padding:8px 15px;
-      border-radius:6px; cursor:pointer; border:none; font-weight:bold;
-      color:#eee;
+    .panel {
+      background: #1a1a1a;
+      padding: 20px;
+      border-radius: 12px;
+      flex: 1;
+      box-shadow: 0 0 12px rgba(0,0,0,0.5);
     }
-    .saveBtn{background:var(--btn-muted); color:var(--accent)}
-    .resetBtn{background:var(--btn-muted); color:var(--danger)}
-    .prestigeBtn{background:var(--btn-muted); color:var(--warn)}
-    .endlessBtn{background:var(--endless); color:white; border:2px solid #b9a8ff}
-    .upgrade{
-      background:#111;margin:10px 0;padding:10px;border-radius:8px;
-      display:flex;justify-content:space-between;align-items:center;
+    h2 {
+      color: #fff;
+      text-shadow: 0 0 6px #00ff99;
     }
-    .upgrade button{
-      background: var(--burst); color:white; border:none;
-      padding:5px 10px; border-radius:5px; cursor:pointer;
+    .center {
+      flex: 2;
+      text-align: center;
     }
-    .upgrade button:hover{ background:#ff5555 }
-    .achievement{ background:#111; margin:6px 0; padding:8px; border-radius:6px }
-    .locked{ opacity:0.4 }
-    .unlocked{ color: var(--accent); text-shadow:0 0 6px var(--accent) }
-    .notes{ margin-top:20px; font-size:12px; color:#aaa; text-align:left }
-
-    /* Endless cosmetics (no animations) */
-    /* Endless I — Golden Star */
-    .goldStar #starBtn { color: var(--gold); text-shadow: 0 0 6px #b38f00; }
-    /* Endless II — Starfield BG (static dotted backdrop) */
-    .starfield {
-      background:
-       radial-gradient(2px 2px at 20% 30%, #fff 98%, transparent 2%) 0 0/120px 120px,
-       radial-gradient(1px 1px at 70% 80%, #cfcfcf 98%, transparent 2%) 0 0/80px 80px,
-       radial-gradient(1px 1px at 40% 60%, #a8a8a8 98%, transparent 2%) 0 0/100px 100px,
-       var(--bg);
+    #starBtn {
+      font-size: 60px;
+      color: #ff3333;
+      cursor: pointer;
+      transition: transform 0.1s;
+      margin: 20px 0;
     }
-    /* Endless III — Rainbow Star (static gradient fill) */
-    .rainbowStar #starBtn{
-      background: linear-gradient(90deg, #ff0040, #ff8c00, #ffe600, #33dd33, #33aaff, #8a33ff);
-      -webkit-background-clip: text; background-clip: text;
-      color: transparent; text-shadow:none;
+    #starBtn:active {
+      transform: scale(0.9);
     }
-    /* Endless IV — static star cluster around star */
-    .hasCluster .cluster{ display:block }
-    /* Endless V — Black Hole Star (dark star + glow) */
-    .blackHole #starBtn{ color:#000; text-shadow: 0 0 10px #5a00ff, 0 0 18px #1a003d; }
-    /* Endless VI — Galaxy Swirl BG (static gradients) */
-    .galaxy {
-      background:
-        radial-gradient(800px 500px at 20% 30%, rgba(120,0,255,0.12), transparent 60%),
-        radial-gradient(600px 400px at 80% 70%, rgba(0,180,255,0.10), transparent 60%),
-        var(--bg);
+    .stats {
+      margin: 10px 0;
     }
-    /* Endless VII — Eternal Rainbow Star (static) */
-    .eternal #starBtn{
-      background: linear-gradient(90deg, #ff006a, #ff9400, #f6ff00, #00ffa6, #00a2ff, #b400ff);
-      -webkit-background-clip: text; background-clip: text; color: transparent;
+    .btn {
+      background: #111;
+      margin: 5px;
+      padding: 8px 15px;
+      border-radius: 6px;
+      cursor: pointer;
+      border: none;
+      font-weight: bold;
     }
-   nav { position: sticky; top: 0; z-index: 10; background: var(--surface); display: flex; justify-content: center; gap: 1.5rem; padding: 0.75rem 1rem; border-bottom: 1px solid var(--card); }
-nav a { background: none; border: none; color: var(--subtle); font-size: 1rem; cursor: pointer; text-decoration: none; transition: color 0.2s ease;  }
-nav a.active, nav a:hover { color: var(--accent); }
-    
-
+    .saveBtn {
+      background: #222;
+      color: #00ff99;
+    }
+    .resetBtn {
+      background: #222;
+      color: #ff5555;
+    }
+    .prestigeBtn {
+      background: #222;
+      color: #ffcc00;
+    }
+    .shopBtn {
+      background: #333;
+      color: #00aaff;
+    }
+    .toggleBtn {
+      background: #333;
+      color: #ffaa00;
+    }
+    .upgrade {
+      background: #111;
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .upgrade button {
+      background: #ff3333;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .upgrade button:hover {
+      background: #ff5555;
+    }
+    .achievement {
+      background: #111;
+      margin: 6px 0;
+      padding: 8px;
+      border-radius: 6px;
+    }
+    .locked {
+      opacity: 0.4;
+    }
+    .unlocked {
+      color: #00ff99;
+      text-shadow: 0 0 6px #00ff99;
+    }
+    .notes {
+      margin-top: 20px;
+      font-size: 12px;
+      color: #aaa;
+      text-align: left;
+    }
   </style>
 </head>
 <body>
 
-  <!-- Navigation -->
-<nav>
-  <a href="index.html">Home</a>
-  <a href="about.html">Team</a>
-  <a class="active" href="mini-game.html">Mini-Game</a>
-  <a href="socials.html">Socials</a>
- 
-</nav>
+  <nav>
+    <a href="#">Home</a>
+    <a href="#">Team</a>
+    <a href="#">Mini-Game</a>
+    <a href="#">Socials</a>
+  </nav>
 
-  <!-- Center Panel -->
-  <div class="panel center" id="centerPanel">
-    <h2>Click the Star</h2>
-
-    <div class="stats">
-      <p><b>Count:</b> <span id="score">0.0</span></p>
-      <div class="titleBadge" id="titleBadge"></div>
-      <p>
-        Click Value: <span id="clickValue">1</span> |
-        Idle: <span id="idleValue">0</span>/sec |
-        Prestige Multiplier: <span id="prestigeMult">1x</span>
-      </p>
+  <div class="main">
+    <!-- Shop Panel -->
+    <div class="panel" style="flex:0.6;">
+      <h2>⭐ Shop</h2>
+      <p>Stars: <span id="starCount">0</span></p>
+      <button class="btn shopBtn" onclick="tradeStars()">Trade 50T → +1 Star</button>
+      <div id="starUpgrades"></div>
+      <div id="autoPrestigeToggle" style="margin-top:10px; display:none;">
+        <button class="btn toggleBtn" onclick="toggleAutoPrestige()">Auto Prestige: <span id="autoPrestigeState">OFF</span></button>
+      </div>
     </div>
 
-    <div id="starWrapper">
+    <!-- Center Panel -->
+    <div class="panel center">
+      <h2>Click the Star</h2>
+      <div class="stats">
+        <p><b>Count:</b> <span id="score">0</span></p>
+        <p>Click Value: <span id="clickValue">1</span> | Idle: <span id="idleValue">0</span>/sec | Prestige Multiplier: <span id="prestigeMult">1x</span></p>
+      </div>
       <div id="starBtn">★</div>
-      <div class="cluster" id="cluster"><span>✦</span><span>✧</span><span>✦</span></div>
-    </div>
-
-    <div>
       <button class="btn saveBtn" onclick="saveGame()">💾 Save</button>
       <button class="btn resetBtn" onclick="hardReset()">🗑 Hard Reset</button>
       <button class="btn prestigeBtn" id="prestigeBtn" style="display:none;" onclick="prestige()">🌟 Prestige</button>
-      <button class="btn endlessBtn" id="endlessBtn" style="display:none;" onclick="endlessRestart()">♾️ Endless Restart</button>
+      <div class="notes">
+        <p>• Achievements are trophies (no stat boost).</p>
+        <p>• Upgrades scale in price as you buy more.</p>
+        <p>• Your progress auto-saves often (you can also press Save).</p>
+        <p>• Prestige resets progress but doubles your idle/sec permanently.</p>
+        <p>• Reach Infinity to unlock a hidden cosmetic via Endless Restart.</p>
+      </div>
     </div>
 
-    <div class="notes">
-      <p>• Achievements are trophies (no stat boost).</p>
-      <p>• Upgrades scale in price as you buy more.</p>
-      <p>• Your progress auto-saves often (you can also press Save).</p>
-      <p>• Prestige resets progress but doubles your idle/sec permanently.</p>
-      <p>• Reach <b>Infinity</b> to unlock a hidden cosmetic via <b>Endless Restart</b>.</p>
+    <!-- Upgrades Panel -->
+    <div class="panel">
+      <h2>Upgrades</h2>
+      <div id="upgrades"></div>
     </div>
-  </div>
 
-  <!-- Upgrades Panel -->
-  <div class="panel">
-    <h2>Upgrades</h2>
-    <div id="upgrades"></div>
-  </div>
-
-  <!-- Achievements Panel -->
-  <div class="panel">
-    <h2>Achievements</h2>
-    <div id="achievements"></div>
+    <!-- Achievements Panel -->
+    <div class="panel">
+      <h2>Achievements</h2>
+      <div id="achievements"></div>
+    </div>
   </div>
 
 <script>
-  // ---------- Game State ----------
   let score = 0;
   let clickValue = 1;
   let cps = 0;
   let prestigeMult = 1;
+  let stars = 0;
+  let autoPrestige = false;
 
-  // Endless (cosmetic-only, sequential unlocks 0..7)
-  let endlessStage = 0; // 0 = none yet, 1..7 = unlocked cosmetic level
-  const ENDLESS_MAX = 7;
-
-  // Base upgrades factory (used at start and on prestige reset)
-  function baseUpgrades(){
-    return [
-      { id:"click1", name:"+0.5 / click", cost:10,   value:0.5, type:"click",  owned:0, desc:"Practice makes perfect." },
-      { id:"click2", name:"+1 / click",   cost:50,   value:1,   type:"click",  owned:0, desc:"Heavier fingertips." },
-      { id:"cps1",   name:"+1 / sec",     cost:100,  value:1,   type:"cps",    owned:0, desc:"Little helpers." },
-      { id:"cps5",   name:"+5 / sec",     cost:500,  value:5,   type:"cps",    owned:0, desc:"Bigger crew." },
-      // Burst: permanent x2 to click value, stackable. Price scales x2.5 per buy.
-      { id:"burst",  name:"Burst x2",     cost:1000, value:2,   type:"burst",  owned:0, desc:"Permanently doubles click value (stackable)." }
-    ];
-  }
-  let upgrades = baseUpgrades();
-
-  // Achievements (with your two new ones)
-  let achievements = [
-    { id:"first",    name:"First Click",     condition: () => score >= 1 },
-    { id:"ten",      name:"Ten Up",          condition: () => score >= 10 },
-    { id:"hundred",  name:"Triple Digits",   condition: () => score >= 100 },
-    { id:"thousand", name:"1,000!",          condition: () => score >= 1000 },
-    { id:"auto",     name:"Automation",      condition: () => cps >= 10 },
-    { id:"banked",   name:"5,000 Banked",    condition: () => score >= 5000 },
-    { id:"ones",     name:"A Lot of Ones",   condition: () => score >= 111111 },
-    { id:"money",    name:"Money Money",     condition: () => score >= 500000 }
+  let upgrades = [
+    { id: "click1", name: "+0.5 / click", cost: 10, value: 0.5, type: "click", owned: 0, desc: "Practice makes perfect." },
+    { id: "click2", name: "+1 / click", cost: 50, value: 1, type: "click", owned: 0, desc: "Heavier fingertips." },
+    { id: "cps1", name: "+1 / sec", cost: 100, value: 1, type: "cps", owned: 0, desc: "Little helpers." },
+    { id: "cps5", name: "+5 / sec", cost: 500, value: 5, type: "cps", owned: 0, desc: "Bigger crew." },
+    { id: "burst", name: "Burst x2", cost: 1000, value: 2, type: "burst", owned: 0, desc: "Permanently doubles click value (stackable)." }
   ];
 
-  // ---------- Load Save ----------
-  (function load(){
-    const raw = localStorage.getItem("starSave");
-    if (!raw) return;
-    try{
-      const save = JSON.parse(raw);
-      if (typeof save.score === "number") score = save.score;
-      if (typeof save.clickValue === "number") clickValue = save.clickValue;
-      if (typeof save.cps === "number") cps = save.cps;
-      if (Array.isArray(save.upgrades)) upgrades = save.upgrades;
-      if (typeof save.prestigeMult === "number") prestigeMult = save.prestigeMult;
-      if (typeof save.endlessStage === "number") endlessStage = save.endlessStage;
-    } catch(e){ console.warn("Failed to load save:", e); }
-  })();
+  let achievements = [
+    { id: "first", name: "First Click", condition: () => score >= 1 },
+    { id: "ten", name: "Ten Up", condition: () => score >= 10 },
+    { id: "hundred", name: "Triple Digits", condition: () => score >= 100 },
+    { id: "thousand", name: "1,000!", condition: () => score >= 1000 },
+    { id: "auto", name: "Automation", condition: () => cps >= 10 },
+    { id: "banked", name: "5,000 Banked", condition: () => score >= 5000 },
+    { id: "lotofones", name: "A Lot of Ones", condition: () => score >= 111111 },
+    { id: "moneymoney", name: "Money Money", condition: () => score >= 500000 }
+  ];
 
-  // ---------- UI Rendering ----------
-  function renderUpgrades(){
-    const container = document.getElementById("upgrades");
+  let starUpgrades = [
+    { id: "startIdle", name: "Guiding Light", cost: [2,4,8], owned: 0, max: 3, desc: "Start with +Idle/sec × Prestige multiplier." },
+    { id: "doubleClick", name: "Celestial Clicks", cost: [5], owned: 0, max: 1, desc: "Permanently double click value." },
+    { id: "autoPrestige", name: "Ascendant Cycle", cost: [10], owned: 0, max: 1, desc: "Unlock auto prestige toggle." },
+    { id: "priceCut", name: "Efficient Universe", cost: [15], owned: 0, max: 1, desc: "5% cheaper upgrades." }
+  ];
+
+  // Load save
+  if (localStorage.getItem("starSave")) {
+    let save = JSON.parse(localStorage.getItem("starSave"));
+    score = save.score;
+    clickValue = save.clickValue;
+    cps = save.cps;
+    upgrades = save.upgrades;
+    prestigeMult = save.prestigeMult || 1;
+    stars = save.stars || 0;
+    starUpgrades = save.starUpgrades || starUpgrades;
+    autoPrestige = save.autoPrestige || false;
+  }
+
+  // Shop Trade
+  function tradeStars() {
+    if (score >= 5e13) { // 50 trillion
+      score -= 5e13;
+      stars++;
+      updateDisplay();
+      saveGame();
+    }
+  }
+
+  // Buy Star Upgrade
+  function buyStarUpgrade(id) {
+    let u = starUpgrades.find(x => x.id === id);
+    if (!u) return;
+    let cost = u.cost[u.owned] || null;
+    if (cost && stars >= cost && u.owned < u.max) {
+      stars -= cost;
+      u.owned++;
+      if (u.id === "doubleClick") clickValue *= 2;
+      if (u.id === "priceCut") upgrades.forEach(up => up.cost = Math.floor(up.cost * 0.95));
+      if (u.id === "autoPrestige") document.getElementById("autoPrestigeToggle").style.display = "block";
+      updateDisplay();
+      saveGame();
+    }
+  }
+
+  // Toggle Auto Prestige
+  function toggleAutoPrestige() {
+    autoPrestige = !autoPrestige;
+    document.getElementById("autoPrestigeState").textContent = autoPrestige ? "ON" : "OFF";
+    saveGame();
+  }
+
+  // Render Shop
+  function renderStarUpgrades() {
+    let container = document.getElementById("starUpgrades");
     container.innerHTML = "";
-    upgrades.forEach(u=>{
-      const div = document.createElement("div");
+    starUpgrades.forEach(u => {
+      let nextCost = u.cost[u.owned] || null;
+      let div = document.createElement("div");
       div.className = "upgrade";
-      div.innerHTML = `
-        <div>
-          <b>${u.name}</b> (Owned: ${u.owned})<br>
-          <small>${u.desc}</small>
-        </div>
-        <div>${formatNumber(u.cost)} <button>Buy</button></div>
-      `;
-      div.querySelector("button").onclick = ()=> buyUpgrade(u.id);
+      div.innerHTML = `<div><b>${u.name}</b> (Owned: ${u.owned})<br><small>${u.desc}</small></div>
+                       <div>${nextCost ? nextCost + "★" : "Max"} 
+                       ${nextCost ? "<button>Buy</button>" : ""}</div>`;
+      if (nextCost) div.querySelector("button").onclick = () => buyStarUpgrade(u.id);
+      container.appendChild(div);
+    });
+    if (starUpgrades.find(u => u.id === "autoPrestige").owned > 0) {
+      document.getElementById("autoPrestigeToggle").style.display = "block";
+      document.getElementById("autoPrestigeState").textContent = autoPrestige ? "ON" : "OFF";
+    }
+  }
+
+  // Render upgrades
+  function renderUpgrades() {
+    let container = document.getElementById("upgrades");
+    container.innerHTML = "";
+    upgrades.forEach(u => {
+      let div = document.createElement("div");
+      div.className = "upgrade";
+      div.innerHTML = `<div><b>${u.name}</b> (Owned: ${u.owned})<br><small>${u.desc}</small></div><div>${u.cost} <button>Buy</button></div>`;
+      div.querySelector("button").onclick = () => buyUpgrade(u.id);
       container.appendChild(div);
     });
   }
 
-  function renderAchievements(){
-    const container = document.getElementById("achievements");
+  // Render achievements
+  function renderAchievements() {
+    let container = document.getElementById("achievements");
     container.innerHTML = "";
-    achievements.forEach(a=>{
-      const unlocked = a.condition();
-      const div = document.createElement("div");
-      div.className = "achievement " + (unlocked ? "unlocked":"locked");
+    achievements.forEach(a => {
+      let unlocked = a.condition();
+      let div = document.createElement("div");
+      div.className = "achievement " + (unlocked ? "unlocked" : "locked");
       div.textContent = a.name;
       container.appendChild(div);
     });
   }
 
-  function updateDisplay(){
-    const scoreEl = document.getElementById("score");
-    const titleBadge = document.getElementById("titleBadge");
-    const prestigeBtn = document.getElementById("prestigeBtn");
-    const endlessBtn = document.getElementById("endlessBtn");
-
-    // Score display
-    if (!isFinite(score)){
-      scoreEl.textContent = "♾ Endless – The End";
-      endlessBtn.style.display = "inline-block"; // reveal Endless restart
-    } else {
-      scoreEl.textContent = formatNumber(score, true); // one decimal
-      // Prestige button appears at 100,000
-      prestigeBtn.style.display = score >= 100000 ? "inline-block" : "none";
-      // Endless button hidden unless Infinity reached
-      endlessBtn.style.display = "none";
-    }
-
-    document.getElementById("clickValue").textContent = tidy(clickValue);
-    document.getElementById("idleValue").textContent = tidy(cps * prestigeMult);
-    document.getElementById("prestigeMult").textContent = prestigeMult + "x";
-
-    // Title shows only at final Endless
-    titleBadge.textContent = (endlessStage >= 7) ? "Eternal Clicker" : "";
-
-    renderUpgrades();
-    renderAchievements();
-    applyCosmetics();
-  }
-
-  // ---------- Cosmetics ----------
-  function applyCosmetics(){
-    const body = document.body;
-    const center = document.getElementById("centerPanel");
-    const cluster = document.getElementById("cluster");
-
-    // Reset classes
-    body.classList.remove("starfield","galaxy");
-    center.classList.remove("goldStar","rainbowStar","blackHole","hasCluster","eternal");
-
-    // Apply based on endlessStage (cosmetic-only, static)
-    switch(endlessStage){
-      case 1: center.classList.add("goldStar"); break; // Golden Star
-      case 2: body.classList.add("starfield"); break;  // Starfield BG
-      case 3: center.classList.add("rainbowStar"); break; // Rainbow Star
-      case 4: center.classList.add("hasCluster"); cluster.style.display="block"; break; // static cluster
-      case 5: center.classList.add("blackHole"); break; // Black Hole Star
-      case 6: body.classList.add("galaxy"); break; // Galaxy Swirl BG
-      case 7: center.classList.add("eternal"); document.getElementById("titleBadge").textContent = "Eternal Clicker"; break; // Final
-      default: cluster.style.display="none";
-    }
-    if (endlessStage !== 4) cluster.style.display="none";
-  }
-
-  // ---------- Formatting ----------
-  function formatNumber(num, oneDecimal=false){
-    if (num === Infinity) return "♾";
-    if (num >= 1e12) return (num/1e12).toFixed(2)+"T";
-    if (num >= 1e9)  return (num/1e9 ).toFixed(2)+"B";
-    if (num >= 1e6)  return (num/1e6 ).toFixed(2)+"M";
-    if (num >= 1e3)  return (num/1e3 ).toFixed(2)+"K";
-    return oneDecimal ? num.toFixed(1) : String(num);
-  }
-  function tidy(n){
-    return (Math.abs(n)%1===0) ? n.toString() : n.toFixed(1);
-  }
-
-  // ---------- Interactions ----------
-  document.getElementById("starBtn").addEventListener("click", ()=>{
-    if (!isFinite(score)) return; // no further gain once Endless is reached
+  document.getElementById("starBtn").addEventListener("click", () => {
     score += clickValue;
-    updateDisplay(); saveGame();
+    updateDisplay();
+    saveGame();
   });
 
-  function buyUpgrade(id){
-    const u = upgrades.find(x=> x.id === id);
-    if (!u) return;
-    if (!isFinite(score)) return;
-    if (score >= u.cost){
+  function buyUpgrade(id) {
+    let u = upgrades.find(x => x.id === id);
+    if (score >= u.cost) {
       score -= u.cost;
       u.owned++;
-      if (u.type === "click")  clickValue += u.value;
-      if (u.type === "cps")    cps += u.value;
-      if (u.type === "burst")  clickValue *= u.value; // permanent & stackable
-
-      // Price scaling: Burst x2.5, others x1.5
-      if (u.id === "burst"){
-        u.cost = Math.floor(u.cost * 2.5); // 1000 → 2500 → 6250...
-      } else {
-        u.cost = Math.floor(u.cost * 1.5);
-      }
-      updateDisplay(); saveGame();
+      if (u.type === "click") clickValue += u.value;
+      if (u.type === "cps") cps += u.value;
+      if (u.type === "burst") clickValue *= u.value;
+      u.cost = Math.floor(u.cost * 1.5);
+      updateDisplay();
+      saveGame();
     }
   }
 
-  // Idle tick
-  setInterval(()=>{
-    if (!isFinite(score)) return; // stop at Endless
+  function updateDisplay() {
+    document.getElementById("score").textContent = score.toFixed(1);
+    document.getElementById("clickValue").textContent = clickValue;
+    document.getElementById("idleValue").textContent = cps * prestigeMult;
+    document.getElementById("prestigeMult").textContent = prestigeMult + "x";
+    document.getElementById("starCount").textContent = stars;
+    document.getElementById("prestigeBtn").style.display = score >= 100000 ? "inline-block" : "none";
+    renderUpgrades();
+    renderAchievements();
+    renderStarUpgrades();
+  }
+
+  setInterval(() => {
     score += cps * prestigeMult;
-    updateDisplay(); saveGame();
+    if (autoPrestige && score >= 100000) prestige();
+    updateDisplay();
+    saveGame();
   }, 1000);
 
-  // ---------- Save / Reset / Prestige / Endless ----------
-  function saveGame(){
-    localStorage.setItem("starSave", JSON.stringify({
-      score, clickValue, cps, upgrades, prestigeMult, endlessStage
-    }));
+  function saveGame() {
+    localStorage.setItem("starSave", JSON.stringify({ score, clickValue, cps, upgrades, prestigeMult, stars, starUpgrades, autoPrestige }));
   }
 
-  function hardReset(){
-    if (confirm("Hard Reset? This wipes current run progress. (Endless cosmetics stay.)")){
-      score = 0; clickValue = 1; cps = 0; prestigeMult = 1;
-      upgrades = baseUpgrades();
-      // Note: Endless cosmetics are permanent; we keep endlessStage.
-      saveGame(); updateDisplay();
+  function hardReset() {
+    if (confirm("Are you sure you want to reset?")) {
+      score = 0;
+      clickValue = 1;
+      cps = 0;
+      upgrades.forEach(u => { u.owned = 0; u.cost = Math.max(10, Math.floor(u.cost / Math.pow(1.5, u.owned))); });
+      stars = 0;
+      starUpgrades.forEach(u => u.owned = 0);
+      autoPrestige = false;
+      saveGame();
+      updateDisplay();
     }
   }
 
-  function prestige(){
-    if (score >= 100000){
-      if (confirm("Prestige? Resets current run but doubles idle/sec permanently.")){
-        score = 0; clickValue = 1; cps = 0;
-        upgrades = baseUpgrades(); // fully reset prices to base
-        prestigeMult *= 2;
-        saveGame(); updateDisplay();
-      }
+  function prestige() {
+    if (score >= 100000) {
+      score = 0;
+      clickValue = 1;
+      cps = 0;
+      upgrades.forEach(u => { u.owned = 0; u.cost = Math.max(10, Math.floor(u.cost / Math.pow(1.5, u.owned))); });
+      prestigeMult *= 2;
+      // Apply Guiding Light
+      let startIdle = starUpgrades.find(u => u.id === "startIdle").owned;
+      if (startIdle > 0) cps += startIdle * prestigeMult;
+      saveGame();
+      updateDisplay();
     }
   }
 
-  // Appears only at Infinity (set in updateDisplay)
-  function endlessRestart(){
-    if (!isFinite(score)) {
-      const msg = "This is the FINAL reset path.\nEverything will be lost.\nYou will unlock a hidden cosmetic.\nProceed?";
-      if (confirm(msg)){
-        // award next cosmetic (cap at ENDLESS_MAX)
-        if (endlessStage < ENDLESS_MAX) endlessStage++;
-        // full wipe like a new install (but keep cosmetics)
-        score = 0; clickValue = 1; cps = 0; prestigeMult = 1;
-        upgrades = baseUpgrades();
-        // back to normal play
-        saveGame(); updateDisplay();
-        alert("Endless reward unlocked.");
-      }
-    }
-  }
-
-  // Initial paint
   updateDisplay();
 </script>
 
