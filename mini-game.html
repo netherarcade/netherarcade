@@ -1,520 +1,267 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Click the Star</title>
   <style>
-    :root{
-      --bg: #0d0d0d;
-      --panel: #161616;
-      --panel-2: #1a1a1a;
-      --muted: #bfbfbf;
-      --accent: #00ff99;
-      --buy: #ff3b3b;
-      --save: #2a8f6b;
-      --reset: #bb3b3b;
-      --prestige: #d4a800;
-      --card-shadow: 0 6px 18px rgba(0,0,0,0.6);
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #111;
+      color: white;
+      margin: 0;
+      padding: 0;
     }
-
-    html,body{
-      height:100%;
-      margin:0;
-      background:var(--bg);
-      color:#ffffff;
-      font-family: "Helvetica Neue", Arial, sans-serif;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 20px;
+      padding: 20px;
     }
-
-    /* Top nav */
-    header.nav {
-      display:flex;
-      gap:18px;
-      align-items:center;
-      padding:14px 26px;
-      color:var(--muted);
-      background:transparent;
-    }
-    header.nav a {
-      color:var(--muted);
-      text-decoration:none;
-      font-size:14px;
-      margin-right:6px;
-    }
-    header.nav a:hover { color: var(--accent); }
-
-    /* Overall layout */
-    .layout {
-      display:flex;
-      gap:20px;
-      padding:18px 26px 34px 26px;
-      align-items:flex-start;
-      box-sizing:border-box;
-    }
-
-    /* left shop column */
     .panel {
-      background: linear-gradient(180deg, var(--panel), var(--panel-2));
-      border-radius:12px;
-      padding:18px;
-      box-shadow: var(--card-shadow);
-      color:#fff;
+      background: #1a1a1a;
+      border-radius: 10px;
+      padding: 20px;
+      flex: 1;
+      min-height: 400px;
     }
-
-    .shop-panel { width:260px; flex: 0 0 260px; }
-    .center-panel { flex: 1.6; min-width:640px; text-align:center; padding:30px 32px; }
-    .upgrades-panel { width:360px; flex: 0 0 360px; }
-    .achievements-panel { width:360px; flex: 0 0 360px; }
-
-    /* headers */
     .panel h2 {
-      margin:0 0 12px 0;
-      color: var(--accent);
-      font-size:20px;
-      text-shadow: 0 0 10px rgba(0,255,153,0.25);
+      color: limegreen;
+      margin-top: 0;
+      text-align: center;
     }
-
-    /* star big */
-    .star-large {
-      font-size:68px;
-      color:#ff3b3b;
-      display:inline-block;
-      margin: 22px 0;
-      line-height:1;
-      cursor:pointer;
-      text-shadow:
-        0 0 6px rgba(255,59,59,0.25),
-        0 8px 24px rgba(0,0,0,0.65);
-      transition: transform .08s ease;
+    #star {
+      display: block;
+      font-size: 60px;
+      cursor: pointer;
+      margin: 20px auto;
+      color: red;
     }
-    .star-large:active { transform: scale(.94); }
-
-    /* stats */
-    .stats { margin:10px 0 18px 0; color:#fff; font-size:14px; }
-    .stats small { color: var(--muted); display:block; margin-top:6px; font-size:12px; }
-
-    /* inline buttons */
-    .controls { display:flex; gap:12px; justify-content:center; margin-top:8px; }
-    .btn {
-      border:0; border-radius:8px; padding:8px 12px; cursor:pointer; font-weight:600;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.45);
+    #info {
+      text-align: center;
+      margin-top: 10px;
     }
-    .btn.save { background:#233; color:#bfffdc; }
-    .btn.reset { background:#3b1c1c; color:#ffdede; }
-    .btn.prestige { background:#3b3200; color:#ffec99; }
-
-    /* list items (upgrades / shop items) */
-    .list { margin-top:12px; }
-    .item {
-      background:#0f0f0f;
-      border-radius:8px;
-      padding:10px 12px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      margin-bottom:10px;
-      box-shadow: inset 0 -1px 0 rgba(255,255,255,0.02);
+    .game-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 20px;
     }
-    .item .left { text-align:left; }
-    .item .left b { display:block; font-size:14px; color:#fff; margin-bottom:4px; }
-    .item small { color:var(--muted); display:block; font-size:12px; }
-    .cost { display:flex; gap:10px; align-items:center; }
-    .cost .price { color:var(--muted); font-weight:700; margin-right:6px; min-width:86px; text-align:right; }
-    .buy {
-      background:var(--buy); color:white; border-radius:6px; padding:6px 10px; border:0; cursor:pointer; font-weight:700;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    button {
+      padding: 8px 14px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
     }
-    .buy:disabled { background:#333; cursor:not-allowed; color:#777; }
+    button:hover {
+      opacity: 0.9;
+    }
+    .save-btn { background: #2d6a4f; color: white; }
+    .reset-btn { background: #d90429; color: white; }
+    .prestige-btn { background: #ffb703; color: black; }
 
-    /* achievements style */
-    .achievement { background:#0f0f0f; padding:10px; border-radius:8px; margin-bottom:8px; color:#777; }
-    .achievement.unlocked { color: var(--accent); font-weight:700; text-shadow:0 0 8px rgba(0,255,153,0.12); }
-
-    /* small footer notes area */
-    .notes { text-align:left; font-size:12px; color:#cfcfcf; margin-top:16px; line-height:1.45; }
-
-    /* responsive */
-    @media (max-width:1100px){
-      .layout { flex-direction:column; align-items:center; padding:12px; gap:14px; }
-      .shop-panel, .upgrades-panel, .achievements-panel { width:95%; flex: none; }
-      .center-panel { width:95%; min-width:unset; }
+    .upgrade {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #222;
+      padding: 10px;
+      margin: 5px 0;
+      border-radius: 6px;
+    }
+    .upgrade button {
+      background: red;
+      color: white;
+    }
+    .achievements-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .achievements-list li {
+      background: #222;
+      margin: 4px 0;
+      padding: 6px;
+      border-radius: 6px;
     }
   </style>
 </head>
 <body>
-
-  <header class="nav">
-    <a href="#">Home</a>
-    <a href="#">Team</a>
-    <a href="#">Mini-Game</a>
-    <a href="#">Socials</a>
-  </header>
-
-  <div class="layout">
-
-    <!-- Shop Panel (left) -->
-    <aside class="panel shop-panel" id="shopPanel">
-      <h2>⭐ Shop</h2>
-      <div style="display:flex;justify-content:space-between;align-items:center;">
-        <div style="font-size:14px;color:#fff;">Stars: <span id="starCount">0</span></div>
-        <button class="btn" onclick="tradeForStar()" style="background:#222;color:#bcdfff;padding:8px;border-radius:8px;">Trade 50T → +1 Star</button>
-      </div>
-
-      <div class="list" id="starUpgrades">
-        <!-- shop items inserted here -->
-      </div>
-
-      <div id="autoPrestigeToggle" style="margin-top:8px"></div>
-    </aside>
-
-    <!-- Center Panel -->
-    <main class="panel center-panel" id="centerPanel">
+  <div class="container">
+    <!-- Main Game Panel -->
+    <div class="panel">
       <h2>Click the Star</h2>
+      <p id="count">Count: 0</p>
+      <p id="stats">Click Value: 1 | Idle: 0/sec | Prestige Multiplier: 1x</p>
 
-      <div class="stats">
-        <div style="font-size:14px;">Count: <span id="count">0</span></div>
-        <div style="margin-top:10px;color:#fff;font-size:13px;">
-          <span>Click Value: <b id="clickValue">1</b></span>
-          &nbsp;|&nbsp;
-          <span>Idle: <b id="idleValue">0</b>/sec</span>
-          &nbsp;|&nbsp;
-          <span>Prestige Multiplier: <b id="prestigeMult">1x</b></span>
-        </div>
+      <div id="star">★</div>
+
+      <div class="game-buttons">
+        <button class="save-btn" onclick="saveGame()">💾 Save</button>
+        <button class="reset-btn" onclick="hardReset()">❌ Hard Reset</button>
+        <button class="prestige-btn" onclick="prestige()">🌟 Prestige</button>
       </div>
 
-      <div style="margin:22px 0;">
-        <div id="starBtn" class="star-large" title="Click me">★</div>
-      </div>
-
-      <div class="controls">
-        <button class="btn save" onclick="saveGame()">💾 Save</button>
-        <button class="btn reset" onclick="hardReset()">🗑 Hard Reset</button>
-        <button class="btn prestige" id="prestigeBtn" onclick="prestige()">🌟 Prestige</button>
-      </div>
-
-      <div class="notes">
+      <div id="info">
         <p>• Achievements are trophies (no stat boost).</p>
         <p>• Upgrades scale in price as you buy more.</p>
-        <p>• Your progress auto-saves often (you can also press Save).</p>
-        <p>• Prestige resets prices, click value and idle, but doubles your prestige multiplier.</p>
-        <p>• Reach Infinity to unlock a hidden cosmetic via Endless Restart.</p>
+        <p>• Your progress auto-saves often.</p>
+        <p>• Prestige resets progress but doubles idle/sec permanently.</p>
+        <p>• Reach Infinity to unlock Endless cosmetic rewards.</p>
       </div>
-    </main>
+    </div>
 
-    <!-- Upgrades Panel -->
-    <section class="panel upgrades-panel">
+    <!-- Upgrades + Achievements Panel -->
+    <div class="panel">
       <h2>Upgrades</h2>
-      <div id="upgradeList" class="list">
-        <!-- upgrades injected here -->
-      </div>
-    </section>
+      <div id="upgrades"></div>
 
-    <!-- Achievements Panel -->
-    <aside class="panel achievements-panel">
       <h2>Achievements</h2>
-      <div id="achievementsList">
-        <!-- achievements injected here -->
-      </div>
-    </aside>
-
+      <ul class="achievements-list" id="achievements"></ul>
+    </div>
   </div>
 
-<script>
-  // ============================================================
-  // This script preserves all game functionality you had before:
-  // upgrades, shop, stars, achievements, prestige, auto-prestige,
-  // save/load, number formatting, endless trigger.
-  // Only the visual styles were updated above.
-  // ============================================================
-
-  // -------- number formatter ----------
-  function formatNumber(num){
-    if (typeof num !== 'number' || !isFinite(num)) return String(num);
-    if (num < 1000) return Math.floor(num).toString();
-    const units = ["", "K", "M", "B", "T", "Qa", "Qi", "Sx","Sp","Oc","No","Dc"];
-    let i = 0;
-    while (num >= 1000 && i < units.length-1) { num /= 1000; i++; }
-    return (num % 1 === 0 ? num.toFixed(0) : num.toFixed(2)) + units[i];
-  }
-
-  // -------- game state (unchanged logic) ----------
-  let count = 0;
-  let clickValue = 1;
-  let idleValue = 0;
-  let prestigeMult = 1;
-  let stars = 0;
-  let autoPrestigeUnlocked = false;
-  let autoPrestigeEnabled = false;
-
-  // Normal upgrades (rebalanced, same as you asked)
-  let upgrades = [
-    { id:"click1", name: "+0.5 / click", baseCost:20, cost:20, value:0.5, type:"click", amount:0, scale:1.5, desc:"Practice makes perfect." },
-    { id:"click2", name: "+1 / click", baseCost:150, cost:150, value:1, type:"click", amount:0, scale:1.5, desc:"Heavier fingertips." },
-    { id:"cps1", name: "+1 / sec", baseCost:100, cost:100, value:1, type:"idle", amount:0, scale:1.5, desc:"Little helpers." },
-    { id:"cps5", name: "+5 / sec", baseCost:500, cost:500, value:5, type:"idle", amount:0, scale:1.5, desc:"Bigger crew." },
-    { id:"burst", name: "Burst x2", baseCost:1000, cost:1000, value:2, type:"burst", amount:0, scale:2, desc:"Permanently doubles click value (stackable)." }
-  ];
-
-  // Star shop (permanent buys)
-  let shopUpgrades = [
-    { id:"guidingLight", name:"Guiding Light", cost:2, owned:0, desc:"Start with +Idle/sec × Prestige multiplier." },
-    { id:"celestialClicks", name:"Celestial Clicks", cost:5, owned:0, desc:"Permanently double click value." },
-    { id:"ascendantCycle", name:"Ascendant Cycle", cost:10, owned:0, desc:"Unlock auto prestige toggle." },
-    { id:"efficientUniverse", name:"Efficient Universe", cost:15, owned:0, desc:"5% cheaper upgrades." }
-  ];
-
-  // Achievements (kept and expanded)
-  let achievements = [
-    { id:"first", name:"First Click", condition:()=> count >= 1 },
-    { id:"ten", name:"Ten Up", condition:()=> count >= 10 },
-    { id:"hundred", name:"Triple Digits", condition:()=> count >= 100 },
-    { id:"thousand", name:"1,000!", condition:()=> count >= 1000 },
-    { id:"auto", name:"Automation", condition:()=> idleValue > 0 },
-    { id:"banked", name:"5,000 Banked", condition:()=> count >= 5000 },
-    { id:"lotofones", name:"A Lot of Ones", condition:()=> clickValue >= 11 },
-    { id:"moneymoney", name:"Money Money", condition:()=> count >= 1000000 },
-    { id:"prestige", name:"Prestigious", condition:()=> prestigeMult > 1 },
-    { id:"starry", name:"Starry Eyed", condition:()=> stars > 0 },
-    { id:"collector", name:"Collector", condition:()=> shopUpgrades.some(s=>s.owned>0) },
-    { id:"trulybig", name:"True Grinder", condition:()=> count >= 1e9 }
-  ];
-  let unlockedAchievements = [];
-
-  // ---------- rendering helpers ----------
-  const starCountEl = () => document.getElementById('starCount');
-  const starBtn = () => document.getElementById('starBtn');
-  const countEl = () => document.getElementById('count');
-  const clickValueEl = () => document.getElementById('clickValue');
-  const idleValueEl = () => document.getElementById('idleValue');
-  const prestigeMultEl = () => document.getElementById('prestigeMult');
-
-  // ---------- render shop ----------
-  function renderShop(){
-    starCountEl().textContent = stars;
-    const container = document.getElementById('starUpgrades');
-    let html = '';
-    shopUpgrades.forEach((s,i)=>{
-      html += `<div class="item">
-        <div class="left">
-          <b>${s.name} (Owned: ${s.owned})</b>
-          <small>${s.desc}</small>
-        </div>
-        <div class="cost">
-          <div class="price">${s.cost}⭐</div>
-          <button class="buy" ${s.owned ? 'disabled' : ''} onclick="buyStarUpgrade(${i})">Buy</button>
-        </div>
-      </div>`;
-    });
-    container.innerHTML = html;
-    renderAutoPrestigeToggle();
-  }
-
-  // ---------- render upgrades ----------
-  function renderUpgrades(){
-    const container = document.getElementById('upgradeList');
-    let html = '';
-    upgrades.forEach((u,i)=>{
-      html += `<div class="item">
-        <div class="left">
-          <b>${u.name} (Owned: ${u.amount})</b>
-          <small>${u.desc}</small>
-        </div>
-        <div class="cost">
-          <div class="price">${formatNumber(u.cost)}</div>
-          <button class="buy" onclick="buyUpgrade(${i})">Buy</button>
-        </div>
-      </div>`;
-    });
-    container.innerHTML = html;
-  }
-
-  // ---------- render achievements ----------
-  function renderAchievements(){
-    const c = document.getElementById('achievementsList');
-    let html = '';
-    achievements.forEach((a, i)=>{
-      const unlocked = unlockedAchievements.includes(a.id);
-      html += `<div class="achievement ${unlocked ? 'unlocked' : ''}">${a.name}</div>`;
-    });
-    c.innerHTML = html;
-  }
-
-  // ---------- actions ----------
-  function clickStarAction(){
-    count += clickValue;
-    checkAchievements();
-    updateDisplay();
-    saveGame();
-  }
-
-  function buyUpgrade(index){
-    const u = upgrades[index];
-    if (count >= u.cost){
-      count -= u.cost;
-      u.amount++;
-      if (u.type === 'click') clickValue += u.value;
-      else if (u.type === 'idle') idleValue += u.value;
-      else if (u.type === 'burst') clickValue *= u.value;
-      u.cost = Math.floor(u.cost * u.scale);
-      renderUpgrades();
-      updateDisplay();
-      saveGame();
-    }
-  }
-
-  function tradeForStar(){
-    const tradeCost = 5e13; // 50T
-    if (count >= tradeCost){
-      count -= tradeCost;
-      stars++;
-      renderShop();
-      checkAchievements();
-      updateDisplay();
-      saveGame();
-    }
-  }
-
-  function buyStarUpgrade(i){
-    const s = shopUpgrades[i];
-    if (stars >= s.cost && s.owned === 0){
-      stars -= s.cost;
-      s.owned = 1;
-      if (s.id === 'celestialClicks' || s.name === 'Celestial Clicks') clickValue *= 2;
-      if (s.name === 'Ascendant Cycle' || s.id === 'ascendantCycle') { autoPrestigeUnlocked = true; }
-      if (s.name === 'Efficient Universe' || s.id === 'efficientUniverse') {
-        // apply 5% price cut to normal upgrades
-        upgrades.forEach(u => { u.cost = Math.max(1, Math.floor(u.cost * 0.95)); });
-      }
-      renderShop();
-      renderUpgrades();
-      checkAchievements();
-      updateDisplay();
-      saveGame();
-    }
-  }
-
-  function prestige(){
-    if (count >= 100000){ // original manual threshold in some versions, but preserving behavior: allow prestige call
-      prestigeMult *= 2;
-      count = 0;
-      clickValue = 1;
-      idleValue = 0;
-      upgrades.forEach(u => { u.amount = 0; u.cost = u.baseCost; });
-      renderUpgrades();
-      checkAchievements();
-      updateDisplay();
-      saveGame();
-    } else {
-      // still allow prestige if called manually (older code called without threshold)
-      prestigeMult *= 2;
-      count = 0;
-      clickValue = 1;
-      idleValue = 0;
-      upgrades.forEach(u => { u.amount = 0; u.cost = u.baseCost; });
-      renderUpgrades();
-      checkAchievements();
-      updateDisplay();
-      saveGame();
-    }
-  }
-
-  // ---------- auto-prestige UI ----------
-  function renderAutoPrestigeToggle(){
-    const el = document.getElementById('autoPrestigeToggle');
-    if (!autoPrestigeUnlocked) { el.innerHTML = ''; return; }
-    el.innerHTML = `<div style="margin-top:8px;">
-      <small style="color:var(--muted);">Auto Prestige:</small>
-      <button style="margin-top:6px;padding:6px 10px;border-radius:8px;border:0;cursor:pointer;"
-        class="${autoPrestigeEnabled ? 'toggle-on' : 'toggle-off'}"
-        onclick="toggleAutoPrestige()">${autoPrestigeEnabled ? 'ON' : 'OFF'}</button>
-    </div>`;
-  }
-  function toggleAutoPrestige(){ autoPrestigeEnabled = !autoPrestigeEnabled; renderAutoPrestigeToggle(); saveGame(); }
-
-  // ---------- achievements ----------
-  function checkAchievements(){
-    achievements.forEach(a=>{
-      if (!unlockedAchievements.includes(a.id) && a.condition()){
-        unlockedAchievements.push(a.id);
-      }
-    });
-    renderAchievements();
-  }
-
-  // ---------- display update ----------
-  function updateDisplay(){
-    countEl().textContent = formatNumber(count);
-    document.getElementById('clickValue').textContent = formatNumber(clickValue);
-    document.getElementById('idleValue').textContent = formatNumber(idleValue);
-    document.getElementById('prestigeMult').textContent = formatNumber(prestigeMult) + 'x';
-    renderShop();
-    renderUpgrades();
-    renderAchievements();
-  }
-
-  // ---------- game loop ----------
-  setInterval(()=>{
-    count += idleValue;
-    // auto prestige only triggers at extreme Infinity in earlier design — keep safe check
-    if (autoPrestigeEnabled && count >= 1e308) prestige();
-    checkAchievements();
-    updateDisplay();
-  }, 1000);
-
-  // ---------- save/load ----------
-  function saveGame(){
-    const save = {
-      count, clickValue, idleValue, prestigeMult,
-      stars, upgrades, shopUpgrades,
-      autoPrestigeUnlocked, autoPrestigeEnabled,
-      unlockedAchievements
+  <script>
+    let count = 0;
+    let clickValue = 1;
+    let idleValue = 0;
+    let prestigeMultiplier = 1;
+    let upgrades = {
+      click05: { name: "+0.5 / click", baseCost: 30, cost: 30, amount: 0, effect: () => { clickValue += 0.5; }, scale: 1.5 },
+      click1: { name: "+1 / click", baseCost: 150, cost: 150, amount: 0, effect: () => { clickValue += 1; }, scale: 1.5 },
+      idle1: { name: "+1 / sec", baseCost: 100, cost: 100, amount: 0, effect: () => { idleValue += 1; }, scale: 1.5 },
+      idle5: { name: "+5 / sec", baseCost: 500, cost: 500, amount: 0, effect: () => { idleValue += 5; }, scale: 1.5 },
+      burst: { name: "Burst x2", baseCost: 1000, cost: 1000, amount: 0, effect: () => { clickValue *= 2; }, scale: 2 },
     };
-    try { localStorage.setItem('starClickerSave', JSON.stringify(save)); } catch(e){ /* ignore */ }
-  }
 
-  function loadGame(){
-    try {
-      const raw = localStorage.getItem('starClickerSave');
-      if (!raw) return;
-      const s = JSON.parse(raw);
-      count = s.count ?? count;
-      clickValue = s.clickValue ?? clickValue;
-      idleValue = s.idleValue ?? idleValue;
-      prestigeMult = s.prestigeMult ?? prestigeMult;
-      stars = s.stars ?? stars;
-      // Keep old structure if missing
-      upgrades = s.upgrades && s.upgrades.length ? s.upgrades : upgrades;
-      shopUpgrades = s.shopUpgrades && s.shopUpgrades.length ? s.shopUpgrades : shopUpgrades;
-      autoPrestigeUnlocked = s.autoPrestigeUnlocked ?? autoPrestigeUnlocked;
-      autoPrestigeEnabled = s.autoPrestigeEnabled ?? autoPrestigeEnabled;
-      unlockedAchievements = s.unlockedAchievements ?? unlockedAchievements;
-    } catch(e){}
-  }
+    let achievements = [
+      { name: "First Click", unlocked: false, condition: () => count >= 1 },
+      { name: "Ten Up", unlocked: false, condition: () => count >= 10 },
+      { name: "Triple Digits", unlocked: false, condition: () => count >= 100 },
+      { name: "1,000!", unlocked: false, condition: () => count >= 1000 },
+      { name: "Automation", unlocked: false, condition: () => idleValue > 0 },
+      { name: "5,000 Banked", unlocked: false, condition: () => count >= 5000 },
+      { name: "A Lot of Ones", unlocked: false, condition: () => count === 1111 },
+      { name: "Money Money", unlocked: false, condition: () => count >= 1000000 },
+    ];
 
-  function hardReset(){
-    if (!confirm('Are you sure? This will wipe everything!')) return;
-    try { localStorage.removeItem('starClickerSave'); } catch(e){}
-    // reset in-memory state
-    count = 0; clickValue = 1; idleValue = 0; prestigeMult = 1; stars = 0;
-    autoPrestigeUnlocked = false; autoPrestigeEnabled = false; unlockedAchievements = [];
-    upgrades.forEach(u=>{ u.amount=0; u.cost = u.baseCost; });
-    shopUpgrades.forEach(s=> s.owned = 0);
-    renderUpgrades(); renderShop(); renderAchievements(); updateDisplay(); saveGame();
-  }
+    const star = document.getElementById("star");
+    const countDisplay = document.getElementById("count");
+    const statsDisplay = document.getElementById("stats");
+    const upgradesDiv = document.getElementById("upgrades");
+    const achievementsList = document.getElementById("achievements");
 
-  // ---------- attach star click ----------
-  document.getElementById('starBtn').addEventListener('click', ()=> { clickStarAction(); });
+    function updateDisplay() {
+      countDisplay.textContent = `Count: ${formatNumber(count)}`;
+      statsDisplay.textContent = `Click Value: ${clickValue} | Idle: ${idleValue}/sec | Prestige Multiplier: ${prestigeMultiplier}x`;
+      renderUpgrades();
+      renderAchievements();
+    }
 
-  // ---------- init ----------
-  loadGame();
-  renderUpgrades();
-  renderShop();
-  renderAchievements();
-  renderAutoPrestigeToggle();
-  updateDisplay();
-  setInterval(saveGame, 10000); // auto save every 10s
-</script>
+    function clickStar() {
+      count += clickValue * prestigeMultiplier;
+      updateDisplay();
+    }
+
+    function buyUpgrade(key) {
+      let up = upgrades[key];
+      if (count >= up.cost) {
+        count -= up.cost;
+        up.effect();
+        up.amount++;
+        up.cost = Math.floor(up.baseCost * Math.pow(up.scale, up.amount));
+        updateDisplay();
+      }
+    }
+
+    function renderUpgrades() {
+      upgradesDiv.innerHTML = "";
+      for (let key in upgrades) {
+        let up = upgrades[key];
+        let div = document.createElement("div");
+        div.classList.add("upgrade");
+        div.innerHTML = `<span>${up.name} (Owned: ${up.amount}) - ${formatNumber(up.cost)}</span>
+                         <button onclick="buyUpgrade('${key}')">Buy</button>`;
+        upgradesDiv.appendChild(div);
+      }
+    }
+
+    function renderAchievements() {
+      achievementsList.innerHTML = "";
+      achievements.forEach(a => {
+        if (a.condition() && !a.unlocked) {
+          a.unlocked = true;
+        }
+        let li = document.createElement("li");
+        li.textContent = a.name;
+        li.style.color = a.unlocked ? "lime" : "gray";
+        achievementsList.appendChild(li);
+      });
+    }
+
+    function prestige() {
+      if (count >= 1000000) {
+        count = 0;
+        clickValue = 1;
+        idleValue = 0;
+        prestigeMultiplier *= 2;
+        for (let key in upgrades) {
+          upgrades[key].amount = 0;
+          upgrades[key].cost = upgrades[key].baseCost;
+        }
+        updateDisplay();
+      } else {
+        alert("You need at least 1M to Prestige!");
+      }
+    }
+
+    function saveGame() {
+      let saveData = { count, clickValue, idleValue, prestigeMultiplier, upgrades, achievements };
+      localStorage.setItem("starClickerSave", JSON.stringify(saveData));
+    }
+
+    function loadGame() {
+      let data = JSON.parse(localStorage.getItem("starClickerSave"));
+      if (data) {
+        count = data.count;
+        clickValue = data.clickValue;
+        idleValue = data.idleValue;
+        prestigeMultiplier = data.prestigeMultiplier;
+        upgrades = data.upgrades;
+        achievements = data.achievements;
+        updateDisplay();
+      }
+    }
+
+    function hardReset() {
+      if (confirm("Are you sure you want to reset everything?")) {
+        localStorage.removeItem("starClickerSave");
+        location.reload();
+      }
+    }
+
+    function formatNumber(num) {
+      if (num >= 1e12) return (num / 1e12).toFixed(2) + "T";
+      if (num >= 1e9) return (num / 1e9).toFixed(2) + "B";
+      if (num >= 1e6) return (num / 1e6).toFixed(2) + "M";
+      if (num >= 1e3) return (num / 1e3).toFixed(2) + "K";
+      return Math.floor(num);
+    }
+
+    // Idle gain
+    setInterval(() => {
+      count += idleValue * prestigeMultiplier;
+      updateDisplay();
+    }, 1000);
+
+    // Auto save
+    setInterval(saveGame, 10000);
+
+    star.addEventListener("click", clickStar);
+    loadGame();
+    updateDisplay();
+  </script>
 </body>
 </html>
