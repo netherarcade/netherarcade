@@ -114,6 +114,9 @@
       background: linear-gradient(90deg, #ff006a, #ff9400, #f6ff00, #00ffa6, #00a2ff, #b400ff);
       -webkit-background-clip: text; background-clip: text; color: transparent;
     }
+    nav { position: sticky; top: 0; z-index: 10; background: var(--surface); display: flex; justify-content: center; gap: 1.5rem; padding: 0.75rem 1rem; border-bottom: 1px solid var(--card); }
+nav a { background: none; border: none; color: var(--subtle); font-size: 1rem; cursor: pointer; text-decoration: none; transition: color 0.2s ease; }
+nav a.active, nav a:hover { color: var(--accent); }
 
   </style>
 </head>
