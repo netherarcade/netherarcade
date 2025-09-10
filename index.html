@@ -29,14 +29,14 @@
       background: #1a1a1a;
       border-radius: 10px;
       padding: 15px;
-      width: 30%;
+      width: 32%;
       box-shadow: 0px 0px 10px rgba(0,0,0,0.5);
     }
     h2 {
       color: #0f0;
     }
     button {
-      background: #c00;
+      background: red;
       color: #fff;
       border: none;
       padding: 5px 10px;
@@ -57,10 +57,26 @@
     .toggle-off {
       background: red;
     }
-    .star {
+    #star {
       font-size: 60px;
       color: red;
       cursor: pointer;
+      text-shadow: 0 0 10px #f33;
+    }
+    .achievement {
+      background: #222;
+      margin: 5px 0;
+      padding: 5px;
+      border-radius: 5px;
+      color: #aaa;
+    }
+    .achievement.unlocked {
+      color: #fff;
+      background: #333;
+    }
+    .game-buttons button {
+      margin-right: 10px;
+      padding: 8px 15px;
     }
   </style>
 </head>
@@ -75,25 +91,18 @@
 
 <div class="container">
 
-  <!-- Shop Panel -->
-  <div class="panel" id="shopPanel">
-    <h2><span class="shop-star">⭐</span> Shop</h2>
-    <p id="starCount">Stars: 0</p>
-    <button onclick="tradeForStar()">Trade 50T → +1 Star</button>
-    <div id="starUpgrades"></div>
-    <div id="autoPrestigeToggle"></div>
-  </div>
-
   <!-- Main Game Panel -->
-  <div class="panel" style="width: 35%;">
+  <div class="panel" style="width: 40%;">
     <h2>Click the Star</h2>
     <p id="count">Count: 0</p>
     <p id="stats"></p>
-    <div class="star" onclick="clickStar()">★</div>
+    <div id="star" onclick="clickStar()">★</div>
     <br>
-    <button onclick="saveGame()">💾 Save</button>
-    <button onclick="hardReset()">❌ Hard Reset</button>
-    <button id="prestigeBtn" onclick="prestige()">🌟 Prestige</button>
+    <div class="game-buttons">
+      <button onclick="saveGame()">💾 Save</button>
+      <button onclick="hardReset()">❌ Hard Reset</button>
+      <button onclick="prestige()">🌟 Prestige</button>
+    </div>
     <p style="font-size:12px; color:#aaa;">
       • Achievements are trophies (no stat boost).<br>
       • Upgrades scale in price as you buy more.<br>
@@ -103,12 +112,21 @@
     </p>
   </div>
 
-  <!-- Upgrades Panel -->
+  <!-- Shop Panel -->
+  <div class="panel">
+    <h2><span class="shop-star">⭐</span> Shop</h2>
+    <p id="starCount">Stars: 0</p>
+    <button onclick="tradeForStar()">Trade 50T → +1 Star</button>
+    <div id="starUpgrades"></div>
+    <div id="autoPrestigeToggle"></div>
+  </div>
+
+  <!-- Upgrades & Achievements Panel -->
   <div class="panel">
     <h2>Upgrades</h2>
     <div id="upgradeList"></div>
     <h2>Achievements</h2>
-    <div id="achievementList"></div>
+    <div id="achievements"></div>
   </div>
 
 </div>
@@ -135,13 +153,13 @@
   let autoPrestigeUnlocked = false;
   let autoPrestigeEnabled = false;
 
-  // Normal upgrades with adjusted scaling
+  // Normal upgrades
   let upgrades = [
-    { name: "+0.5 / click", baseCost: 20, cost: 20, value: 0.5, type: "click", amount: 0, scale: 1.5 },
-    { name: "+1 / click", baseCost: 150, cost: 150, value: 1, type: "click", amount: 0, scale: 1.5 },
-    { name: "+1 / sec", baseCost: 100, cost: 100, value: 1, type: "idle", amount: 0, scale: 1.5 },
-    { name: "+5 / sec", baseCost: 500, cost: 500, value: 5, type: "idle", amount: 0, scale: 1.5 },
-    { name: "Burst x2", baseCost: 1000, cost: 1000, value: 2, type: "burst", amount: 0, scale: 2 }
+    { name: "+0.5 / click", baseCost: 45, cost: 45, value: 0.5, type: "click", amount: 0 },
+    { name: "+1 / click", baseCost: 150, cost: 150, value: 1, type: "click", amount: 0 },
+    { name: "+1 / sec", baseCost: 100, cost: 100, value: 1, type: "idle", amount: 0 },
+    { name: "+5 / sec", baseCost: 500, cost: 500, value: 5, type: "idle", amount: 0 },
+    { name: "Burst x2", baseCost: 1000, cost: 1000, value: 2, type: "burst", amount: 0 }
   ];
 
   // Star Shop upgrades
@@ -154,16 +172,15 @@
 
   // Achievements
   let achievements = [
-    { name: "First Click", condition: () => count >= 1 },
-    { name: "Ten Up", condition: () => count >= 10 },
-    { name: "Triple Digits", condition: () => count >= 100 },
-    { name: "1,000!", condition: () => count >= 1000 },
-    { name: "Automation", condition: () => idleValue > 0 },
-    { name: "5,000 Banked", condition: () => count >= 5000 },
-    { name: "A Lot of Ones", condition: () => clickValue >= 111 },
-    { name: "Money Money", condition: () => count >= 100000 }
+    { name: "First Click", unlocked: false, condition: () => count >= 1 },
+    { name: "Ten Up", unlocked: false, condition: () => count >= 10 },
+    { name: "Triple Digits", unlocked: false, condition: () => count >= 100 },
+    { name: "1,000!", unlocked: false, condition: () => count >= 1000 },
+    { name: "Automation", unlocked: false, condition: () => idleValue > 0 },
+    { name: "5,000 Banked", unlocked: false, condition: () => count >= 5000 },
+    { name: "A Lot of Ones", unlocked: false, condition: () => count === 1111 },
+    { name: "Money Money", unlocked: false, condition: () => count >= 100000 }
   ];
-  let achieved = [];
 
   // ================= Game Functions =================
   function clickStar() {
@@ -179,7 +196,7 @@
       if (u.type === "click") clickValue += u.value;
       if (u.type === "idle") idleValue += u.value;
       if (u.type === "burst") clickValue *= u.value;
-      u.cost = Math.floor(u.cost * u.scale);
+      u.cost = Math.floor(u.cost * 1.5); // Price scaling
       renderUpgrades();
       updateDisplay();
     }
@@ -211,21 +228,17 @@
   }
 
   function prestige() {
-    if (count >= 1e6) { // 1,000,000 required
-      prestigeMultiplier *= 2;
-      count = 0;
-      clickValue = 1;
-      idleValue = 0;
-      upgrades.forEach(u => {
-        u.amount = 0;
-        u.cost = u.baseCost;
-      });
-      renderUpgrades();
-      updateDisplay();
-      saveGame();
-    } else {
-      alert("You need at least 1,000,000 to Prestige!");
-    }
+    if (count < 1e6) return; // Needs 1M
+    prestigeMultiplier *= 2;
+    count = 0;
+    clickValue = 1;
+    idleValue = 0;
+    upgrades.forEach(u => {
+      u.amount = 0;
+      u.cost = u.baseCost;
+    });
+    renderUpgrades();
+    updateDisplay();
   }
 
   // ================= Auto Prestige =================
@@ -242,25 +255,6 @@
   function toggleAutoPrestige() {
     autoPrestigeEnabled = !autoPrestigeEnabled;
     renderAutoPrestigeToggle();
-  }
-
-  // ================= Achievements =================
-  function checkAchievements() {
-    achievements.forEach(a => {
-      if (!achieved.includes(a.name) && a.condition()) {
-        achieved.push(a.name);
-      }
-    });
-    renderAchievements();
-  }
-
-  function renderAchievements() {
-    let html = "";
-    achievements.forEach(a => {
-      let unlocked = achieved.includes(a.name);
-      html += `<div style="color:${unlocked ? '#0f0' : '#666'}">${a.name}</div>`;
-    });
-    document.getElementById("achievementList").innerHTML = html;
   }
 
   // ================= Rendering =================
@@ -288,23 +282,32 @@
     document.getElementById("starUpgrades").innerHTML = html;
   }
 
+  function renderAchievements() {
+    let html = "";
+    achievements.forEach(a => {
+      html += `<div class="achievement ${a.unlocked ? 'unlocked' : ''}">${a.name}</div>`;
+    });
+    document.getElementById("achievements").innerHTML = html;
+  }
+
   function updateDisplay() {
     document.getElementById("count").innerText = "Count: " + formatNumber(count);
-    document.getElementById("stats").innerText =
+    document.getElementById("stats").innerHTML =
       `Click Value: ${formatNumber(clickValue)} | Idle: ${formatNumber(idleValue)}/sec | Prestige Multiplier: ${formatNumber(prestigeMultiplier)}x`;
+
+    achievements.forEach(a => {
+      if (!a.unlocked && a.condition()) a.unlocked = true;
+    });
+
+    renderAchievements();
     renderShop();
     renderAutoPrestigeToggle();
-    checkAchievements();
-
-    // Enable prestige button only if >= 1M
-    const prestigeBtn = document.getElementById("prestigeBtn");
-    prestigeBtn.disabled = count < 1e6;
   }
 
   // ================= Game Loop =================
   setInterval(() => {
     count += idleValue;
-    if (autoPrestigeEnabled && count >= 1e308) {
+    if (autoPrestigeEnabled && count >= 1e6) {
       prestige();
     }
     updateDisplay();
@@ -314,8 +317,8 @@
   function saveGame() {
     let save = {
       count, clickValue, idleValue, prestigeMultiplier,
-      stars, upgrades, shopUpgrades,
-      autoPrestigeUnlocked, autoPrestigeEnabled, achieved
+      stars, upgrades, shopUpgrades, achievements,
+      autoPrestigeUnlocked, autoPrestigeEnabled
     };
     localStorage.setItem("starClickerSave", JSON.stringify(save));
   }
@@ -330,14 +333,14 @@
       stars = save.stars || 0;
       upgrades = save.upgrades || upgrades;
       shopUpgrades = save.shopUpgrades || shopUpgrades;
+      achievements = save.achievements || achievements;
       autoPrestigeUnlocked = save.autoPrestigeUnlocked || false;
       autoPrestigeEnabled = save.autoPrestigeEnabled || false;
-      achieved = save.achieved || [];
     }
     renderUpgrades();
     renderShop();
-    renderAutoPrestigeToggle();
     renderAchievements();
+    renderAutoPrestigeToggle();
     updateDisplay();
   }
 
