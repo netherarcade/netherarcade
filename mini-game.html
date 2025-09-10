@@ -29,12 +29,11 @@
       background: #1a1a1a;
       border-radius: 10px;
       padding: 15px;
-      width: 23%;
+      width: 30%;
       box-shadow: 0px 0px 10px rgba(0,0,0,0.5);
     }
     h2 {
       color: #0f0;
-      margin-top: 0;
     }
     button {
       background: #c00;
@@ -48,33 +47,15 @@
       background: #444;
       cursor: not-allowed;
     }
-    .big-star {
-      font-size: 40px;
-      cursor: pointer;
-    }
     .shop-star {
       color: gold;
-      font-size: 20px;
+      font-size: 22px;
     }
     .toggle-on {
       background: green;
     }
     .toggle-off {
       background: red;
-    }
-    small {
-      color: #aaa;
-    }
-    .achievement {
-      padding: 5px;
-      margin-bottom: 5px;
-      background: #222;
-      border-radius: 5px;
-      color: #777;
-    }
-    .achievement.unlocked {
-      color: #0f0;
-      font-weight: bold;
     }
   </style>
 </head>
@@ -99,22 +80,21 @@
   </div>
 
   <!-- Main Game Panel -->
-  <div class="panel" style="width: 30%;">
+  <div class="panel" style="width: 35%;">
     <h2>Click the Star</h2>
     <p id="count">Count: 0</p>
     <p id="stats"></p>
-    <div class="big-star" onclick="clickStar()">⭐</div>
+    <div style="font-size: 40px; cursor:pointer;" onclick="clickStar()">⭐</div>
     <br>
-    <button onclick="saveGame()">Save</button>
-    <button onclick="hardReset()">Hard Reset</button>
-    <button onclick="prestige()">Prestige</button>
+    <button onclick="saveGame()">💾 Save</button>
+    <button onclick="hardReset()">❌ Hard Reset</button>
+    <button onclick="prestige()">🌟 Prestige</button>
     <p style="font-size:12px; color:#aaa;">
       • Achievements are trophies (no stat boost).<br>
       • Upgrades scale in price as you buy more.<br>
       • Your progress auto-saves often.<br>
-      • Prestige resets prices, click value and idle, but doubles your prestige multiplier.<br>
-      • Stars persist forever (not reset on prestige).<br>
-      • Reach Infinity to unlock Endless rewards.<br>
+      • Prestige resets progress but doubles idle/sec permanently.<br>
+      • Reach Infinity to unlock Endless cosmetic rewards.<br>
     </p>
   </div>
 
@@ -122,12 +102,6 @@
   <div class="panel">
     <h2>Upgrades</h2>
     <div id="upgradeList"></div>
-  </div>
-
-  <!-- Achievements Panel -->
-  <div class="panel">
-    <h2>Achievements</h2>
-    <div id="achievementsList"></div>
   </div>
 
 </div>
@@ -154,13 +128,13 @@
   let autoPrestigeUnlocked = false;
   let autoPrestigeEnabled = false;
 
-  // Normal upgrades
+  // Normal upgrades (rebalanced)
   let upgrades = [
-    { name: "+0.5 / click", baseCost: 20, cost: 20, value: 0.5, type: "click", amount: 0, desc: "Practice makes perfect." },
-    { name: "+1 / click", baseCost: 100, cost: 100, value: 1, type: "click", amount: 0, desc: "Heavier fingertips." },
-    { name: "+1 / sec", baseCost: 25, cost: 25, value: 1, type: "idle", amount: 0, desc: "Little helpers." },
-    { name: "+5 / sec", baseCost: 125, cost: 125, value: 5, type: "idle", amount: 0, desc: "Bigger crew." },
-    { name: "Burst x2", baseCost: 1000, cost: 1000, value: 2, type: "burst", amount: 0, desc: "Permanently doubles click value (stackable)." }
+    { name: "+0.5 / click", baseCost: 20, cost: 20, value: 0.5, type: "click", amount: 0, scale: 1.5 },
+    { name: "+1 / click", baseCost: 150, cost: 150, value: 1, type: "click", amount: 0, scale: 1.5 },
+    { name: "+1 / sec", baseCost: 100, cost: 100, value: 1, type: "idle", amount: 0, scale: 1.5 },
+    { name: "+5 / sec", baseCost: 500, cost: 500, value: 5, type: "idle", amount: 0, scale: 1.5 },
+    { name: "Burst x2", baseCost: 1000, cost: 1000, value: 2, type: "burst", amount: 0, scale: 2 }
   ];
 
   // Star Shop upgrades
@@ -171,27 +145,9 @@
     { name: "Efficient Universe", cost: 15, owned: 0, desc: "5% cheaper upgrades." }
   ];
 
-  // Achievements
-  let achievements = [
-    { name: "First Click", condition: () => count >= 1 },
-    { name: "Ten Up", condition: () => count >= 10 },
-    { name: "Triple Digits", condition: () => count >= 100 },
-    { name: "1,000!", condition: () => count >= 1000 },
-    { name: "Automation", condition: () => idleValue > 0 },
-    { name: "5,000 Banked", condition: () => count >= 5000 },
-    { name: "A Lot of Ones", condition: () => clickValue >= 11 },
-    { name: "Money Money", condition: () => count >= 1000000 },
-    { name: "Prestigious", condition: () => prestigeMultiplier > 1 },
-    { name: "Starry Eyed", condition: () => stars > 0 },
-    { name: "Collector", condition: () => shopUpgrades.some(u => u.owned > 0) },
-    { name: "True Grinder", condition: () => count >= 1e9 }
-  ];
-  let unlockedAchievements = [];
-
   // ================= Game Functions =================
   function clickStar() {
     count += clickValue;
-    checkAchievements();
     updateDisplay();
   }
 
@@ -203,19 +159,18 @@
       if (u.type === "click") clickValue += u.value;
       if (u.type === "idle") idleValue += u.value;
       if (u.type === "burst") clickValue *= u.value;
-      u.cost = Math.floor(u.cost * 2);
+      u.cost = Math.floor(u.cost * u.scale); // NEW: use scale factor
       renderUpgrades();
       updateDisplay();
     }
   }
 
   function tradeForStar() {
-    let tradeCost = 50 * 1e12; // 50T
+    let tradeCost = 50000000000000; // 50T
     if (count >= tradeCost) {
       count -= tradeCost;
       stars++;
       renderShop();
-      checkAchievements();
       updateDisplay();
     }
   }
@@ -231,7 +186,6 @@
         renderAutoPrestigeToggle();
       }
       renderShop();
-      checkAchievements();
       updateDisplay();
     }
   }
@@ -243,31 +197,10 @@
     idleValue = 0;
     upgrades.forEach(u => {
       u.amount = 0;
-      u.cost = u.baseCost;
+      u.cost = u.baseCost; // reset to base
     });
     renderUpgrades();
-    checkAchievements();
     updateDisplay();
-  }
-
-  // ================= Achievements =================
-  function checkAchievements() {
-    achievements.forEach((a, i) => {
-      if (!unlockedAchievements.includes(i) && a.condition()) {
-        unlockedAchievements.push(i);
-        renderAchievements();
-      }
-    });
-  }
-
-  function renderAchievements() {
-    let html = "";
-    achievements.forEach((a, i) => {
-      html += `<div class="achievement ${unlockedAchievements.includes(i) ? "unlocked" : ""}">
-        ${a.name}
-      </div>`;
-    });
-    document.getElementById("achievementsList").innerHTML = html;
   }
 
   // ================= Auto Prestige =================
@@ -292,7 +225,7 @@
     upgrades.forEach((u, i) => {
       html += `<div style="margin-bottom:10px;">
         <b>${u.name}</b> (Owned: ${u.amount})<br>
-        <small>${u.desc}</small><br>
+        <small>${u.type === "click" ? "Click" : u.type === "idle" ? "Idle" : "Special"} upgrade.</small><br>
         ${formatNumber(u.cost)} <button onclick="buyUpgrade(${i})">Buy</button>
       </div>`;
     });
@@ -318,7 +251,6 @@
       `Click Value: ${formatNumber(clickValue)} | Idle: ${formatNumber(idleValue)}/sec | Prestige Multiplier: ${formatNumber(prestigeMultiplier)}x`;
     renderShop();
     renderAutoPrestigeToggle();
-    renderAchievements();
   }
 
   // ================= Game Loop =================
@@ -327,7 +259,6 @@
     if (autoPrestigeEnabled && count >= 1e308) {
       prestige();
     }
-    checkAchievements();
     updateDisplay();
   }, 1000);
 
@@ -336,8 +267,7 @@
     let save = {
       count, clickValue, idleValue, prestigeMultiplier,
       stars, upgrades, shopUpgrades,
-      autoPrestigeUnlocked, autoPrestigeEnabled,
-      unlockedAchievements
+      autoPrestigeUnlocked, autoPrestigeEnabled
     };
     localStorage.setItem("starClickerSave", JSON.stringify(save));
   }
@@ -354,12 +284,10 @@
       shopUpgrades = save.shopUpgrades || shopUpgrades;
       autoPrestigeUnlocked = save.autoPrestigeUnlocked || false;
       autoPrestigeEnabled = save.autoPrestigeEnabled || false;
-      unlockedAchievements = save.unlockedAchievements || [];
     }
     renderUpgrades();
     renderShop();
     renderAutoPrestigeToggle();
-    renderAchievements();
     updateDisplay();
   }
 
@@ -372,7 +300,7 @@
 
   // ================= Init =================
   loadGame();
-  setInterval(saveGame, 10000);
+  setInterval(saveGame, 10000); // Auto save
 </script>
 
 </body>
