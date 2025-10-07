@@ -1,161 +1,243 @@
-@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap");
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nether Arcade – Login</title>
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "DM Sans", sans-serif;
-}
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
 
-body {
-  background: linear-gradient(135deg, #ff4e50, #f9d423);
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #333;
-}
+    :root {
+      --bg: #141416;
+      --surface: #1b1c1f;
+      --card: #222327;
+      --accent: #ffb347;
+      --text: #f3f3f7;
+      --subtle: #a7a7ad;
+    }
 
-.container {
-  width: 100%;
-  max-width: 400px;
-  padding: 20px;
-}
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
 
-.form-container {
-  background: #ffffff;
-  border-radius: 10px;
-  padding: 40px 30px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-}
+    body {
+      background: radial-gradient(circle at top, #1b1b1e, #121214);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-.form-header p {
-  color: #888;
-  font-size: 14px;
-  margin-bottom: 5px;
-}
+    .container {
+      width: 100%;
+      max-width: 420px;
+      padding: 20px;
+    }
 
-.form-header h1 {
-  font-size: 28px;
-  margin-bottom: 30px;
-  font-weight: 600;
-}
+    .form-container {
+      background: var(--surface);
+      border-radius: 16px;
+      padding: 40px 30px;
+      box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
+      border: 1px solid #2a2a2f;
+      text-align: center;
+    }
 
-.form-box {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
+    /* ✩ Decorative Divider */
+    .divider {
+      color: var(--accent);
+      margin: 0.75rem 0 1.5rem;
+      font-size: 14px;
+      opacity: 0.8;
+      letter-spacing: 1px;
+    }
 
-.input-group {
-  position: relative;
-}
+    .form-header p {
+      color: var(--subtle);
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
 
-.input-field {
-  width: 100%;
-  padding: 14px 40px 14px 12px;
-  font-size: 16px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  outline: none;
-  background-color: #f9f9f9;
-  transition: border-color 0.3s ease;
-}
+    .form-header h1 {
+      font-size: 26px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
 
-.input-field:focus {
-  border-color: #ff4e50;
-  background-color: #fff;
-}
+    .form-box {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      margin-top: 10px;
+    }
 
-.floating-label {
-  position: absolute;
-  top: 50%;
-  left: 12px;
-  transform: translateY(-50%);
-  background-color: #fff;
-  padding: 0 4px;
-  color: #aaa;
-  font-size: 14px;
-  pointer-events: none;
-  transition: all 0.3s ease;
-}
+    .input-group {
+      position: relative;
+    }
 
-.input-field:focus ~ .floating-label,
-.input-field:not(:placeholder-shown) ~ .floating-label {
-  top: -10px;
-  left: 8px;
-  font-size: 12px;
-  color: #ff4e50;
-}
+    .input-field {
+      width: 100%;
+      padding: 14px 42px 14px 14px;
+      font-size: 15px;
+      border: 1px solid #2e2e32;
+      border-radius: 10px;
+      background-color: var(--card);
+      color: var(--text);
+      outline: none;
+      transition: border 0.3s ease, background 0.3s ease;
+    }
 
-.eye-icon {
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  cursor: pointer;
-  font-size: 18px;
-  color: #999;
-}
+    .input-field:focus {
+      border-color: var(--accent);
+      background-color: #2b2b30;
+    }
 
-.checkbox-group {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 14px;
-}
+    .floating-label {
+      position: absolute;
+      top: 50%;
+      left: 14px;
+      transform: translateY(-50%);
+      background-color: var(--surface);
+      padding: 0 5px;
+      color: var(--subtle);
+      font-size: 13px;
+      pointer-events: none;
+      transition: all 0.3s ease;
+    }
 
-.remember-me {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
+    .input-field:focus ~ .floating-label,
+    .input-field:not(:placeholder-shown) ~ .floating-label {
+      top: -8px;
+      left: 10px;
+      font-size: 11px;
+      color: var(--accent);
+    }
 
-.checkbox-field {
-  cursor: pointer;
-}
+    .eye-icon {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: var(--subtle);
+      font-size: 18px;
+      transition: color 0.2s;
+    }
 
-.form-link {
-  text-decoration: none;
-  color: #ff4e50;
-  transition: color 0.2s ease;
-}
+    .eye-icon:hover {
+      color: var(--accent);
+    }
 
-.form-link:hover {
-  color: #d63c3f;
-}
+    .checkbox-group {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      color: var(--subtle);
+      margin-top: 4px;
+    }
 
-.form-btn {
-  padding: 12px;
-  background-color: #ff4e50;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
+    .remember-me {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
 
-.form-btn:hover {
-  background-color: #d63c3f;
-}
+    .checkbox-field {
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
 
-.form-divider {
-  margin: 30px 0 20px;
-  height: 1px;
-  background-color: #eee;
-}
+    .form-link {
+      text-decoration: none;
+      color: var(--accent);
+      transition: color 0.2s ease;
+    }
 
-.login-message {
-  font-size: 14px;
-  text-align: center;
-  margin-top: -10px;
-  height: 20px;
-}
+    .form-link:hover {
+      color: #ffd479;
+    }
 
-@media (max-width: 480px) {
-  .form-container {
-    padding: 30px 20px;
-  }
-}
+    .form-btn {
+      padding: 12px;
+      background-color: var(--accent);
+      color: #111;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.3s ease;
+      margin-top: 6px;
+    }
+
+    .form-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 20px rgba(255, 179, 71, 0.4);
+    }
+
+    .form-divider {
+      margin: 30px 0 10px;
+      height: 1px;
+      background-color: #2d2d31;
+    }
+
+    .login-message {
+      font-size: 13px;
+      text-align: center;
+      color: var(--subtle);
+    }
+
+    @media (max-width: 480px) {
+      .form-container {
+        padding: 30px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="form-container">
+      <div class="form-header">
+        <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
+        <p>🎮 Welcome Back</p>
+        <h1>Login to Nether Arcade</h1>
+        <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
+      </div>
+
+      <form class="form-box">
+        <div class="input-group">
+          <input type="text" class="input-field" placeholder=" " required />
+          <label class="floating-label">Username</label>
+        </div>
+
+        <div class="input-group">
+          <input type="password" class="input-field" placeholder=" " required />
+          <label class="floating-label">Password</label>
+          <span class="eye-icon">👁️</span>
+        </div>
+
+        <div class="checkbox-group">
+          <label class="remember-me">
+            <input type="checkbox" class="checkbox-field" /> Remember Me
+          </label>
+          <a href="#" class="form-link">Forgot Password?</a>
+        </div>
+
+        <button class="form-btn">✨ Login</button>
+
+        <div class="form-divider"></div>
+        <p class="login-message">
+          Don’t have an account? <a href="#" class="form-link">Sign Up</a>
+        </p>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
