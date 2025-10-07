@@ -1,79 +1,146 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Click the Star</title>
+<meta charset="UTF-8">
+<title>Nether Arcade – Socials</title>
+<link rel="icon" href="logo.png">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+<style>
+:root {
+  --bg: #131316;
+  --surface: #1e1e22;
+  --card: #27272c;
+  --accent: #ff3c3c;
+  --text: #f3f3f7;
+  --subtle: #9f9fa6;
+  --divider: #39ff14; /* neon green divider */
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: "Inter", system-ui, sans-serif; background: var(--bg); color: var(--text); display: flex; flex-direction: column; min-height: 100vh; }
+.banner-wrap { position: relative; width: 100%; height: 260px; overflow: hidden; }
+.banner-img { width: 100%; height: 100%; object-fit: cover; }
+.banner-fade { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(19,19,22,0) 60%, var(--bg) 100%); }
+nav { position: sticky; top: 0; z-index: 10; background: var(--surface); display: flex; justify-content: center; gap: 1.5rem; padding: 0.75rem 1rem; border-bottom: 1px solid var(--card); }
+nav a { background: none; border: none; color: var(--subtle); font-size: 1rem; cursor: pointer; text-decoration: none; transition: color 0.2s ease; }
+nav a.active, nav a:hover { color: var(--accent); }
+main { flex: 1; padding: 2.5rem 1.5rem; display: flex; flex-direction: column; align-items: center; text-align: center; }
+section { width: 100%; max-width: 960px; }
+h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 1rem; }
+p { color: var(--subtle); line-height: 1.6; margin-bottom: 1.5rem; }
+.divider { color: var(--divider); font-weight: 600; margin: 1.5rem 0; }
 
-  <!-- Break Infinity for large-number support -->
-  <script src="https://cdn.jsdelivr.net/npm/break_infinity.js@1.0.6/break_infinity.min.js"></script>
-
-  <!-- CSS -->
-  <link rel="stylesheet" href="style.css">
+/* Social buttons */
+.btn { display: inline-block; background: var(--accent); color: #000; border: none; padding: 0.75rem 1.75rem; font-size: 1rem; border-radius: 10px; cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease; text-decoration: none; }
+.btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(255,60,60,0.35); }
+.social-buttons { margin-top: 2rem; display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: var(--subtle); }
+</style>
 </head>
 <body>
-  <header class="nav">
-    <a href="index">Home</a>
-    <a href="about">Team</a>
-    <a href="mini-game">Mini-Game</a>
-    <a href="socials">Socials</a>
-  </header>
 
-  <div class="layout">
+<!-- Banner -->
+<div class="banner-wrap">
+  <img class="banner-img" src="minecraft banner.webp" alt="Nether Arcade Banner" loading="lazy">
+  <div class="banner-fade"></div>
+</div>
 
-    <!-- Shop Panel -->
-    <aside class="panel shop-panel" id="shopPanel">
-      <h2>⭐ Shop</h2>
-      <div style="display:flex;justify-content:space-between;align-items:center;">
-        <div style="font-size:14px;color:#fff;">Stars: <span id="starCount">0</span></div>
-        <button class="btn" onclick="tradeForStar()" style="background:#202; color:#dfffe9; padding:8px; border-radius:8px;">Trade 50T → +1 Star</button>
-      </div>
+<!-- Navigation -->
+<nav>
+  <a href="index">Home</a>
+  <a href="about">Team</a>
+  <a href="mini-game">Mini-Game</a>
+  <a class="active" href="socials.html">Socials</a>
+  
+</nav>
+ 
+  <div id="user-info" style="position: fixed; top: 10px; left: 10px; font-family: sans-serif;"></div>
 
-      <div class="list" id="starUpgrades"></div>
+  <!-- Firebase SDKs for showing user info and logout -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+  import {
+    getAuth,
+    onAuthStateChanged,
+    signOut
+  } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
 
-      <div id="autoPrestigeToggle" style="margin-top:12px"></div>
-    </aside>
+  // Your Firebase config
+  const firebaseConfig = {
+    apiKey: "AIzaSyAHWjE1igMxmPQ65hivDN7ioNsBSB7nl7U",
+    authDomain: "tester-f4444.firebaseapp.com",
+    projectId: "tester-f4444",
+    storageBucket: "tester-f4444.firebasestorage.app",
+    messagingSenderId: "588985084600",
+    appId: "1:588985084600:web:64816acb4d654f9a4ae24d"
+  };
 
-    <!-- Center Panel -->
-    <main class="panel center-panel">
-      <h2>Click the Star</h2>
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
 
-      <div style="font-size:15px;color:#fff;margin-bottom:8px;">Count: <span id="count">0</span></div>
+  const userInfoDiv = document.getElementById("user-info");
 
-      <div class="stats" id="stats">
-        Click Value: <b id="clickVal">1</b> &nbsp;|&nbsp; Idle: <b id="idleVal">0</b>/sec &nbsp;|&nbsp; Prestige Multiplier: <b id="prestigeVal">1x</b>
-        <small>Tip: press <b>P</b> to toggle the dev boost (dev-only)</small>
-      </div>
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      const name = user.displayName || user.email;
 
-      <div id="starBtn" class="star" title="Click me">★</div>
+      userInfoDiv.innerHTML = `
+        <div style="background: #1e1e22; padding: 6px 12px; border-radius: 6px; display: inline-block;">
+          👤 <strong>${name}</strong>
+          <button id="logoutBtn" style="margin-left: 10px; padding: 3px 8px; font-size: 0.9rem;">Logout</button>
+        </div>
+      `;
 
-      <div class="controls">
-        <button class="btn save" onclick="saveGame()">💾 Save</button>
-        <button class="btn reset" onclick="hardReset()">🗑 Hard Reset</button>
-        <button class="btn prestige" id="prestigeBtn" onclick="prestige()">🌟 Prestige</button>
-      </div>
+      // Logout
+      document.getElementById("logoutBtn").addEventListener("click", () => {
+        signOut(auth).then(() => {
+          window.location.reload();
+        });
+      });
 
-      <div style="margin-top:14px;text-align:left;color:var(--muted);font-size:13px;">
-        <p>• Achievements are trophies (no stat boost).</p>
-        <p>• Upgrades scale in price as you buy more.</p>
-        <p>• Your progress auto-saves often (you can also press Save).</p>
-        <p>• Prestige resets prices, click value and idle, but doubles your prestige multiplier.</p>
-        <p>• Reach Infinity to unlock a hidden cosmetic via Endless Restart.</p>
-      </div>
-    </main>
+    } else {
+      // Not logged in
+      userInfoDiv.innerHTML = `
+        <a href="Login/index.html" style="color: var(--subtle); background: #1e1e22; padding: 6px 12px; border-radius: 6px; text-decoration: none;">
+          Click here to log in Login
+        </a>
+      `;
+    }
+  });
+</script>
 
-    <!-- Upgrades & Achievements -->
-    <aside class="panel side-panel">
-      <h2>Upgrades</h2>
-      <div id="upgradeList" class="list"></div>
 
-      <h2 style="margin-top:18px;">Achievements</h2>
-      <div id="achievementsList" style="margin-top:8px;"></div>
-    </aside>
 
-  </div>
+<main>
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
+    <h1><i class="fa-solid fa-globe"></i> Socials</h1>
+    <p>Hit us up on our socials!</p>
 
-  <!-- JS -->
-  <script src="script.js"></script>
+    <a class="btn" href="https://discord.gg/xpPTKx9FuP" target="_blank" rel="noopener noreferrer">
+      <i class="fa-brands fa-discord"></i> Join Discord
+    </a>
+
+    <div class="social-buttons">
+      <a class="btn" href="https://youtube.com/@NetherArcade" target="_blank" rel="noopener noreferrer">
+        <i class="fa-brands fa-youtube"></i> View YouTube Channel
+      </a>
+      <a class="btn" href="https://tiktok.com/@netherarcade" target="_blank" rel="noopener noreferrer">
+        <i class="fa-brands fa-tiktok"></i> View TikTok Channel
+      </a>
+    </div>
+
+    <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
+  </section>
+</main>
+
+<footer>
+  &copy; <span id="yr"></span> Nether Arcade &nbsp;•&nbsp; Not affiliated with Mojang
+</footer>
+
+<script>
+document.getElementById("yr").textContent = new Date().getFullYear();
+</script>
 </body>
 </html>
