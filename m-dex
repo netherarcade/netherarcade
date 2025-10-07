@@ -1,0 +1,79 @@
+index.html<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Click the Star</title>
+
+  <!-- Break Infinity for large-number support -->
+  <script src="https://cdn.jsdelivr.net/npm/break_infinity.js@1.0.6/break_infinity.min.js"></script>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="nav">
+    <a href="index">Home</a>
+    <a href="about">Team</a>
+    <a href="mini-game">Mini-Game</a>
+    <a href="socials">Socials</a>
+  </header>
+
+  <div class="layout">
+
+    <!-- Shop Panel -->
+    <aside class="panel shop-panel" id="shopPanel">
+      <h2>⭐ Shop</h2>
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div style="font-size:14px;color:#fff;">Stars: <span id="starCount">0</span></div>
+        <button class="btn" onclick="tradeForStar()" style="background:#202; color:#dfffe9; padding:8px; border-radius:8px;">Trade 50T → +1 Star</button>
+      </div>
+
+      <div class="list" id="starUpgrades"></div>
+
+      <div id="autoPrestigeToggle" style="margin-top:12px"></div>
+    </aside>
+
+    <!-- Center Panel -->
+    <main class="panel center-panel">
+      <h2>Click the Star</h2>
+
+      <div style="font-size:15px;color:#fff;margin-bottom:8px;">Count: <span id="count">0</span></div>
+
+      <div class="stats" id="stats">
+        Click Value: <b id="clickVal">1</b> &nbsp;|&nbsp; Idle: <b id="idleVal">0</b>/sec &nbsp;|&nbsp; Prestige Multiplier: <b id="prestigeVal">1x</b>
+        <small>Tip: press <b>P</b> to toggle the dev boost (dev-only)</small>
+      </div>
+
+      <div id="starBtn" class="star" title="Click me">★</div>
+
+      <div class="controls">
+        <button class="btn save" onclick="saveGame()">💾 Save</button>
+        <button class="btn reset" onclick="hardReset()">🗑 Hard Reset</button>
+        <button class="btn prestige" id="prestigeBtn" onclick="prestige()">🌟 Prestige</button>
+      </div>
+
+      <div style="margin-top:14px;text-align:left;color:var(--muted);font-size:13px;">
+        <p>• Achievements are trophies (no stat boost).</p>
+        <p>• Upgrades scale in price as you buy more.</p>
+        <p>• Your progress auto-saves often (you can also press Save).</p>
+        <p>• Prestige resets prices, click value and idle, but doubles your prestige multiplier.</p>
+        <p>• Reach Infinity to unlock a hidden cosmetic via Endless Restart.</p>
+      </div>
+    </main>
+
+    <!-- Upgrades & Achievements -->
+    <aside class="panel side-panel">
+      <h2>Upgrades</h2>
+      <div id="upgradeList" class="list"></div>  
+
+      <h2 style="margin-top:18px;">Achievements</h2>
+      <div id="achievementsList" style="margin-top:8px;"></div>
+    </aside>
+
+  </div>
+
+  <!-- JS -->
+  <script src="script.js"></script>
+</body>
+</html>
