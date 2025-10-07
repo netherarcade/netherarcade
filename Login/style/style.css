@@ -1,12 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Nether Arcade – Login</title>
-
-  <style>
-    @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
+ @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
 
     :root {
       --bg: #141416;
@@ -199,45 +191,3 @@
         padding: 30px 20px;
       }
     }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="form-container">
-      <div class="form-header">
-        <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
-        <p>🎮 Welcome Back</p>
-        <h1>Login to Nether Arcade</h1>
-        <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
-      </div>
-
-      <form class="form-box">
-        <div class="input-group">
-          <input type="text" class="input-field" placeholder=" " required />
-          <label class="floating-label">Username</label>
-        </div>
-
-        <div class="input-group">
-          <input type="password" class="input-field" placeholder=" " required />
-          <label class="floating-label">Password</label>
-          <span class="eye-icon">👁️</span>
-        </div>
-
-        <div class="checkbox-group">
-          <label class="remember-me">
-            <input type="checkbox" class="checkbox-field" /> Remember Me
-          </label>
-          <a href="#" class="form-link">Forgot Password?</a>
-        </div>
-
-        <button class="form-btn">✨ Login</button>
-
-        <div class="form-divider"></div>
-        <p class="login-message">
-          Don’t have an account? <a href="#" class="form-link">Sign Up</a>
-        </p>
-      </form>
-    </div>
-  </div>
-</body>
-</html>
