@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
 
-    :root {
+:root {
       --bg: #141416;
       --surface: #1b1c1f;
       --card: #222327;
@@ -191,5 +191,6 @@
         padding: 30px 20px;
       }
     }
+
 
 
