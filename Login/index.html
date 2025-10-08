@@ -10,43 +10,45 @@
 </head>
 <body>
 
-<div class="container">
+<body>
+  <div class="container">
     <div class="form-container">
-        <div class="form-header">
-            <p>Please enter your details</p>
-            <h1>Welcome Back</h1>
+      <div class="form-header">
+        <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
+        <p>🎮 Welcome Back</p>
+        <h1>Login to Nether Arcade</h1>
+        <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
+      </div>
+
+      <form class="form-box">
+        <div class="input-group">
+          <input type="text" class="input-field" placeholder=" " required />
+          <label class="floating-label">Username</label>
         </div>
-        <form class="form-box">
-            <div class="input-group">
-                <input type="email" id="email" class="input-field" placeholder="" required>
-                <label for="email" class="floating-label">Email address</label>
-            </div>
-            <div class="input-group">
-                <input type="password" id="password" class="input-field" placeholder="" required>
-                <label for="password" class="floating-label">Password</label>
-                <div class="eye-icon" onclick="togglePassword()">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye-icon lucide-eye">
-                        <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0" />
-                        <circle cx="12" cy="12" r="3" /></svg>
-                </div>
-            </div>
-            <div class="input-group checkbox-group">
-                <div class="form-col remember-me">
-                    <input type="checkbox" id="remember-me-checkbox" class="checkbox-field">
-                    <label for="remember-me-checkbox">Remember me</label>
-                </div>
-                <div class="form-col">
-                    <a href="Forgot.html" class="form-link" id="reset">Forgot password?</a>
-                </div>
-            </div>
-            <button type="submit" id="submit" class="form-btn form-btn--submit">Sign In</button>
-        </form>
-        <div class="form-divider">
-            </div>
-            <p>Don't have an account? <a href="Sign-up.html" class="form-link">Sign up</a></p>
+
+        <div class="input-group">
+          <input type="password" class="input-field" placeholder=" " required />
+          <label class="floating-label">Password</label>
+          <span class="eye-icon">👁️</span>
         </div>
+
+        <div class="checkbox-group">
+          <label class="remember-me">
+            <input type="checkbox" class="checkbox-field" /> Remember Me
+          </label>
+          <a href="#" class="form-link">Forgot Password?</a>
+        </div>
+
+        <button class="form-btn">✨ Login</button>
+
+        <div class="form-divider"></div>
+        <p class="login-message">
+          Don’t have an account? <a href="#" class="form-link">Sign Up</a>
+        </p>
+      </form>
     </div>
-</div>
+  </div>
+</body>
     <script>
                     function togglePassword() {
                         const passwordInput = document.getElementById("password")
@@ -63,6 +65,7 @@
 </script>
 </body>
 </html>
+
 
 
 
