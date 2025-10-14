@@ -24,7 +24,7 @@
 
     <!-- Shop Panel -->
     <aside class="panel shop-panel" id="shopPanel">
-      <h2>⭐ Shop</h2>
+      <h2><i class="fa-solid fa-shop"></i> Shop</h2>
       <div style="display:flex;justify-content:space-between;align-items:center;">
         <div style="font-size:14px;color:#fff;">Stars: <span id="starCount">0</span></div>
         <button class="btn" onclick="tradeForStar()" style="background:#202; color:#dfffe9; padding:8px; border-radius:8px;">Trade 50T → +1 Star</button>
@@ -46,12 +46,12 @@
         <small>Tip: press <b>P</b> to toggle the dev boost (dev-only)</small>
       </div>
 
-      <div id="starBtn" class="star" title="Click me">★</div>
+      <div id="starBtn" class="star" title="Click me"><i class="fa-solid fa-star"></i></div>
 
       <div class="controls">
-        <button class="btn save" onclick="saveGame()">💾 Save</button>
-        <button class="btn reset" onclick="hardReset()">🗑 Hard Reset</button>
-        <button class="btn prestige" id="prestigeBtn" onclick="prestige()">🌟 Prestige</button>
+        <button class="btn save" onclick="saveGame()"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+        <button class="btn reset" onclick="hardReset()"><i class="fa-solid fa-trash"></i> Hard Reset</button>
+        <button class="btn prestige" id="prestigeBtn" onclick="prestige()"><i class="fa-solid fa-star"></i> Prestige</button>
       </div>
 
       <div style="margin-top:14px;text-align:left;color:var(--muted);font-size:13px;">
@@ -68,7 +68,7 @@
       <h2>Upgrades</h2>
       <div id="upgradeList" class="list"></div>  
 
-      <h2 style="margin-top:18px;">Achievements</h2>
+      <h2 style="margin-top:18px;"><i class="fa-solid fa-trophy"></i> Achievements</h2>
       <div id="achievementsList" style="margin-top:8px;"></div>
     </aside>
 
