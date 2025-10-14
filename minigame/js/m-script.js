@@ -230,7 +230,7 @@ function renderShop(){
         <small>${s.desc}</small>
       </div>
       <div class="cost">
-        <div class="price">${s.cost}⭐</div>
+        <div class="price">${s.cost}<i class="fa-solid fa-star"></i></div>
         <button class="buy" ${s.owned ? 'disabled' : ''} onclick="buyStarUpgrade(${i})">Buy</button>
       </div>
     </div>`;
@@ -263,7 +263,7 @@ function renderAchievements(){
   let html = '';
   achievements.forEach(a => {
     const cls = a.unlocked ? 'achievement unlocked' : 'achievement locked';
-    html += `<div class="${cls}">${a.unlocked ? '🏆 ' : '🔒 '}${a.name}</div>`;
+    html += `<div class="${cls}">${a.unlocked ? '<i class="fa-solid fa-trophy"></i> ' : '<i class="fa-solid fa-lock"></i> '}${a.name}</div>`;
   });
   container.innerHTML = html;
 }
