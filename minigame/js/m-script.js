@@ -60,6 +60,7 @@ let achievements = [
 
 /* ===================== Helpers & formatting ===================== */
 
+/* Old formatting */
 function formatDecimal(d){
   if (!usingDecimal) return formatNumberFallback(d);
   try {
@@ -104,6 +105,27 @@ function parseD(v){
     try { return new DecimalLib(v); } catch(e){ return new DecimalLib(0); }
   }
   return Number(v) || 0;
+}
+
+/* ===================== Cosmic currency formatting ===================== */
+
+const cosmicTiers = [
+  {limit: D(1e6), suffix:'★'},    // Stars
+  {limit: D(1e10), suffix:'🪐'},  // Planets
+  {limit: D(1e13), suffix:'🌌'}   // Galaxies
+];
+
+function formatCosmic(d){
+  for (let i = cosmicTiers.length - 1; i >= 0; i--){
+    const tier = cosmicTiers[i];
+    if (gte(d, tier.limit)){
+      const val = usingDecimal ? d.dividedBy(tier.limit) : d / tier.limit;
+      const display = val.lessThan(100) ? val.toFixed(2) : val.toFixed(0);
+      return display + ' ' + tier.suffix;
+    }
+  }
+  // fallback for numbers smaller than 1M
+  return formatDecimal(d);
 }
 
 /* ===================== Core game functions ===================== */
@@ -262,7 +284,7 @@ function renderAchievements(){
 }
 
 function updateDisplay(){
-  document.getElementById('count').textContent = formatDecimal(count);
+  document.getElementById('count').textContent = formatCosmic(count);
   document.getElementById('clickVal').textContent = formatDecimal(clickValue);
   document.getElementById('idleVal').textContent = formatDecimal(idleValue);
   document.getElementById('prestigeVal').textContent = (usingDecimal ? formatDecimal(prestigeMultiplier) : prestigeMultiplier) + 'x';
@@ -274,6 +296,7 @@ function updateDisplay(){
 
 function renderAll(){ updateDisplay(); renderShop(); renderUpgrades(); renderAchievements(); }
 
+/* ===================== Game loop & save/load ===================== */
 /* ===================== Game loop & save/load ===================== */
 
 setInterval(()=>{
