@@ -4,7 +4,9 @@
 */
 const DecimalLib = window.Decimal || (window.BreakInfinity && window.BreakInfinity.Decimal) || null;
 if (!DecimalLib) {
-  alert("Big-number library failed to load. The game may break at extreme values.");
+  // alert("Big-number library failed to load. The game may break at extreme values.");
+}
+
 }
 const D = (v) => {
   if (DecimalLib) return new DecimalLib(v);
