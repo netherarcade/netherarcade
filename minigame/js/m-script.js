@@ -1,11 +1,3 @@
-/* ===================== Setup Decimal =====================
-   Use Break_Infinity's Decimal via the loaded CDN.
-   If something is wrong, we fallback to Number but warn.
-*/
-
-const DecimalLib = window.Decimal || (window.BreakInfinity && window.BreakInfinity.Decimal) || null;
-if (!DecimalLib) {
-  alert("Big-number library failed to load. The game may break at extreme values.");
 }
 const D = (v) => {
   if (DecimalLib) return new DecimalLib(v);
