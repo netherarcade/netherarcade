@@ -1,0 +1,23 @@
+<section id="minigames">
+  <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
+  <h1><i class="fa-solid fa-gamepad"></i> Mini-Games</h1>
+  <p>Play fun minigames directly from the arcade!</p>
+
+  <div style="display: flex; gap: 1.5rem; flex-wrap: wrap; justify-content: center; margin-top: 2rem;">
+
+    <!-- Snake Game Box -->
+    <a href="minigame/snake.html" class="ip-box">
+      <span>Snake</span>
+      <div style="font-size:0.85rem; color:var(--subtle);">Classic arcade fun!</div>
+    </a>
+
+    <!-- Starclicker Game Box -->
+    <a href="minigame/starclicker.html" class="ip-box">
+      <span>Starclicker</span>
+      <div style="font-size:0.85rem; color:var(--subtle);">Click your way to the stars!</div>
+    </a>
+
+  </div>
+
+  <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
+</section>
