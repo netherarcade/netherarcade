@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Nether Arcade – Snake with Bombs</title>
+<link rel="icon" href="logo.png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+:root {
+  --bg: #131316;
+  --surface: #1e1e22;
+  --accent: #ff3c3c;
+  --text: #f3f3f7;
+  --subtle: #9f9fa6;
+  --green: #00ff88;
+  --bomb: #ff9900;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { 
+  font-family: "Inter", system-ui, sans-serif; 
+  background: var(--bg); 
+  color: var(--text); 
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  min-height: 100vh; 
+  justify-content: center;
+}
+h1 { font-size: 2rem; margin-bottom: 1rem; color: var(--accent); text-align: center; }
+p { color: var(--subtle); margin-bottom: 2rem; text-align: center; }
+canvas { background: var(--surface); border: 2px solid var(--accent); border-radius: 12px; }
+.controls { margin-top: 1rem; color: var(--subtle); text-align: center; }
+.controls span { margin: 0 0.5rem; }
+</style>
+</head>
+<body>
+
+<h1>Snake with Bombs</h1>
+<p>Eat the green apples and avoid the orange bombs!</p>
+<canvas id="game" width="400" height="400"></canvas>
+<div class="controls">
+  <span>⬆ Up</span>
+  <span>⬇ Down</span>
+  <span>⬅ Left</span>
+  <span>➡ Right</span>
+</div>
+
+<script>
+const canvas = document.getElementById('game');
+const ctx = canvas.getContext('2d');
+
+const gridSize = 20;
+const tileCount = canvas.width / gridSize;
+
+let snake = [{x:10, y:10}];
+let apple = {x:5, y:5};
+let bombs = [];
+let dx = 0;
+let dy = 0;
+let gameOver = false;
+let applesEaten = 0;
+let speed = 100;
+
+// Helper to get random position
+function randomPos() {
+    return {
+        x: Math.floor(Math.random() * tileCount),
+        y: Math.floor(Math.random() * tileCount)
+    };
+}
+
+function draw() {
+    if(gameOver) {
+        ctx.fillStyle = 'var(--accent)';
+        ctx.font = '18px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('Game Over! Press Space to Restart', canvas.width/2, canvas.height/2);
+        return;
+    }
+
+    // Move snake
+    const head = {x: snake[0].x + dx, y: snake[0].y + dy};
+    snake.unshift(head);
+
+    // Check apple collision
+    if(head.x === apple.x && head.y === apple.y){
+        applesEaten++;
+        apple = randomPos();
+
+        // Add a new bomb
+        let newBomb = randomPos();
+        while(snake.some(s => s.x === newBomb.x && s.y === newBomb.y) || (apple.x === newBomb.x && apple.y === newBomb.y)){
+            newBomb = randomPos();
+        }
+        bombs.push(newBomb);
+
+        // Keep bombs equal to applesEaten - 1
+        while(bombs.length > applesEaten - 1){
+            bombs.shift();
+        }
+    } else {
+        snake.pop();
+    }
+
+    // Check collisions
+    if(head.x < 0 || head.x >= tileCount || head.y < 0 || head.y >= tileCount ||
+       snake.slice(1).some(s => s.x === head.x && s.y === head.y) ||
+       bombs.some(b => b.x === head.x && b.y === head.y)) {
+        gameOver = true;
+    }
+
+    // Draw background
+    ctx.fillStyle = 'var(--surface)';
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+
+    // Draw apple
+    ctx.fillStyle = 'var(--green)';
+    ctx.fillRect(apple.x*gridSize, apple.y*gridSize, gridSize, gridSize);
+
+    // Draw bombs
+    ctx.fillStyle = 'var(--bomb)';
+    bombs.forEach(b => ctx.fillRect(b.x*gridSize, b.y*gridSize, gridSize, gridSize));
+
+    // Draw snake
+    ctx.fillStyle = 'var(--accent)';
+    snake.forEach(s => ctx.fillRect(s.x*gridSize, s.y*gridSize, gridSize, gridSize));
+}
+
+document.addEventListener('keydown', e => {
+    if(e.key === 'ArrowUp' && dy === 0){ dx = 0; dy = -1; }
+    else if(e.key === 'ArrowDown' && dy === 0){ dx = 0; dy = 1; }
+    else if(e.key === 'ArrowLeft' && dx === 0){ dx = -1; dy = 0; }
+    else if(e.key === 'ArrowRight' && dx === 0){ dx = 1; dy = 0; }
+    else if(e.key === ' ' && gameOver) restart();
+});
+
+function gameLoop() {
+    draw();
+    setTimeout(gameLoop, speed);
+}
+
+function restart() {
+    snake = [{x:10, y:10}];
+    apple = {x:5, y:5};
+    bombs = [];
+    dx = 0; dy = 0;
+    applesEaten = 0;
+    gameOver = false;
+}
+
+gameLoop();
+</script>
+
+</body>
+</html>
