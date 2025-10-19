@@ -1,4 +1,11 @@
+/* ===================== Setup Decimal =====================
+   Use Break_Infinity's Decimal via the loaded CDN.
+   If something is wrong, we fallback to Number but warn.
+*/
 
+const DecimalLib = window.Decimal || (window.BreakInfinity && window.BreakInfinity.Decimal) || null;
+if (!DecimalLib) {
+  alert("Big-number library failed to load. The game may break at extreme values.");
 }
 const D = (v) => {
   if (DecimalLib) return new DecimalLib(v);
@@ -61,7 +68,6 @@ let achievements = [
 
 /* ===================== Helpers & formatting ===================== */
 
-/* Old formatting */
 function formatDecimal(d){
   if (!usingDecimal) return formatNumberFallback(d);
   try {
@@ -106,27 +112,6 @@ function parseD(v){
     try { return new DecimalLib(v); } catch(e){ return new DecimalLib(0); }
   }
   return Number(v) || 0;
-}
-
-/* ===================== Cosmic currency formatting ===================== */
-
-const cosmicTiers = [
-  {limit: D(1e6), suffix:'★'},    // Stars
-  {limit: D(1e10), suffix:'🪐'},  // Planets
-  {limit: D(1e13), suffix:'🌌'}   // Galaxies
-];
-
-function formatCosmic(d){
-  for (let i = cosmicTiers.length - 1; i >= 0; i--){
-    const tier = cosmicTiers[i];
-    if (gte(d, tier.limit)){
-      const val = usingDecimal ? d.dividedBy(tier.limit) : d / tier.limit;
-      const display = val.lessThan(100) ? val.toFixed(2) : val.toFixed(0);
-      return display + ' ' + tier.suffix;
-    }
-  }
-  // fallback for numbers smaller than 1M
-  return formatDecimal(d);
 }
 
 /* ===================== Core game functions ===================== */
@@ -246,7 +231,7 @@ function renderShop(){
         <small>${s.desc}</small>
       </div>
       <div class="cost">
-        <div class="price">${s.cost}<i class="fa-solid fa-star"></i></div>
+        <div class="price">${s.cost}⭐</div>
         <button class="buy" ${s.owned ? 'disabled' : ''} onclick="buyStarUpgrade(${i})">Buy</button>
       </div>
     </div>`;
@@ -279,13 +264,13 @@ function renderAchievements(){
   let html = '';
   achievements.forEach(a => {
     const cls = a.unlocked ? 'achievement unlocked' : 'achievement locked';
-    html += `<div class="${cls}">${a.unlocked ? '<i class="fa-solid fa-trophy"></i> ' : '<i class="fa-solid fa-lock"></i> '}${a.name}</div>`;
+    html += `<div class="${cls}">${a.unlocked ? '🏆 ' : '🔒 '}${a.name}</div>`;
   });
   container.innerHTML = html;
 }
 
 function updateDisplay(){
-  document.getElementById('count').textContent = formatCosmic(count);
+  document.getElementById('count').textContent = formatDecimal(count);
   document.getElementById('clickVal').textContent = formatDecimal(clickValue);
   document.getElementById('idleVal').textContent = formatDecimal(idleValue);
   document.getElementById('prestigeVal').textContent = (usingDecimal ? formatDecimal(prestigeMultiplier) : prestigeMultiplier) + 'x';
@@ -297,7 +282,6 @@ function updateDisplay(){
 
 function renderAll(){ updateDisplay(); renderShop(); renderUpgrades(); renderAchievements(); }
 
-/* ===================== Game loop & save/load ===================== */
 /* ===================== Game loop & save/load ===================== */
 
 setInterval(()=>{
@@ -406,4 +390,3 @@ window.toggleAutoPrestige = toggleAutoPrestige;
 loadGame();
 renderAll();
 setInterval(saveGame, 10000); // autosave every 10s
-this is the scri^t is everthing here corect
