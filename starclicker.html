@@ -4,58 +4,147 @@
 <meta charset="UTF-8">
 <title>Cosmic Star Clicker</title>
 <style>
-  /* ========== GLOBAL ========== */
-  html, body {
-    margin: 0; padding: 0; overflow: hidden; font-family: 'Arial', sans-serif;
-    background: radial-gradient(#0b0c1a, #06060d);
-    color: white; height: 100%; width: 100%;
-  }
-  #gameContainer {
-    position: relative; z-index: 10; width: 800px; margin: auto; top: 50px; text-align: center;
-  }
-  h1 { font-size: 3em; margin-bottom: 10px; text-shadow: 0 0 20px #fff; }
-  #starCountDisplay { font-size: 2.5em; margin: 20px 0; }
-  button {
-    cursor: pointer; border: none; border-radius: 12px; padding: 15px 35px;
-    font-size: 1.2em; margin: 5px; background: linear-gradient(90deg,#ffefba,#ffffff);
-    box-shadow: 0 0 15px #fff; transition: transform 0.1s ease, box-shadow 0.2s;
-  }
-  button:hover { box-shadow: 0 0 25px #fff; }
-  button:active { transform: scale(1.1); }
-  .upgrade, .shopItem {
-    display: flex; justify-content: space-between; align-items: center;
-    margin: 10px 0; padding: 10px 15px; background: rgba(255,255,255,0.05);
-    border-radius: 10px;
-  }
-  .upgrade button, .shopItem button { padding: 5px 15px; font-size: 1em; }
-  .achievement {
-    position: absolute; top: 20px; left: 50%; transform: translateX(-50%);
-    background: rgba(255,255,255,0.1); padding: 10px 20px; border-radius: 20px;
-    font-weight: bold; animation: floatAchievement 2s ease-out forwards;
-  }
-  @keyframes floatAchievement {
-    0% { opacity: 0; transform: translate(-50%, 0) scale(0.5); }
-    50% { opacity: 1; transform: translate(-50%, -50px) scale(1.2); }
-    100% { opacity: 0; transform: translate(-50%, -100px) scale(1); }
-  }
-  /* Particle style */
-  .particle {
-    position: absolute; width: 8px; height: 8px; border-radius: 50%;
-    background: radial-gradient(circle,#fff,#fffa); pointer-events: none;
-    animation: floatParticle 1s ease-out forwards;
-  }
-  @keyframes floatParticle {
-    0% { transform: translate(0,0) scale(1); opacity:1; }
-    100% { transform: translate(var(--dx), var(--dy)) scale(0); opacity:0; }
-  }
-  /* Background canvas */
-  canvas#bgCanvas { position: fixed; top:0; left:0; z-index:0; }
-  #autoPrestigeToggle { margin-top: 15px; }
+/* =================== GLOBAL =================== */
+html, body {
+  margin: 0; padding: 0; overflow: hidden;
+  font-family: 'Arial', sans-serif;
+  background: radial-gradient(circle at center, #0b0c1a, #06060d);
+  color: white; height: 100%; width: 100%;
+}
+
+/* =================== GAME CONTAINER =================== */
+#gameContainer {
+  position: relative;
+  z-index: 10;
+  width: 800px;
+  margin: 50px auto;
+  text-align: center;
+}
+
+/* =================== HEADERS =================== */
+h1 {
+  font-size: 3em;
+  margin-bottom: 10px;
+  text-shadow: 0 0 20px #fff;
+}
+
+h2 {
+  margin-top: 30px;
+  margin-bottom: 10px;
+  text-shadow: 0 0 10px #fff;
+}
+
+/* =================== STAR COUNT & BUTTON =================== */
+#starCountDisplay {
+  font-size: 2.5em;
+  margin: 20px 0;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 12px;
+  padding: 15px 35px;
+  font-size: 1.2em;
+  margin: 5px;
+  background: linear-gradient(90deg,#ffefba,#ffffff);
+  box-shadow: 0 0 15px #fff;
+  transition: transform 0.1s ease, box-shadow 0.2s;
+}
+
+button:hover {
+  box-shadow: 0 0 25px #fff;
+}
+
+button:active {
+  transform: scale(1.1);
+}
+
+/* =================== UPGRADE & SHOP ITEMS =================== */
+.upgrade, .shopItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 0;
+  padding: 10px 15px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 10px;
+}
+
+.upgrade button, .shopItem button {
+  padding: 5px 15px;
+  font-size: 1em;
+}
+
+/* =================== ACHIEVEMENTS =================== */
+.achievement {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255,255,255,0.1);
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-weight: bold;
+  animation: floatAchievement 2s ease-out forwards;
+}
+
+@keyframes floatAchievement {
+  0% { opacity: 0; transform: translate(-50%, 0) scale(0.5); }
+  50% { opacity: 1; transform: translate(-50%, -50px) scale(1.2); }
+  100% { opacity: 0; transform: translate(-50%, -100px) scale(1); }
+}
+
+/* =================== PARTICLES =================== */
+.particle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: radial-gradient(circle,#fff,#fffa);
+  pointer-events: none;
+  animation: floatParticle 1s ease-out forwards;
+}
+
+@keyframes floatParticle {
+  0% { transform: translate(0,0) scale(1); opacity:1; }
+  100% { transform: translate(var(--dx), var(--dy)) scale(0); opacity:0; }
+}
+
+/* =================== BACKGROUND CANVAS =================== */
+canvas#bgCanvas {
+  position: fixed;
+  top:0;
+  left:0;
+  z-index:0;
+}
+
+/* =================== AUTO PRESTIGE =================== */
+#autoPrestigeToggle {
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  align-items: center;
+}
+
+#autoPrestigeToggle button {
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 0;
+  cursor: pointer;
+  font-weight: bold;
+  background: linear-gradient(90deg, #ffefba, #ffffff);
+  box-shadow: 0 0 10px #fff;
+}
 </style>
 </head>
 <body>
 
+<!-- Background Canvas -->
 <canvas id="bgCanvas"></canvas>
+
+<!-- Main Game Container -->
 <div id="gameContainer">
   <h1>Cosmic Star Clicker ✨</h1>
   <div id="starCountDisplay">0</div>
@@ -69,282 +158,5 @@
   <div id="starUpgrades"></div>
 </div>
 
-<script>
-/* ===================================================== */
-/* ===================== GAME CORE ==================== */
-/* ===================================================== */
-
-// ===== Decimal.js support =====
-const D = (v) => (window.Decimal ? new Decimal(v) : Number(v));
-const usingDecimal = !!window.Decimal;
-const add = (a,b)=>usingDecimal?a.plus(b):a+b;
-const sub = (a,b)=>usingDecimal?a.minus(b):a-b;
-const mul = (a,b)=>usingDecimal?a.times(b):a*b;
-const div = (a,b)=>usingDecimal?a.dividedBy(b):a/b;
-const gte = (a,b)=>usingDecimal?a.greaterThanOrEqualTo(b):a>=b;
-const lt = (a,b)=>usingDecimal?a.lessThan(b):a<b;
-const toStr = a => usingDecimal?a.toString():String(a);
-const toNum = a => usingDecimal?a.toNumber():a;
-
-// ===== GAME STATE =====
-let state = {
-  count: D(0),
-  clickValue: D(1),
-  idleValue: D(0),
-  prestigeMultiplier: D(1),
-  stars: 0,
-  autoPrestigeUnlocked: false,
-  autoPrestigeEnabled: false
-};
-
-// ===== UPGRADES =====
-let upgrades = [
-  {id:"click05", name:"+0.5 / click", baseCost:D(20), value:D(0.5), type:"click", scale:D(1.5), desc:"Practice makes perfect.", owned:0},
-  {id:"click1", name:"+1 / click", baseCost:D(150), value:D(1), type:"click", scale:D(1.5), desc:"Heavier fingertips.", owned:0},
-  {id:"cps1", name:"+1 / sec", baseCost:D(100), value:D(1), type:"idle", scale:D(1.5), desc:"Little helpers.", owned:0},
-  {id:"cps5", name:"+5 / sec", baseCost:D(500), value:D(5), type:"idle", scale:D(1.5), desc:"Bigger crew.", owned:0},
-  {id:"burst", name:"Burst x2", baseCost:D(1000), value:D(2), type:"burst", scale:D(2), desc:"Permanently doubles click value.", owned:0}
-];
-
-let starShop = [
-  {id:"guidingLight", name:"Guiding Light", cost:2, desc:"Start with +Idle/sec × Prestige multiplier.", owned:0},
-  {id:"celestialClicks", name:"Celestial Clicks", cost:5, desc:"Permanently double click value.", owned:0},
-  {id:"ascendantCycle", name:"Ascendant Cycle", cost:10, desc:"Unlock auto prestige toggle.", owned:0},
-  {id:"efficientUniverse", name:"Efficient Universe", cost:15, desc:"5% cheaper upgrades.", owned:0}
-];
-
-// Achievements
-let achievements = [
-  {id:"first", name:"First Click", condition:()=>gte(state.count,D(1)), unlocked:false},
-  {id:"ten", name:"Ten Up", condition:()=>gte(state.count,D(10)), unlocked:false},
-  {id:"hundred", name:"Triple Digits", condition:()=>gte(state.count,D(100)), unlocked:false},
-  {id:"auto", name:"Automation", condition:()=>gte(state.idleValue,D(1)), unlocked:false},
-  {id:"prest", name:"Prestigious", condition:()=>gte(state.prestigeMultiplier,D(2)), unlocked:false}
-];
-
-// ===== FORMATTING =====
-function formatDecimal(d){
-  if(!usingDecimal) return formatNum(d);
-  const suffixes = [["1e12","T"],["1e9","B"],["1e6","M"],["1e3","K"]];
-  for(const [limit,sfx] of suffixes){
-    const L = new Decimal(limit);
-    if(d.greaterThanOrEqualTo(L)) return d.div(L).toFixed(2)+sfx;
-  }
-  return d.toFixed(d.greaterThanOrEqualTo(1)?0:2);
-}
-function formatNum(n){
-  if(n>=1e12) return (n/1e12).toFixed(2)+"T";
-  if(n>=1e9) return (n/1e9).toFixed(2)+"B";
-  if(n>=1e6) return (n/1e6).toFixed(2)+"M";
-  if(n>=1e3) return (n/1e3).toFixed(2)+"K";
-  return Math.floor(n).toString();
-}
-
-// ===== CORE FUNCTIONS =====
-function clickStar(){
-  state.count = add(state.count,state.clickValue);
-  spawnParticles(event.clientX,event.clientY);
-  checkAchievements();
-  updateDisplay();
-  saveGame();
-}
-function buyUpgrade(i){
-  const u = upgrades[i];
-  if(!gte(state.count,u.baseCost)) return;
-  state.count = sub(state.count,u.baseCost);
-  u.owned++;
-  if(u.type==="click") state.clickValue = add(state.clickValue,u.value);
-  if(u.type==="idle") state.idleValue = add(state.idleValue,u.value);
-  if(u.type==="burst") state.clickValue = mul(state.clickValue,u.value);
-  u.baseCost = mul(u.baseCost,u.scale);
-  updateDisplay(); saveGame();
-}
-function prestige(){
-  if(!gte(state.count,D(1e6))) return alert("Need 1,000,000 to Prestige!");
-  state.prestigeMultiplier = mul(state.prestigeMultiplier,D(2));
-  state.count=D(0); state.clickValue=D(1); state.idleValue=D(0);
-  upgrades.forEach(u=>{u.owned=0; u.baseCost=u.baseCost;});
-  updateDisplay(); saveGame();
-}
-
-// ===== ACHIEVEMENTS =====
-function checkAchievements(){
-  achievements.forEach(a=>{
-    if(!a.unlocked && a.condition()){
-      a.unlocked=true;
-      showAchievement(a.name);
-    }
-  });
-}
-function showAchievement(name){
-  const a = document.createElement('div');
-  a.className='achievement';
-  a.textContent=`🏆 ${name}`;
-  document.body.appendChild(a);
-  setTimeout(()=>document.body.removeChild(a),2000);
-}
-
-// ===== DISPLAY =====
-function updateDisplay(){
-  const display=document.getElementById('starCountDisplay');
-  display.textContent=formatDecimal(state.count);
-  renderUpgrades(); renderShop(); renderAutoPrestigeToggle();
-}
-
-function renderUpgrades(){
-  const container=document.getElementById('upgradeList');
-  container.innerHTML=upgrades.map((u,i)=>`
-    <div class="upgrade">
-      <div>
-        <b>${u.name} (Owned: ${u.owned})</b><br>
-        <small>${u.desc}</small>
-      </div>
-      <div>
-        <div>${formatDecimal(u.baseCost)}</div>
-        <button onclick="buyUpgrade(${i})">Buy</button>
-      </div>
-    </div>
-  `).join('');
-}
-
-function renderShop(){
-  const container=document.getElementById('starUpgrades');
-  container.innerHTML=starShop.map((s,i)=>`
-    <div class="shopItem">
-      <div>
-        <b>${s.name} (Owned: ${s.owned})</b><br>
-        <small>${s.desc}</small>
-      </div>
-      <div>
-        <div>${s.cost}★</div>
-        <button onclick="buyStarShop(${i})" ${s.owned?'disabled':''}>Buy</button>
-      </div>
-    </div>
-  `).join('');
-}
-
-function renderAutoPrestigeToggle(){
-  const el=document.getElementById('autoPrestigeToggle');
-  if(!state.autoPrestigeUnlocked){ el.innerHTML=''; return; }
-  el.innerHTML=`<div style="display:flex;justify-content:center;align-items:center;gap:10px;">
-    <div>Auto Prestige</div>
-    <button onclick="toggleAutoPrestige()">${state.autoPrestigeEnabled?'ON':'OFF'}</button>
-  </div>`;
-}
-
-function toggleAutoPrestige(){
-  state.autoPrestigeEnabled=!state.autoPrestigeEnabled;
-  renderAutoPrestigeToggle();
-  saveGame();
-}
-
-// ===== SHOP FUNCTIONS =====
-function buyStarShop(i){
-  const s=starShop[i];
-  if(state.stars>=s.cost && s.owned===0){
-    state.stars-=s.cost; s.owned=1;
-    if(s.id==='celestialClicks') state.clickValue=mul(state.clickValue,D(2));
-    if(s.id==='ascendantCycle') state.autoPrestigeUnlocked=true;
-    if(s.id==='efficientUniverse') upgrades.forEach(u=>u.baseCost=mul(u.baseCost,D(0.95)));
-    updateDisplay(); saveGame();
-  }
-}
-
-// ===== SAVE/LOAD =====
-function saveGame(){
-  localStorage.setItem('cosmicStarSave',JSON.stringify({
-    state:{
-      count:toStr(state.count),
-      clickValue:toStr(state.clickValue),
-      idleValue:toStr(state.idleValue),
-      prestigeMultiplier:toStr(state.prestigeMultiplier),
-      stars:state.stars,
-      autoPrestigeUnlocked:state.autoPrestigeUnlocked,
-      autoPrestigeEnabled:state.autoPrestigeEnabled
-    },
-    upgrades:upgrades.map(u=>({id:u.id,owned:u.owned,baseCost:toStr(u.baseCost)})),
-    starShop:starShop.map(s=>({id:s.id,owned:s.owned}))
-  }));
-}
-function loadGame(){
-  const raw=localStorage.getItem('cosmicStarSave');
-  if(!raw) return;
-  try{
-    const save=JSON.parse(raw);
-    Object.assign(state,{
-      count:D(save.state.count||0),
-      clickValue:D(save.state.clickValue||1),
-      idleValue:D(save.state.idleValue||0),
-      prestigeMultiplier:D(save.state.prestigeMultiplier||1),
-      stars:save.state.stars||0,
-      autoPrestigeUnlocked:save.state.autoPrestigeUnlocked||false,
-      autoPrestigeEnabled:save.state.autoPrestigeEnabled||false
-    });
-    save.upgrades.forEach(sU=>{
-      const u=upgrades.find(x=>x.id===sU.id);
-      if(u){ u.owned=sU.owned||0; u.baseCost=D(sU.baseCost||u.baseCost); }
-    });
-    save.starShop.forEach(sS=>{
-      const s=starShop.find(x=>x.id===sS.id);
-      if(s) s.owned=sS.owned||0;
-    });
-  }catch(e){ console.warn("Load failed",e);}
-}
-
-/* ===================================================== */
-/* ================= PARTICLES & EFFECTS ============== */
-/* ===================================================== */
-const particlesContainer = document.body;
-function spawnParticles(x,y){
-  for(let i=0;i<10;i++){
-    const p=document.createElement('div');
-    p.className='particle';
-    const dx=(Math.random()-0.5)*200+'px';
-    const dy=(Math.random()-1)*200+'px';
-    p.style.left=x+'px'; p.style.top=y+'px';
-    p.style.setProperty('--dx',dx); p.style.setProperty('--dy',dy);
-    particlesContainer.appendChild(p);
-    setTimeout(()=>particlesContainer.removeChild(p),1000);
-  }
-}
-
-/* ===================================================== */
-/* ================= BACKGROUND STARS ================= */
-/* ===================================================== */
-const canvas=document.getElementById('bgCanvas');
-const ctx=canvas.getContext('2d');
-let w,h,stars=[];
-function resizeCanvas(){ w=canvas.width=window.innerWidth; h=canvas.height=window.innerHeight; stars=[]; for(let i=0;i<200;i++) stars.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*2+1,s:Math.random()*0.5+0.1})); }
-window.addEventListener('resize',resizeCanvas);
-resizeCanvas();
-function animateStars(){
-  ctx.clearRect(0,0,w,h);
-  ctx.fillStyle='white';
-  stars.forEach(s=>{
-    s.y-=s.s;
-    if(s.y<0) s.y=h;
-    ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2); ctx.fill();
-  });
-  requestAnimationFrame(animateStars);
-}
-animateStars();
-
-/* ===================================================== */
-/* ================== GAME LOOP ======================= */
-/* ===================================================== */
-setInterval(()=>{
-  state.count = add(state.count,state.idleValue);
-  if(state.autoPrestigeEnabled && gte(state.count,D(1e6))) prestige();
-  updateDisplay();
-},1000);
-
-/* ===================================================== */
-/* =================== INIT =========================== */
-/* ===================================================== */
-document.getElementById('starBtn').addEventListener('click',clickStar);
-loadGame();
-updateDisplay();
-setInterval(saveGame,10000);
-</script>
 </body>
 </html>
