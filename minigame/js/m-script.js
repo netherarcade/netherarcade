@@ -405,5 +405,3 @@ window.toggleAutoPrestige = toggleAutoPrestige;
 loadGame();
 renderAll();
 setInterval(saveGame, 10000); // autosave every 10s
-
-
