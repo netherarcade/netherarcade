@@ -1,3 +1,4 @@
+
 }
 const D = (v) => {
   if (DecimalLib) return new DecimalLib(v);
@@ -405,3 +406,4 @@ window.toggleAutoPrestige = toggleAutoPrestige;
 loadGame();
 renderAll();
 setInterval(saveGame, 10000); // autosave every 10s
+this is the scri^t is everthing here corect
