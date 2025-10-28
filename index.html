@@ -1,86 +1,296 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Snake Game Menu</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <title>Nether Arcade – Home</title>
+    <link rel="icon" href="logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <meta name="description" content="Welcome to Nether Arcade. Fun minigames, creative builds, and a great community await you!">
+    <meta property="og:title" content="Nether Arcade – Home">
+    <meta property="og:description" content="Welcome to Nether Arcade. Fun minigames, creative builds, and a great community await you!">
+    <meta property="og:image" content="logo.png">
+    <meta property="og:url" content="https://netherarcade.qzz.io">
+    <meta name="twitter:card" content="summary_large_image">
+    <style>
+        :root {
 
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  --bg: #131316;
+  --surface: #1e1e22;
+  --card: #27272c;
+  --accent: #ff3c3c;
+  --text: #f3f3f7;
+  --subtle: #9f9fa6;
+  --green: #00ff88;
+}
 
-  <style>
-    body {
-      background-image: url("images/background1.png");
-      background-size: cover;
-      background-repeat: no-repeat;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      font-family: "Inter", system-ui, sans-serif;
-    }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: "Inter", system-ui, sans-serif; background: var(--bg); color: var(--text); display: flex; flex-direction: column; min-height: 100vh; }
+.banner-wrap { position: relative; width: 100%; height: 260px; overflow: hidden; }
+.banner-img { width: 100%; height: 100%; object-fit: cover; }
+.banner-fade { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(19,19,22,0) 60%, var(--bg) 100%); }
 
-    #logo {
-      max-width: 350px;
-      width: 90%;
-      margin-bottom: 2rem;
-    }
+nav { position: sticky; top: 0; z-index: 10; background: var(--surface); display: flex; justify-content: center; gap: 1.5rem; padding: 0.75rem 1rem; border-bottom: 1px solid var(--card); }
 
-    .play-btn {
-      display: inline-block;
-      padding: 15px 40px;
-      font-size: 24px;
-      font-weight: bold;
-      color: white;
-      background-color: #ff3333;
-      border: none;
-      border-radius: 15px;
-      box-shadow: 0 8px #990000;
-      text-decoration: none;
-      transition: all 0.2s;
-    }
 
-    .play-btn:hover {
-      background-color: #ff5555;
-      box-shadow: 0 6px #770000;
-      transform: translateY(2px);
-      color: white;
-      text-decoration: none;
-    }
+nav a { background: none; border: none; color: var(--subtle); font-size: 1rem; cursor: pointer; text-decoration: none; transition: color 0.2s ease; }
 
-    .play-btn:active {
-      background-color: #ff2222;
-      box-shadow: 0 3px #660000;
-      transform: translateY(4px);
-    }
 
-    h1 {
-      color: white;
-      text-shadow: 0 0 8px #ff3333;
-      font-weight: bold;
-      margin-bottom: 1rem;
-    }
+nav a.active, nav a:hover { color: var(--accent); }
 
-    p {
-      color: #ccc;
-      font-size: 1.1rem;
-    }
-  </style>
+
+main { flex: 1; padding: 2.5rem 1.5rem; display: flex; flex-direction: column; align-items: center; text-align: center; }
+
+
+section { width: 100%; max-width: 960px; }
+
+
+h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 1rem; }
+
+
+p { color: var(--subtle); line-height: 1.6; margin-bottom: 1.5rem; }
+
+
+.divider { color: var(--green); display: flex; justify-content: center; align-items: center; margin: 1.5rem 0; font-weight: 600; }
+
+
+
+
+
+/* Server IP Box */
+
+
+.ip-box { background: var(--card); border-radius: 12px; padding: 1.2rem; text-align: center; font-size: 1.2rem; font-weight: 600; cursor: pointer; position: relative; }
+
+
+.ip-box:hover { background: var(--surface); }
+
+
+.tooltip { position: absolute; bottom: -1.5rem; left: 50%; transform: translateX(-50%); background: var(--accent); color: #000; padding: 0.3rem 0.6rem; border-radius: 6px; font-size: 0.75rem; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+
+
+.ip-box.copied .tooltip { opacity: 1; }
+
+
+
+
+
+footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: var(--subtle); }
+
+
+</style>
 </head>
+
 <body>
+    <!-- Banner -->
+    <div class="banner-wrap">
+        <img class="banner-img" src="minecraft banner.webp" alt="Nether Arcade Banner" loading="lazy">
+        <div class="banner-fade"></div>
+    </div>
+    <!-- Navigation -->
+    <nav>
+        <a class="active" href="index">Home</a>
+        <a href="about">Team</a>
+        <a href="minigame.html">Mini-Game</a>
+        <a href="socials.html">Socials</a>
+    </nav>
+    <div id="user-info" style="position: fixed; top: 10px; left: 10px; font-family: sans-serif;"></div>
+    <!-- Firebase SDKs for showing user info and logout -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
 
-  <div class="text-center">
-    <img id="logo" src="images/game.PNG" alt="Game Logo">
-    <h1>Snake with Bombs</h1>
-    <p>Eat the green apples and avoid the red bombs!</p>
-    <a href="game.html" class="play-btn">Play</a>
-  </div>
 
-  <!-- Bootstrap JS -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+  import {
 
+
+    getAuth,
+
+
+    onAuthStateChanged,
+
+
+    signOut
+
+
+  } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+
+
+
+
+
+  // Your Firebase config
+
+
+  const firebaseConfig = {
+
+
+    apiKey: "AIzaSyAHWjE1igMxmPQ65hivDN7ioNsBSB7nl7U",
+
+
+    authDomain: "tester-f4444.firebaseapp.com",
+
+
+    projectId: "tester-f4444",
+
+
+    storageBucket: "tester-f4444.firebasestorage.app",
+
+
+    messagingSenderId: "588985084600",
+
+
+    appId: "1:588985084600:web:64816acb4d654f9a4ae24d"
+
+
+  };
+
+
+
+
+
+  // Initialize Firebase
+
+
+  const app = initializeApp(firebaseConfig);
+
+
+  const auth = getAuth(app);
+
+
+
+
+
+  const userInfoDiv = document.getElementById("user-info");
+
+
+
+
+
+  onAuthStateChanged(auth, (user) => {
+
+
+    if (user) {
+
+
+      const name = user.displayName || user.email;
+
+
+
+
+
+      userInfoDiv.innerHTML = `
+
+
+        <div style="background: #1e1e22; padding: 6px 12px; border-radius: 6px; display: inline-block;">
+
+
+          👤 <strong>${name}</strong>
+
+
+          <button id="logoutBtn" style="margin-left: 10px; padding: 3px 8px; font-size: 0.9rem;">Logout</button>
+
+
+        </div>
+
+
+      `;
+
+
+
+
+
+      // Logout
+
+
+      document.getElementById("logoutBtn").addEventListener("click", () => {
+
+
+        signOut(auth).then(() => {
+
+
+          window.location.reload();
+
+
+        });
+
+
+      });
+
+
+
+
+
+    } else {
+
+
+      // Not logged in
+
+
+      userInfoDiv.innerHTML = `
+
+
+        <a href="Login/index.html" style="color: var(--subtle); background: #1e1e22; padding: 6px 12px; border-radius: 6px; text-decoration: none;">
+
+
+          Click here to log in Login
+
+
+        </a>
+
+
+      `;
+
+
+    }
+
+
+  });
+
+
+</script>
+    <main>
+        <section id="home">
+            <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
+            <h1><i class="fa-solid fa-fire"></i> Welcome to Nether Arcade</h1>
+            <p>Fun minigames, creative builds, and a great community await you!</p>
+            <!-- Server IP Box -->
+            <div class="ip-box" onclick="copyIP()">
+                <span>netherarcade.cold00.eu</span>
+                <div style="font-size:0.85rem; color:var(--subtle);">Java Edition only • Version 1.21.8</div>
+                <span class="tooltip" id="tip">Copied!</span>
+            </div>
+            <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
+        </section>
+    </main>
+    <footer>
+        &copy; <span id="yr"></span> Nether Arcade &nbsp;•&nbsp; Not affiliated with Mojang
+    </footer>
+    <script>
+    function copyIP() {
+
+
+        const ip = "netherarcade.cold00.eu";
+
+
+        navigator.clipboard.writeText(ip).then(() => {
+
+
+            const box = document.querySelector(".ip-box");
+
+
+            box.classList.add("copied");
+
+
+            setTimeout(() => box.classList.remove("copied"), 2000);
+
+
+        });
+
+
+    }
+
+
+    document.getElementById("yr").textContent = new Date().getFullYear();
+    </script>
 </body>
+
 </html>
