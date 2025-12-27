@@ -1,0 +1,93 @@
+/* Page background */
+body {
+    background: radial-gradient(circle at top, #4b2e2e, #1b0f0f);
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Main container */
+#gameContainer {
+    text-align: center;
+    padding: 20px 30px;
+    background-color: #1f1f1f;
+    border-radius: 20px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
+}
+
+/* Game board */
+#gameBoard {
+    border: 4px solid dimgray;
+    border-radius: 12px;
+   
+    margin-bottom: 15px;
+}
+
+/* Canvas */
+canvas {
+    background: #0f1312;
+    border-radius: 8px;
+}
+
+/* Score text */
+#scoreText {
+    font-family: "Permanent Marker", cursive;
+    font-size: 72px;
+    color: dimgray;
+    margin: 10px 0;
+    
+}
+
+/* Reset button */
+#resetBtn {
+    font-family: "Permanent Marker", cursive;
+    font-size: 22px;
+    width: 120px;
+    height: 50px;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    background:linear-gradient(0deg,rgba(102, 11, 5, 1) 0%, rgba(207, 14, 0, 1) 100%);
+    color: white;
+   
+   
+}
+
+/* Button hover & click effects */
+#resetBtn:hover {
+    transform: scale(1.05);
+    
+}
+
+#resetBtn:active {
+    transform: scale(0.95);
+}
+
+
+
+
+
+#startBtn {
+    font-family: "Permanent Marker", cursive;
+    font-size: 22px;
+    width: 120px;
+    height: 50px;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+
+    
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* Button hover & click effects */
+#startBtn:hover {
+    transform: scale(1.05);
+    
+}
+
+#startBtn:active {
+    transform: scale(0.95);
+}
