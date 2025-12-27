@@ -1,164 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Cosmic Star Clicker</title>
-  <link rel="game" href="game.js" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Click the Star</title>
 
-<style>
-/* =================== GLOBAL =================== */
-html, body {
-  margin: 0; padding: 0; overflow: hidden;
-  font-family: 'Arial', sans-serif;
-  background: radial-gradient(circle at center, #0b0c1a, #06060d);
-  color: white; height: 100%; width: 100%;
-}
+  <!-- Break Infinity for large-number support -->
+  <script src="https://cdn.jsdelivr.net/npm/break_infinity.js@1.0.6/break_infinity.min.js"></script>
 
-/* =================== GAME CONTAINER =================== */
-#gameContainer {
-  position: relative;
-  z-index: 10;
-  width: 800px;
-  margin: 50px auto;
-  text-align: center;
-}
-
-/* =================== HEADERS =================== */
-h1 {
-  font-size: 3em;
-  margin-bottom: 10px;
-  text-shadow: 0 0 20px #fff;
-}
-
-h2 {
-  margin-top: 30px;
-  margin-bottom: 10px;
-  text-shadow: 0 0 10px #fff;
-}
-
-/* =================== STAR COUNT & BUTTON =================== */
-#starCountDisplay {
-  font-size: 2.5em;
-  margin: 20px 0;
-}
-
-button {
-  cursor: pointer;
-  border: none;
-  border-radius: 12px;
-  padding: 15px 35px;
-  font-size: 1.2em;
-  margin: 5px;
-  background: linear-gradient(90deg,#ffefba,#ffffff);
-  box-shadow: 0 0 15px #fff;
-  transition: transform 0.1s ease, box-shadow 0.2s;
-}
-
-button:hover {
-  box-shadow: 0 0 25px #fff;
-}
-
-button:active {
-  transform: scale(1.1);
-}
-
-/* =================== UPGRADE & SHOP ITEMS =================== */
-.upgrade, .shopItem {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 10px 0;
-  padding: 10px 15px;
-  background: rgba(255,255,255,0.05);
-  border-radius: 10px;
-}
-
-.upgrade button, .shopItem button {
-  padding: 5px 15px;
-  font-size: 1em;
-}
-
-/* =================== ACHIEVEMENTS =================== */
-.achievement {
-  position: absolute;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(255,255,255,0.1);
-  padding: 10px 20px;
-  border-radius: 20px;
-  font-weight: bold;
-  animation: floatAchievement 2s ease-out forwards;
-}
-
-@keyframes floatAchievement {
-  0% { opacity: 0; transform: translate(-50%, 0) scale(0.5); }
-  50% { opacity: 1; transform: translate(-50%, -50px) scale(1.2); }
-  100% { opacity: 0; transform: translate(-50%, -100px) scale(1); }
-}
-
-/* =================== PARTICLES =================== */
-.particle {
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: radial-gradient(circle,#fff,#fffa);
-  pointer-events: none;
-  animation: floatParticle 1s ease-out forwards;
-}
-
-@keyframes floatParticle {
-  0% { transform: translate(0,0) scale(1); opacity:1; }
-  100% { transform: translate(var(--dx), var(--dy)) scale(0); opacity:0; }
-}
-
-/* =================== BACKGROUND CANVAS =================== */
-canvas#bgCanvas {
-  position: fixed;
-  top:0;
-  left:0;
-  z-index:0;
-}
-
-/* =================== AUTO PRESTIGE =================== */
-#autoPrestigeToggle {
-  margin-top: 15px;
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  align-items: center;
-}
-
-#autoPrestigeToggle button {
-  padding: 6px 10px;
-  border-radius: 8px;
-  border: 0;
-  cursor: pointer;
-  font-weight: bold;
-  background: linear-gradient(90deg, #ffefba, #ffffff);
-  box-shadow: 0 0 10px #fff;
-}
-</style>
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <header class="nav">
+    <a href="index">Home</a>
+    <a href="about">Team</a>
+    <a href="mini-game">Mini-Game</a>
+    <a href="socials">Socials</a>
+  </header>
 
-<!-- Background Canvas -->
-<canvas id="bgCanvas"></canvas>
+  <div class="layout">
 
-<!-- Main Game Container -->
-<div id="gameContainer">
-  <h1>Cosmic Star Clicker ✨</h1>
-  <div id="starCountDisplay">0</div>
-  <button id="starBtn">⭐ Click Star ⭐</button>
-  <div id="autoPrestigeToggle"></div>
+    <!-- Shop Panel -->
+    <aside class="panel shop-panel" id="shopPanel">
+      <h2>⭐ Shop</h2>
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div style="font-size:14px;color:#fff;">Stars: <span id="starCount">0</span></div>
+        <button class="btn" onclick="tradeForStar()" style="background:#202; color:#dfffe9; padding:8px; border-radius:8px;">Trade 50T → +1 Star</button>
+      </div>
 
-  <h2>Upgrades</h2>
-  <div id="upgradeList"></div>
+      <div class="list" id="starUpgrades"></div>
 
-  <h2>Star Shop</h2>
-  <div id="starUpgrades"></div>
-</div>
+      <div id="autoPrestigeToggle" style="margin-top:12px"></div>
+    </aside>
 
+    <!-- Center Panel -->
+    <main class="panel center-panel">
+      <h2>Click the Star</h2>
+
+      <div style="font-size:15px;color:#fff;margin-bottom:8px;">Count: <span id="count">0</span></div>
+
+      <div class="stats" id="stats">
+        Click Value: <b id="clickVal">1</b> &nbsp;|&nbsp; Idle: <b id="idleVal">0</b>/sec &nbsp;|&nbsp; Prestige Multiplier: <b id="prestigeVal">1x</b>
+        <small>Tip: press <b>P</b> to toggle the dev boost (dev-only)</small>
+      </div>
+
+      <div id="starBtn" class="star" title="Click me">★</div>
+
+      <div class="controls">
+        <button class="btn save" onclick="saveGame()">💾 Save</button>
+        <button class="btn reset" onclick="hardReset()">🗑 Hard Reset</button>
+        <button class="btn prestige" id="prestigeBtn" onclick="prestige()">🌟 Prestige</button>
+      </div>
+
+      <div style="margin-top:14px;text-align:left;color:var(--muted);font-size:13px;">
+        <p>• Achievements are trophies (no stat boost).</p>
+        <p>• Upgrades scale in price as you buy more.</p>
+        <p>• Your progress auto-saves often (you can also press Save).</p>
+        <p>• Prestige resets prices, click value and idle, but doubles your prestige multiplier.</p>
+        <p>• Reach Infinity to unlock a hidden cosmetic via Endless Restart.</p>
+      </div>
+    </main>
+
+    <!-- Upgrades & Achievements -->
+    <aside class="panel side-panel">
+      <h2>Upgrades</h2>
+      <div id="upgradeList" class="list"></div>
+
+      <h2 style="margin-top:18px;">Achievements</h2>
+      <div id="achievementsList" style="margin-top:8px;"></div>
+    </aside>
+
+  </div>
+
+  <!-- JS -->
+  <script src="script.js"></script>
 </body>
 </html>
