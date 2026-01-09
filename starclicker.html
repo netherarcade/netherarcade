@@ -569,7 +569,30 @@ function loadGame(){
     if (s.shopUpgrades && Array.isArray(s.shopUpgrades)){
       s.shopUpgrades.forEach(savedS => {
         const sUp = shopUpgrades.find(x => (x.id || x.name) === savedS.id);
-        if (sUp) sUp.owned = savedS.owned ?? sUp.owned;
+        if (s.shopUpgrades && Array.isArray(s.shopUpgrades)){
+  s.shopUpgrades.forEach(savedS => {
+    const sUp = shopUpgrades.find(x => (x.id || x.name) === savedS.id);
+    if (sUp) {
+      sUp.owned = savedS.owned ?? sUp.owned;
+
+      // re-apply effects of purchased shop upgrades
+      if (sUp.owned) {
+        if (sUp.id === 'celestialClicks' || sUp.name === 'Celestial Clicks') {
+          clickValue = mul(clickValue, D(2));
+        }
+        if (sUp.id === 'ascendantCycle' || sUp.name === 'Ascendant Cycle') {
+          autoPrestigeUnlocked = true;
+        }
+        if (sUp.id === 'efficientUniverse' || sUp.name === 'Efficient Universe') {
+          upgrades.forEach(u => {
+            u.cost = usingDecimal ? u.cost.times(0.95) : Math.floor(Number(u.cost) * 0.95);
+          });
+        }
+      }
+    }
+  });
+}
+✅ This goes exactl
       });
     }
     // restore achievements
