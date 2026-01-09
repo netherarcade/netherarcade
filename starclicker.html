@@ -187,7 +187,7 @@
         <p>• Achievements are trophies (no stat boost).</p>
         <p>• Upgrades scale in price as you buy more.</p>
         <p>• Your progress auto-saves often (you can also press Save).</p>
-        <p>• Prestige resets prices, click value and idle, but doubles your prestige multiplier.</p>
+        <p>• Prestige resets prices, click value and idle,but .</p>
         <p>• Reach Infinity to unlock a hidden cosmetic via Endless Restart.</p>
       </div>
     </main>
@@ -327,8 +327,9 @@ function parseD(v){
 /* ===================== Core game functions ===================== */
 
 /* click */
-function clickStar(){
-  count = add(count, clickValue);
+setInterval(()=>{
+  count = add(count, mul(idleValue, prestigeMultiplier));
+}, 1000);
   checkAchievements();
   updateDisplay();
   saveGame();
