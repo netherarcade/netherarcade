@@ -386,25 +386,24 @@ function buyStarUpgrade(i){
   }
 }
 
-/* prestige - requires 1M */
-function prestige(){
-  if (!gte(count, D(1e6))){
-    alert("You need at least 1,000,000 to Prestige!");
-    return;
-  }
+/function prestige(){
+  // only allow if count >= 1,000,000
+  if (!gte(count, D(1e6))) return;
 
-  // double current click value
+  // double click value
   clickValue = mul(clickValue, D(2));
 
-  // reset main values
+  // reset main progress
   count = D(0);
   idleValue = D(0);
 
-  // reset normal upgrades
+  // reset normal upgrades but keep shop upgrades intact
   upgrades.forEach(u => {
     u.owned = 0;
     u.cost = u.baseCost;
   });
+
+  // shop upgrades are untouched
 
   renderAll();
   saveGame();
