@@ -6,6 +6,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow-x: hidden;
 }
 
 /* Main container */
@@ -90,4 +91,5 @@ canvas {
 
 #startBtn:active {
     transform: scale(0.95);
+
 }
