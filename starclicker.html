@@ -388,32 +388,27 @@ function buyStarUpgrade(i){
 
 /* prestige - requires 1M */
 function prestige(){
-  const threshold = usingDecimal ? D(1e6) : 1e6;
-  if (!gte(count, threshold)){
+  if (!gte(count, D(1e6))){
     alert("You need at least 1,000,000 to Prestige!");
     return;
   }
-  // double prestige multiplier
-  prestigeMultiplier = mul(prestigeMultiplier, D(2));
-  // reset count and base clickable/idle values
+
+  // double current click value
+  clickValue = mul(clickValue, D(2));
+
+  // reset main values
   count = D(0);
-  clickValue = D(1);
   idleValue = D(0);
-  // reset normal upgrades but keep shop upgrades and stars
+
+  // reset normal upgrades
   upgrades.forEach(u => {
     u.owned = 0;
     u.cost = u.baseCost;
   });
-  // Apply Guiding Light if owned: start idle = 1 * prestigeMultiplier
-  const gl = shopUpgrades.find(s => s.id === 'guidingLight' || s.name === 'Guiding Light');
-  if (gl && gl.owned){
-    idleValue = mul(D(1), prestigeMultiplier);
-  }
+
   renderAll();
   saveGame();
 }
-
-
 
 /* auto prestige toggle UI */
 function renderAutoPrestigeToggle(){
