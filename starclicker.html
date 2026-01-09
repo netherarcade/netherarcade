@@ -386,12 +386,14 @@ function buyStarUpgrade(i){
   }
 }
 
-/function prestige(){
-  // only allow if count >= 1,000,000
+unction prestige(){
   if (!gte(count, D(1e6))) return;
 
   // double click value
   clickValue = mul(clickValue, D(2));
+
+  // double prestige multiplier
+  prestigeMultiplier = mul(prestigeMultiplier, D(2));
 
   // reset main progress
   count = D(0);
@@ -402,8 +404,6 @@ function buyStarUpgrade(i){
     u.owned = 0;
     u.cost = u.baseCost;
   });
-
-  // shop upgrades are untouched
 
   renderAll();
   saveGame();
