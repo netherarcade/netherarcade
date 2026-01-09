@@ -1,296 +1,648 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Nether Arcade – Home</title>
-    <link rel="icon" href="logo.png">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
-    <meta name="description" content="Welcome to Nether Arcade. Fun minigames, creative builds, and a great community await you!">
-    <meta property="og:title" content="Nether Arcade – Home">
-    <meta property="og:description" content="Welcome to Nether Arcade. Fun minigames, creative builds, and a great community await you!">
-    <meta property="og:image" content="logo.png">
-    <meta property="og:url" content="https://netherarcade.qzz.io">
-    <meta name="twitter:card" content="summary_large_image">
-    <style>
-        :root {
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Click the Star</title>
+  <!-- Break Infinity for large-number support -->
+  <script src="https://cdn.jsdelivr.net/npm/break_infinity.js@1.0.6/break_infinity.min.js"></script>
+  <style>
+    :root{
+      --bg: #000;              /* pure black background as you wanted */
+      --panel: #0f1312;
+      --panel-2: #141818;
+      --muted: #bfbfbf;
+      --accent: #00ff99;
+      --buy: #ff3b3b;
+      --save: #2a8f6b;
+      --reset: #bb3b3b;
+      --prestige: #d4a800;
+      --card-shadow: 0 8px 30px rgba(0,0,0,0.7);
+    }
 
-  --bg: #131316;
-  --surface: #1e1e22;
-  --card: #27272c;
-  --accent: #ff3c3c;
-  --text: #f3f3f7;
-  --subtle: #9f9fa6;
-  --green: #00ff88;
+    html,body{
+      height:100%;
+      margin:0;
+      background:var(--bg);
+      color:#e9f5ef;
+      font-family: "Helvetica Neue", Arial, sans-serif;
+    }
+
+    /* Top nav */
+    header.nav {
+      display:flex;
+      gap:20px;
+      align-items:center;
+      padding:12px 22px;
+      color:var(--muted);
+      background:transparent;
+    }
+    header.nav a {
+      color:var(--muted);
+      text-decoration:none;
+      font-size:14px;
+      font-weight:700;
+    }
+    header.nav a:hover { color: var(--accent); }
+
+    /* Layout */
+    .layout {
+      display:flex;
+      gap:20px;
+      padding:18px 22px 40px;
+      align-items:flex-start;
+      box-sizing:border-box;
+    }
+
+    .panel {
+      background: linear-gradient(180deg,var(--panel),var(--panel-2));
+      border-radius:12px;
+      padding:18px;
+      box-shadow: var(--card-shadow);
+      color:#e9f5ef;
+    }
+
+    .shop-panel { width:260px; flex:0 0 260px; }
+    .center-panel { flex:1.6; min-width:620px; text-align:center; padding:26px 32px; }
+    .side-panel { width:340px; flex:0 0 340px; }
+
+    .panel h2 {
+      margin:0 0 12px 0;
+      color: var(--accent);
+      font-size:20px;
+      text-shadow: 0 0 10px rgba(0,255,153,0.18);
+    }
+
+    /* big star */
+    .star {
+      font-size:80px;
+      color:#ff3b3b;
+      cursor:pointer;
+      display:inline-block;
+      margin:18px 0;
+      text-shadow:
+        0 0 12px rgba(255,59,59,0.22),
+        0 18px 28px rgba(0,0,0,0.7);
+      transition: transform .06s ease;
+    }
+    .star:active { transform: scale(.96); }
+
+    .stats {
+      margin-top:10px;
+      color:#e7f7ee;
+      font-size:15px;
+    }
+    .stats small { color: #9fb8a9; display:block; margin-top:6px; font-size:13px; }
+
+    /* controls */
+    .controls { display:flex; gap:12px; justify-content:center; margin-top:18px; }
+    .btn {
+      border:0; border-radius:10px; padding:9px 14px; cursor:pointer; font-weight:700;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.5);
+    }
+    .btn.save { background:#1f7a5a; color:#dff9ee; }
+    .btn.reset { background:#7b1b1b; color:#ffdede; }
+    .btn.prestige { background:#664d00; color:#fff1c6; }
+
+    /* list items */
+    .list { margin-top:14px; }
+    .item {
+      background: rgba(255,255,255,0.03);
+      border-radius:8px;
+      padding:10px 12px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:10px;
+      box-shadow: inset 0 -1px 0 rgba(255,255,255,0.02);
+    }
+    .item .left { text-align:left; }
+    .item .left b { display:block; font-size:15px; color:#f3fff6; margin-bottom:4px; }
+    .item small { color:var(--muted); display:block; font-size:13px; }
+    .cost { display:flex; gap:10px; align-items:center; }
+    .cost .price { color:var(--muted); font-weight:700; margin-right:6px; min-width:90px; text-align:right; }
+    .buy {
+      background:var(--buy); color:white; border-radius:8px; padding:6px 12px; border:0; cursor:pointer; font-weight:800;
+    }
+    .buy:disabled { background:#333; cursor:not-allowed; color:#777; }
+
+    .achievement { background: rgba(255,255,255,0.02); padding:8px; border-radius:8px; margin-bottom:8px; color:#7aa886; }
+    .achievement.locked { color:#3d6b57; opacity:0.6; }
+    .achievement.unlocked { box-shadow: 0 6px 20px rgba(0,255,153,0.06); color:var(--accent); font-weight:800; }
+
+    .small { color:var(--muted); font-size:13px; }
+
+    @media (max-width:1100px){
+      .layout{flex-direction:column;align-items:center;padding:12px;gap:14px;}
+      .shop-panel,.side-panel{width:95%;flex:none;}
+      .center-panel{width:95%;min-width:unset;}
+    }
+
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <a href="index">Home</a>
+    <a href="about">Team</a>
+    <a href="minigame">Mini-Game</a>
+    <a href="socials">Socials</a>
+  </header>
+
+  <div class="layout">
+
+    <!-- Shop Panel -->
+    <aside class="panel shop-panel" id="shopPanel">
+      <h2>⭐ Shop</h2>
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div style="font-size:14px;color:#fff;">Stars: <span id="starCount">0</span></div>
+        <button class="btn" onclick="tradeForStar()" style="background:#202; color:#dfffe9; padding:8px; border-radius:8px;">Trade 50T → +1 Star</button>
+      </div>
+
+      <div class="list" id="starUpgrades"></div>
+
+      <div id="autoPrestigeToggle" style="margin-top:12px"></div>
+    </aside>
+
+    <!-- Center Panel -->
+    <main class="panel center-panel">
+      <h2>Click the Star</h2>
+
+      <div style="font-size:15px;color:#fff;margin-bottom:8px;">Count: <span id="count">0</span></div>
+
+      <div class="stats" id="stats">
+        Click Value: <b id="clickVal">1</b> &nbsp;|&nbsp; Idle: <b id="idleVal">0</b>/sec &nbsp;|&nbsp; Prestige Multiplier: <b id="prestigeVal">1x</b>
+       
+      </div>
+
+      <div id="starBtn" class="star" title="Click me">★</div>
+
+      <div class="controls">
+        <button class="btn save" onclick="saveGame()">💾 Save</button>
+        <button class="btn reset" onclick="hardReset()">🗑 Hard Reset</button>
+        <button class="btn prestige" id="prestigeBtn" onclick="prestige()">🌟 Prestige</button>
+      </div>
+
+      <div style="margin-top:14px;text-align:left;color:var(--muted);font-size:13px;">
+        <p>• Achievements are trophies (no stat boost).</p>
+        <p>• Upgrades scale in price as you buy more.</p>
+        <p>• Your progress auto-saves often (you can also press Save).</p>
+        <p>• Prestige resets prices, click value and idle, but doubles your prestige multiplier.</p>
+        <p>• Reach Infinity to unlock a hidden cosmetic via Endless Restart.</p>
+      </div>
+    </main>
+
+    <!-- Upgrades & Achievements -->
+    <aside class="panel side-panel">
+      <h2>Upgrades</h2>
+      <div id="upgradeList" class="list"></div>
+
+      <h2 style="margin-top:18px;">Achievements</h2>
+      <div id="achievementsList" style="margin-top:8px;"></div>
+    </aside>
+
+  </div>
+
+<script>
+/* ===================== Setup Decimal =====================
+   Use Break_Infinity's Decimal via the loaded CDN.
+   If something is wrong, we fallback to Number but warn.
+*/
+
+const DecimalLib = window.Decimal || (window.BreakInfinity && window.BreakInfinity.Decimal) || null;
+const D = (v) => {
+  if (DecimalLib) return new DecimalLib(v);
+  return typeof v === "number" ? v : Number(v);
+};
+/* Helper boolean to detect Decimal usage */
+const usingDecimal = !!DecimalLib;
+
+/* safe helpers so code can look clean */
+function add(a,b){ return usingDecimal ? a.plus(b) : a + b; }
+function sub(a,b){ return usingDecimal ? a.minus(b) : a - b; }
+function mul(a,b){ return usingDecimal ? a.times(b) : a * b; }
+function div(a,b){ return usingDecimal ? a.dividedBy(b) : a / b; }
+function gte(a,b){ return usingDecimal ? a.greaterThanOrEqualTo(b) : a >= b; }
+function lt(a,b){ return usingDecimal ? a.lessThan(b) : a < b; }
+function toNumber(a){ return usingDecimal ? a.toNumber() : a; }
+function toString(a){ return usingDecimal ? a.toString() : String(a); }
+
+/* ================= Game state (use Decimal for big numbers) */
+let count = D(0);
+let clickValue = D(1);
+let idleValue = D(0);
+let prestigeMultiplier = D(1);
+let stars = 0;
+let autoPrestigeUnlocked = false;
+let autoPrestigeEnabled = false;
+
+/* Upgrade definitions (unchanged functionality, only Decimal values where needed) */
+let upgrades = [
+  { id:'click05', name: "+0.5 / click", baseCost: D(20), cost: D(20), value: D(0.5), type:"click", owned:0, scale: D(1.5), desc:"Practice makes perfect." },
+  { id:'click1', name: "+1 / click", baseCost: D(150), cost: D(150), value: D(1), type:"click", owned:0, scale: D(1.5), desc:"Heavier fingertips." },
+  { id:'cps1', name: "+1 / sec", baseCost: D(100), cost: D(100), value: D(1), type:"idle", owned:0, scale: D(1.5), desc:"Little helpers." },
+  { id:'cps5', name: "+5 / sec", baseCost: D(500), cost: D(500), value: D(5), type:"idle", owned:0, scale: D(1.5), desc:"Bigger crew." },
+  { id:'burst', name: "Burst x2", baseCost: D(1000), cost: D(1000), value: D(2), type:"burst", owned:0, scale: D(2), desc:"Permanently doubles click value (stackable)." }
+];
+
+/* Star shop */
+let shopUpgrades = [
+  { id:'guidingLight', name:"Guiding Light", cost:2, owned:0, desc:"Start with +Idle/sec × Prestige multiplier." },
+  { id:'celestialClicks', name:"Celestial Clicks", cost:5, owned:0, desc:"Permanently double click value." },
+  { id:'ascendantCycle', name:"Ascendant Cycle", cost:10, owned:0, desc:"Unlock auto prestige toggle." },
+  { id:'efficientUniverse', name:"Efficient Universe", cost:15, owned:0, desc:"5% cheaper upgrades." }
+];
+
+/* Achievements (always visible; locked/unlocked states) */
+let achievements = [
+  { id:'first',   name:"First Click",          unlocked:false, condition:()=> gte(count, D(1)) },
+  { id:'ten',     name:"Ten Up",               unlocked:false, condition:()=> gte(count, D(10)) },
+  { id:'hundred', name:"Triple Digits",        unlocked:false, condition:()=> gte(count, D(100)) },
+  { id:'thousand',name:"1,000!",               unlocked:false, condition:()=> gte(count, D(1000)) },
+  { id:'auto',    name:"Automation",           unlocked:false, condition:()=> gte(idleValue, D(1)) },
+  { id:'banked',  name:"5,000 Banked",         unlocked:false, condition:()=> gte(count, D(5000)) },
+  { id:'lotones', name:"A Lot of Ones",        unlocked:false, condition:()=> gte(clickValue, D(11)) },
+  { id:'moneym',  name:"Money Money",          unlocked:false, condition:()=> gte(count, D(1e6)) },
+  { id:'prest',   name:"Prestigious",          unlocked:false, condition:()=> gte(prestigeMultiplier, D(2)) },
+  { id:'starry',  name:"Starry Eyed",          unlocked:false, condition:()=> stars > 0 },
+  { id:'collect', name:"Collector",            unlocked:false, condition:()=> shopUpgrades.some(s=> s.owned>0) },
+  { id:'trueg',   name:"True Grinder",         unlocked:false, condition:()=> gte(count, D(1e9)) }
+];
+
+/* ===================== Helpers & formatting ===================== */
+
+function formatDecimal(d){
+  // Accepts Decimal or Number
+  if (!usingDecimal) return formatNumberFallback(d);
+  // BreakInfinity's Decimal has toNumber() but may return Infinity on huge numbers - use toString and parse mantissa
+  try {
+    if (!isFinite(d.m)) { // not exact test for huge, but we'll fallback to exponential string
+      return d.toString();
+    }
+  } catch(e){}
+  // Use a custom formatting for large numbers (similar K M B T Qa Qi)
+  const thresholds = [
+    {limit: new DecimalLib('1e33'), suffix:'Dc'}, // arbitrary extra suffixes if needed
+    {limit: new DecimalLib('1e30'), suffix:'No'},
+    {limit: new DecimalLib('1e27'), suffix:'Oc'},
+    {limit: new DecimalLib('1e24'), suffix:'Sp'},
+    {limit: new DecimalLib('1e21'), suffix:'Sx'},
+    {limit: new DecimalLib('1e18'), suffix:'Qi'},
+    {limit: new DecimalLib('1e15'), suffix:'Qa'},
+    {limit: new DecimalLib('1e12'), suffix:'T'},
+    {limit: new DecimalLib('1e9'),  suffix:'B'},
+    {limit: new DecimalLib('1e6'),  suffix:'M'},
+    {limit: new DecimalLib('1e3'),  suffix:'K'}
+  ];
+  for(let i=0;i<thresholds.length;i++){
+    const t = thresholds[i];
+    if (d.greaterThanOrEqualTo(t.limit)){
+      const val = d.dividedBy(t.limit);
+      // show one or two decimals based on magnitude
+      const s = val.lessThan(100) ? val.toFixed(2) : val.toFixed(0);
+      return s + t.suffix;
+    }
+  }
+  // below 1000
+  return d.toFixed(d.greaterThanOrEqualTo(1) ? 0 : 2).toString();
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: "Inter", system-ui, sans-serif; background: var(--bg); color: var(--text); display: flex; flex-direction: column; min-height: 100vh; }
-.banner-wrap { position: relative; width: 100%; height: 260px; overflow: hidden; }
-.banner-img { width: 100%; height: 100%; object-fit: cover; }
-.banner-fade { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(19,19,22,0) 60%, var(--bg) 100%); }
-
-nav { position: sticky; top: 0; z-index: 10; background: var(--surface); display: flex; justify-content: center; gap: 1.5rem; padding: 0.75rem 1rem; border-bottom: 1px solid var(--card); }
-
-
-nav a { background: none; border: none; color: var(--subtle); font-size: 1rem; cursor: pointer; text-decoration: none; transition: color 0.2s ease; }
-
-
-nav a.active, nav a:hover { color: var(--accent); }
-
-
-main { flex: 1; padding: 2.5rem 1.5rem; display: flex; flex-direction: column; align-items: center; text-align: center; }
-
-
-section { width: 100%; max-width: 960px; }
-
-
-h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 1rem; }
-
-
-p { color: var(--subtle); line-height: 1.6; margin-bottom: 1.5rem; }
-
-
-.divider { color: var(--green); display: flex; justify-content: center; align-items: center; margin: 1.5rem 0; font-weight: 600; }
-
-
-
-
-
-/* Server IP Box */
-
-
-.ip-box { background: var(--card); border-radius: 12px; padding: 1.2rem; text-align: center; font-size: 1.2rem; font-weight: 600; cursor: pointer; position: relative; }
-
-
-.ip-box:hover { background: var(--surface); }
-
-
-.tooltip { position: absolute; bottom: -1.5rem; left: 50%; transform: translateX(-50%); background: var(--accent); color: #000; padding: 0.3rem 0.6rem; border-radius: 6px; font-size: 0.75rem; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
-
-
-.ip-box.copied .tooltip { opacity: 1; }
-
-
-
-
-
-footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: var(--subtle); }
-
-
-</style>
-</head>
-
-<body>
-    <!-- Banner -->
-    <div class="banner-wrap">
-        <img class="banner-img" src="minecraft banner.webp" alt="Nether Arcade Banner" loading="lazy">
-        <div class="banner-fade"></div>
-    </div>
-    <!-- Navigation -->
-    <nav>
-        <a class="active" href="index">Home</a>
-        <a href="about">Team</a>
-        <a href="minigame.html">Mini-Game</a>
-        <a href="socials.html">Socials</a>
-    </nav>
-    <div id="user-info" style="position: fixed; top: 10px; left: 10px; font-family: sans-serif;"></div>
-    <!-- Firebase SDKs for showing user info and logout -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-
-
-  import {
-
-
-    getAuth,
-
-
-    onAuthStateChanged,
-
-
-    signOut
-
-
-  } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
-
-
-
-
-
-  // Your Firebase config
-
-
-  const firebaseConfig = {
-
-
-    apiKey: "AIzaSyAHWjE1igMxmPQ65hivDN7ioNsBSB7nl7U",
-
-
-    authDomain: "tester-f4444.firebaseapp.com",
-
-
-    projectId: "tester-f4444",
-
-
-    storageBucket: "tester-f4444.firebasestorage.app",
-
-
-    messagingSenderId: "588985084600",
-
-
-    appId: "1:588985084600:web:64816acb4d654f9a4ae24d"
-
-
-  };
-
-
-
-
-
-  // Initialize Firebase
-
-
-  const app = initializeApp(firebaseConfig);
-
-
-  const auth = getAuth(app);
-
-
-
-
-
-  const userInfoDiv = document.getElementById("user-info");
-
-
-
-
-
-  onAuthStateChanged(auth, (user) => {
-
-
-    if (user) {
-
-
-      const name = user.displayName || user.email;
-
-
-
-
-
-      userInfoDiv.innerHTML = `
-
-
-        <div style="background: #1e1e22; padding: 6px 12px; border-radius: 6px; display: inline-block;">
-
-
-          👤 <strong>${name}</strong>
-
-
-          <button id="logoutBtn" style="margin-left: 10px; padding: 3px 8px; font-size: 0.9rem;">Logout</button>
-
-
-        </div>
-
-
-      `;
-
-
-
-
-
-      // Logout
-
-
-      document.getElementById("logoutBtn").addEventListener("click", () => {
-
-
-        signOut(auth).then(() => {
-
-
-          window.location.reload();
-
-
+function formatNumberFallback(num){
+  // fallback formatting if Decimal not available
+  if (num >= 1e12) return (num/1e12).toFixed(2) + 'T';
+  if (num >= 1e9) return (num/1e9).toFixed(2) + 'B';
+  if (num >= 1e6) return (num/1e6).toFixed(2) + 'M';
+  if (num >= 1e3) return (num/1e3).toFixed(2) + 'K';
+  return Math.floor(num).toString();
+}
+
+/* small helper for creating Decimal from saved value (string or number) */
+function parseD(v){
+  if (usingDecimal){
+    try { return new DecimalLib(v); } catch(e){ return new DecimalLib(0); }
+  }
+  return Number(v) || 0;
+}
+
+/* ===================== Core game functions ===================== */
+
+/* click */
+function clickStar(){
+  count = add(count, clickValue);
+  checkAchievements();
+  updateDisplay();
+  saveGame();
+}
+
+/* buy upgrade */
+function buyUpgrade(i){
+  const u = upgrades[i];
+  if (gte(count, u.cost)){
+    count = sub(count, u.cost);
+    u.owned += 1;
+    if (u.type === 'click') clickValue = add(clickValue, u.value);
+    if (u.type === 'idle') idleValue = add(idleValue, u.value);
+    if (u.type === 'burst') clickValue = mul(clickValue, u.value);
+    // scale cost
+    u.cost = usingDecimal ? u.cost.times(u.scale) : Math.floor(Number(u.cost) * Number(u.scale));
+    renderAll();
+    saveGame();
+  }
+}
+
+/* trade 50T for star */
+function tradeForStar(){
+  const tradeCost = usingDecimal ? new DecimalLib('5e13') : 5e13;
+  if (gte(count, tradeCost)){
+    count = sub(count, tradeCost);
+    stars += 1;
+    renderAll();
+    saveGame();
+  }
+}
+
+/* buy shop upgrade */
+function buyStarUpgrade(i){
+  const s = shopUpgrades[i];
+  if (stars >= s.cost || s.owned === 0 && stars >= s.cost){
+    if (stars >= s.cost && s.owned === 0){
+      stars -= s.cost;
+      s.owned = 1;
+      if (s.id === 'celestialClicks' || s.name === 'Celestial Clicks') {
+        clickValue = mul(clickValue, D(2));
+      }
+      if (s.id === 'ascendantCycle' || s.name === 'Ascendant Cycle') {
+        autoPrestigeUnlocked = true;
+      }
+      if (s.id === 'efficientUniverse' || s.name === 'Efficient Universe') {
+        // apply 5% discount to normal upgrades (multiply costs by 0.95)
+        upgrades.forEach(u => {
+          u.cost = usingDecimal ? u.cost.times(0.95) : Math.floor(Number(u.cost) * 0.95);
         });
-
-
-      });
-
-
-
-
-
-    } else {
-
-
-      // Not logged in
-
-
-      userInfoDiv.innerHTML = `
-
-
-        <a href="Login/index.html" style="color: var(--subtle); background: #1e1e22; padding: 6px 12px; border-radius: 6px; text-decoration: none;">
-
-
-          Click here to log in Login
-
-
-        </a>
-
-
-      `;
-
-
+      }
+      renderAll();
+      saveGame();
     }
+  }
+}
 
-
+/* prestige - requires 1M */
+function prestige(){
+  const threshold = usingDecimal ? D(1e6) : 1e6;
+  if (!gte(count, threshold)){
+    alert("You need at least 1,000,000 to Prestige!");
+    return;
+  }
+  // double prestige multiplier
+  prestigeMultiplier = mul(prestigeMultiplier, D(2));
+  // reset count and base clickable/idle values
+  count = D(0);
+  clickValue = D(1);
+  idleValue = D(0);
+  // reset normal upgrades but keep shop upgrades and stars
+  upgrades.forEach(u => {
+    u.owned = 0;
+    u.cost = u.baseCost;
   });
+  // Apply Guiding Light if owned: start idle = 1 * prestigeMultiplier
+  const gl = shopUpgrades.find(s => s.id === 'guidingLight' || s.name === 'Guiding Light');
+  if (gl && gl.owned){
+    idleValue = mul(D(1), prestigeMultiplier);
+  }
+  renderAll();
+  saveGame();
+}
 
+
+
+/* auto prestige toggle UI */
+function renderAutoPrestigeToggle(){
+  const el = document.getElementById('autoPrestigeToggle');
+  if (!autoPrestigeUnlocked){
+    el.innerHTML = '';
+    return;
+  }
+  el.innerHTML = `<div style="display:flex;gap:10px;align-items:center;margin-top:10px;">
+    <div class="small">Auto Prestige</div>
+    <button class="${autoPrestigeEnabled ? 'toggle-on' : 'toggle-off'}" onclick="toggleAutoPrestige()" style="padding:6px 10px;border-radius:8px;border:0;cursor:pointer;">
+      ${autoPrestigeEnabled ? 'ON' : 'OFF'}
+    </button>
+  </div>`;
+}
+function toggleAutoPrestige(){
+  autoPrestigeEnabled = !autoPrestigeEnabled;
+  saveGame();
+  renderAutoPrestigeToggle();
+}
+
+/* achievements check & render (always visible list; locked vs unlocked) */
+function checkAchievements(){
+  let changed = false;
+  achievements.forEach(a => {
+    if (!a.unlocked && a.condition()){
+      a.unlocked = true;
+      changed = true;
+    }
+  });
+  if (changed) renderAchievements();
+}
+
+/* ===================== Rendering ===================== */
+
+function renderShop(){
+  document.getElementById('starCount').textContent = stars;
+  const container = document.getElementById('starUpgrades');
+  let html = '';
+  shopUpgrades.forEach((s, i) => {
+    html += `<div class="item">
+      <div class="left">
+        <b>${s.name} (Owned: ${s.owned})</b>
+        <small>${s.desc}</small>
+      </div>
+      <div class="cost">
+        <div class="price">${s.cost}⭐</div>
+        <button class="buy" ${s.owned ? 'disabled' : ''} onclick="buyStarUpgrade(${i})">Buy</button>
+      </div>
+    </div>`;
+  });
+  container.innerHTML = html;
+  renderAutoPrestigeToggle();
+}
+
+function renderUpgrades(){
+  const container = document.getElementById('upgradeList');
+  let html = '';
+  upgrades.forEach((u, i) => {
+    const price = usingDecimal ? formatDecimal(u.cost) : formatNumberFallback(Number(u.cost));
+    html += `<div class="item">
+      <div class="left">
+        <b>${u.name} (Owned: ${u.owned})</b>
+        <small>${u.desc}</small>
+      </div>
+      <div class="cost">
+        <div class="price">${price}</div>
+        <button class="buy" onclick="buyUpgrade(${i})">Buy</button>
+      </div>
+    </div>`;
+  });
+  container.innerHTML = html;
+}
+
+function renderAchievements(){
+  const container = document.getElementById('achievementsList');
+  let html = '';
+  achievements.forEach(a => {
+    const cls = a.unlocked ? 'achievement unlocked' : 'achievement locked';
+    html += `<div class="${cls}">${a.unlocked ? '🏆 ' : '🔒 '}${a.name}</div>`;
+  });
+  container.innerHTML = html;
+}
+
+function updateDisplay(){
+  document.getElementById('count').textContent = formatDecimal(count);
+  document.getElementById('clickVal').textContent = formatDecimal(clickValue);
+  document.getElementById('idleVal').textContent = formatDecimal(idleValue);
+  document.getElementById('prestigeVal').textContent = (usingDecimal ? formatDecimal(prestigeMultiplier) : prestigeMultiplier) + 'x';
+
+  // toggle prestige button enabled only at 1M
+  const pBtn = document.getElementById('prestigeBtn');
+  pBtn.disabled = !gte(count, D(1e6));
+
+  renderShop();
+  renderUpgrades();
+  renderAchievements();
+}
+
+/* render everything helper */
+function renderAll(){ updateDisplay(); renderShop(); renderUpgrades(); renderAchievements(); }
+
+/* ===================== Game loop & save/load ===================== */
+
+/* idle ticks every second */
+setInterval(()=>{
+  count = add(count, idleValue);
+  if (autoPrestigeEnabled && gte(count, D(1e6))){
+    prestige();
+  }
+  checkAchievements();
+  updateDisplay();
+}, 1000);
+
+/* save/load: convert Decimal -> string for safe storage */
+function saveGame(){
+  try {
+    const save = {
+      count: toString(count),
+      clickValue: toString(clickValue),
+      idleValue: toString(idleValue),
+      prestigeMultiplier: toString(prestigeMultiplier),
+      stars,
+      autoPrestigeUnlocked,
+      autoPrestigeEnabled,
+      upgrades: upgrades.map(u=>({
+        id:u.id, owned:u.owned, cost: toString(u.cost)
+      })),
+      shopUpgrades: shopUpgrades.map(s=>({id:s.id || s.name, owned:s.owned})),
+      achievements: achievements.map(a=>({id:a.id, unlocked:a.unlocked}))
+    };
+    localStorage.setItem('starClickerSave', JSON.stringify(save));
+  } catch(e){}
+}
+
+function loadGame(){
+  try {
+    const raw = localStorage.getItem('starClickerSave');
+    if (!raw) return;
+    const s = JSON.parse(raw);
+    count = parseD(s.count ?? 0);
+    clickValue = parseD(s.clickValue ?? 1);
+    idleValue = parseD(s.idleValue ?? 0);
+    prestigeMultiplier = parseD(s.prestigeMultiplier ?? 1);
+    stars = s.stars ?? 0;
+    autoPrestigeUnlocked = s.autoPrestigeUnlocked ?? false;
+    autoPrestigeEnabled = s.autoPrestigeEnabled ?? false;
+    // restore upgrades
+    if (s.upgrades && Array.isArray(s.upgrades)){
+      s.upgrades.forEach(savedU => {
+        const u = upgrades.find(x=>x.id === savedU.id);
+        if (u){
+          u.owned = savedU.owned ?? u.owned;
+          u.cost = parseD(savedU.cost ?? u.cost);
+        }
+      });
+    }
+    // restore shop
+    if (s.shopUpgrades && Array.isArray(s.shopUpgrades)){
+      s.shopUpgrades.forEach(savedS => {
+        const sUp = shopUpgrades.find(x => (x.id || x.name) === savedS.id);
+        if (sUp) sUp.owned = savedS.owned ?? sUp.owned;
+      });
+    }
+    // restore achievements
+    if (s.achievements && Array.isArray(s.achievements)){
+      s.achievements.forEach(savedA => {
+        const a = achievements.find(x => x.id === savedA.id);
+        if (a) a.unlocked = savedA.unlocked ?? a.unlocked;
+      });
+    }
+  } catch(e){ console.warn('Load failed', e); }
+}
+
+/* hard reset */
+function hardReset(){
+  if (!confirm('Are you sure? This will wipe everything!')) return;
+  localStorage.removeItem('starClickerSave');
+  // reset all in memory
+  count = D(0); clickValue = D(1); idleValue = D(0); prestigeMultiplier = D(1); stars = 0;
+  upgrades.forEach(u => { u.owned = 0; u.cost = u.baseCost; });
+  shopUpgrades.forEach(s => s.owned = 0);
+  achievements.forEach(a => a.unlocked = false);
+  autoPrestigeUnlocked = false; autoPrestigeEnabled = false;
+  renderAll();
+  saveGame();
+}
+
+/* ===================== Dev key (single 'P', case-insensitive) =====================
+   Press P or p to get +1e15 (intended for devs/testing). No UI element.
+*/
+window.addEventListener('keydown', (e) => {
+  if (e.key && e.key.toLowerCase() === 'p'){
+    // add 1e15
+    count = add(count, D('1e15'));
+    // small visual feedback (console + tiny flash)
+    console.log('Dev boost: +1e15');
+    // flash center text briefly
+    const star = document.getElementById('starBtn');
+    if (star){
+      star.style.transform = 'scale(1.06)';
+      setTimeout(()=> star.style.transform = '', 160);
+    }
+    updateDisplay();
+    saveGame();
+  }
+});
+
+/* Watch star click */
+document.getElementById('starBtn').addEventListener('click', ()=> clickStar());
+
+/* expose small functions to buttons */
+window.clickStar = clickStar;
+window.buyUpgrade = buyUpgrade;
+window.buyStarUpgrade = buyStarUpgrade;
+window.tradeForStar = tradeForStar;
+window.saveGame = saveGame;
+window.hardReset = hardReset;
+window.prestige = prestige;
+window.toggleAutoPrestige = toggleAutoPrestige;
+
+/* Init */
+loadGame();
+renderAll();
+setInterval(saveGame, 10000); // autosave every 10s
 
 </script>
-    <main>
-        <section id="home">
-            <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
-            <h1><i class="fa-solid fa-fire"></i> Welcome to Nether Arcade</h1>
-            <p>Fun minigames, creative builds, and a great community await you!</p>
-            <!-- Server IP Box -->
-            <div class="ip-box" onclick="copyIP()">
-                <span>netherarcade.cold00.eu</span>
-                <div style="font-size:0.85rem; color:var(--subtle);">Java Edition only • Version 1.21.11</div>
-                <span class="tooltip" id="tip">Copied!</span>
-            </div>
-            <div class="divider">─────────﹒˗ˏˋ ✩ ˎˊ˗﹒─────────</div>
-        </section>
-    </main>
-    <footer>
-        &copy; <span id="yr"></span> Nether Arcade &nbsp;•&nbsp; Not affiliated with Mojang
-    </footer>
-    <script>
-    function copyIP() {
-
-
-        const ip = "netherarcade.cold00.eu";
-
-
-        navigator.clipboard.writeText(ip).then(() => {
-
-
-            const box = document.querySelector(".ip-box");
-
-
-            box.classList.add("copied");
-
-
-            setTimeout(() => box.classList.remove("copied"), 2000);
-
-
-        });
-
-
-    }
-
-
-    document.getElementById("yr").textContent = new Date().getFullYear();
-    </script>
 </body>
-
 </html>
+
+
+
