@@ -1,25 +1,4 @@
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Click the Star</title>
-  <!-- Break Infinity for large-number support -->
-  <script src="https://cdn.jsdelivr.net/npm/break_infinity.js@1.0.6/break_infinity.min.js"></script>
-  <style>
-    :root{
-      --bg: #000;              /* pure black background as you wanted */
-      --panel: #0f1312;
-      --panel-2: #141818;
-      --muted: #bfbfbf;
-      --accent: #00ff99;
-      --buy: #ff3b3b;
-      --save: #2a8f6b;
-      --reset: #bb3b3b;
-      --prestige: #d4a800;
-      --card-shadow: 0 8px 30px rgba(0,0,0,0.7);
-    }
+<
 
     html,body{
       height:100%;
@@ -386,25 +365,29 @@ function buyStarUpgrade(i){
   }
 }
 
+/* prestige - requires 1M */
 function prestige(){
-  if (!gte(count, D(1e6))) return;
-
-  // double click value
-  clickValue = mul(clickValue, D(2));
-
+  const threshold = usingDecimal ? D(1e6) : 1e6;
+  if (!gte(count, threshold)){
+    alert("You need at least 1,000,000 to Prestige!");
+    return;
+  }
   // double prestige multiplier
   prestigeMultiplier = mul(prestigeMultiplier, D(2));
-
-  // reset main progress
+  // reset count and base clickable/idle values
   count = D(0);
+  clickValue = D(1);
   idleValue = D(0);
-
-  // reset normal upgrades but keep shop upgrades intact
+  // reset normal upgrades but keep shop upgrades and stars
   upgrades.forEach(u => {
     u.owned = 0;
     u.cost = u.baseCost;
   });
-
+  // Apply Guiding Light if owned: start idle = 1 * prestigeMultiplier
+  const gl = shopUpgrades.find(s => s.id === 'guidingLight' || s.name === 'Guiding Light');
+  if (gl && gl.owned){
+    idleValue = mul(D(1), prestigeMultiplier);
+  }
   renderAll();
   saveGame();
 }
@@ -569,30 +552,7 @@ function loadGame(){
     if (s.shopUpgrades && Array.isArray(s.shopUpgrades)){
       s.shopUpgrades.forEach(savedS => {
         const sUp = shopUpgrades.find(x => (x.id || x.name) === savedS.id);
-        if (s.shopUpgrades && Array.isArray(s.shopUpgrades)){
-  s.shopUpgrades.forEach(savedS => {
-    const sUp = shopUpgrades.find(x => (x.id || x.name) === savedS.id);
-    if (sUp) {
-      sUp.owned = savedS.owned ?? sUp.owned;
-
-      // re-apply effects of purchased shop upgrades
-      if (sUp.owned) {
-        if (sUp.id === 'celestialClicks' || sUp.name === 'Celestial Clicks') {
-          clickValue = mul(clickValue, D(2));
-        }
-        if (sUp.id === 'ascendantCycle' || sUp.name === 'Ascendant Cycle') {
-          autoPrestigeUnlocked = true;
-        }
-        if (sUp.id === 'efficientUniverse' || sUp.name === 'Efficient Universe') {
-          upgrades.forEach(u => {
-            u.cost = usingDecimal ? u.cost.times(0.95) : Math.floor(Number(u.cost) * 0.95);
-          });
-        }
-      }
-    }
-  });
-}
-✅ This goes exactl
+        if (sUp) sUp.owned = savedS.owned ?? sUp.owned;
       });
     }
     // restore achievements
@@ -660,8 +620,4 @@ setInterval(saveGame, 10000); // autosave every 10s
 </script>
 </body>
 </html>
-
-
-
-
 
