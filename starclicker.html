@@ -275,22 +275,11 @@
       /* ===================== Setup Decimal =====================
      Use Break_Infinity's Decimal via the loaded CDN.
      If something is wrong, we fallback to Number but warn.
-  */
-document.body.style.userSelect = "none";
-        let lastTap = 0;
+  */document.body.style.userSelect = "none";
+       
+     
 
-element.addEventListener("touchend", function(e) {
-  let currentTime = new Date().getTime();
-  let tapLength = currentTime - lastTap;
-
-  if (tapLength < 300 && tapLength > 0) {
-    e.preventDefault();
-    console.log("Double tap!");
-  }
-
-  lastTap = currentTime;
-}); 
-        
+   
 
       const DecimalLib = window.Decimal || (window.BreakInfinity && window.BreakInfinity.Decimal) || null;
       const D = (v) => {
@@ -739,6 +728,7 @@ element.addEventListener("touchend", function(e) {
       loadGame();
       renderAll();
       setInterval(saveGame, 10000); // autosave every 10s
+      
       </script>
   </body>
 
