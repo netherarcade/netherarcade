@@ -251,7 +251,7 @@
                       <div class="cost">
                           <div class="price">1.00K</div>
                           <button class="buy" onclick="buyUpgrade(4)">Buy</button>
-                      </div>
+                       </div>
                   </div>
               </div>
               <h2 style="margin-top:18px;">Achievements</h2>
@@ -275,7 +275,9 @@
       /* ===================== Setup Decimal =====================
      Use Break_Infinity's Decimal via the loaded CDN.
      If something is wrong, we fallback to Number but warn.
-  */let lastTap = 0;
+  */
+document.body.style.userSelect = "none";
+        let lastTap = 0;
 
 element.addEventListener("touchend", function(e) {
   let currentTime = new Date().getTime();
@@ -287,8 +289,8 @@ element.addEventListener("touchend", function(e) {
   }
 
   lastTap = currentTime;
-});
-        document.body.style.userSelect = "none";
+}); 
+        
 
       const DecimalLib = window.Decimal || (window.BreakInfinity && window.BreakInfinity.Decimal) || null;
       const D = (v) => {
