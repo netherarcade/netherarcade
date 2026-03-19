@@ -631,20 +631,20 @@
               const raw = localStorage.getItem('starClickerSave');
               if (!raw) return;
               const s = JSON.parse(raw);
-              count = parseD(s.count ? ? 0);
-              clickValue = parseD(s.clickValue ? ? 1);
-              idleValue = parseD(s.idleValue ? ? 0);
-              prestigeMultiplier = parseD(s.prestigeMultiplier ? ? 1);
-              stars = s.stars ? ? 0;
-              autoPrestigeUnlocked = s.autoPrestigeUnlocked ? ? false;
-              autoPrestigeEnabled = s.autoPrestigeEnabled ? ? false;
+              count = parseD(s.count ?? 0);
+              clickValue = parseD(s.clickValue ?? 1);
+              idleValue = parseD(s.idleValue ?? 0);
+              prestigeMultiplier = parseD(s.prestigeMultiplier ?? 1);
+              stars = s.stars ?? 0;
+              autoPrestigeUnlocked = s.autoPrestigeUnlocked ?? false;
+              autoPrestigeEnabled = s.autoPrestigeEnabled ?? false;
               // restore upgrades
               if (s.upgrades && Array.isArray(s.upgrades)) {
                   s.upgrades.forEach(savedU => {
                       const u = upgrades.find(x => x.id === savedU.id);
                       if (u) {
-                          u.owned = savedU.owned ? ? u.owned;
-                          u.cost = parseD(savedU.cost ? ? u.cost);
+                          u.owned = savedU.owned ?? u.owned;
+                          u.cost = parseD(savedU.cost ?? u.cost);
                       }
                   });
               }
@@ -652,14 +652,14 @@
               if (s.shopUpgrades && Array.isArray(s.shopUpgrades)) {
                   s.shopUpgrades.forEach(savedS => {
                       const sUp = shopUpgrades.find(x => (x.id || x.name) === savedS.id);
-                      if (sUp) sUp.owned = savedS.owned ? ? sUp.owned;
+                      if (sUp) sUp.owned = savedS.owned ?? sUp.owned;
                   });
               }
               // restore achievements
               if (s.achievements && Array.isArray(s.achievements)) {
                   s.achievements.forEach(savedA => {
                       const a = achievements.find(x => x.id === savedA.id);
-                      if (a) a.unlocked = savedA.unlocked ? ? a.unlocked;
+                      if (a) a.unlocked = savedA.unlocked ?? a.unlocked;
                   });
               }
           } catch (e) { console.warn('Load failed', e); }
