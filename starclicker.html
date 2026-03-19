@@ -1,8 +1,4 @@
   <html>
-<html lang="en"><head>
-<meta charset="UTF-8">
-<title>Nether Arcade – Mini-Games</title>
-<link rel="icon" href="../logo.png">
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <style>   
@@ -14,7 +10,7 @@
   --muted: #9fb8a9;
   --buy: #1f7a5a;
   --card-shadow: 0 10px 30px rgba(0,0,0,0.6);
-}    
+}
       html,body{
       height:100%;
       margin:0;
@@ -282,7 +278,15 @@
      If something is wrong, we fallback to Number but warn.
   */document.body.style.userSelect = "none";
        
-     
+     let lastTouchEnd = 0;
+
+document.addEventListener("touchend", function (event) {
+  let now = Date.now();
+  if (now - lastTouchEnd <= 300) {
+    event.preventDefault();
+  }
+  lastTouchEnd = now;
+}, false);
 
    
 
