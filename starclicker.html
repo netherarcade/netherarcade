@@ -1,8 +1,5 @@
-  <!DOCTYPE html> 
-<html lang="en">
-<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-<title>Nether Arcade – Mini-Games</title>
-<link rel="icon" href="../logo.png">
+  <html>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <style>   
   :root {
@@ -13,6 +10,12 @@
   --muted: #9fb8a9;
   --buy: #1f7a5a;
   --card-shadow: 0 10px 30px rgba(0,0,0,0.6);
+}
+
+#starBtn {
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
 }
       html,body{
       height:100%;
@@ -278,7 +281,20 @@
       /* ===================== Setup Decimal =====================
      Use Break_Infinity's Decimal via the loaded CDN.
      If something is wrong, we fallback to Number but warn.
-  */document.body.style.userSelect = "none";
+  */     
+
+
+  let lastTouchEnd = 0;
+
+document.addEventListener('touchend', function (event) {
+  const now = Date.now();
+  if (now - lastTouchEnd <= 300) {
+    event.preventDefault();
+  }
+  lastTouchEnd = now;
+}, { passive: false });
+ 
+  document.body.style.userSelect = "none";
        
        
 
@@ -715,7 +731,14 @@
       });
 
       /* Watch star click */
-      document.getElementById('starBtn').addEventListener('click', () => clickStar());
+    const starBtn = document.getElementById('starBtn');
+
+starBtn.addEventListener('click', clickStar);
+
+starBtn.addEventListener('touchstart', function(e) {
+  e.preventDefault(); // stops zoom + delay
+  clickStar();
+}, { passive: false });
 
       /* expose small functions to buttons */
       window.clickStar = clickStar;
