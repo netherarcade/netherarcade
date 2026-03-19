@@ -123,6 +123,86 @@
       .shop-panel,.side-panel{width:95%;flex:none;}
       .center-panel{width:95%;min-width:unset;}
       }
+@media (max-width: 900px){
+
+  header.nav {
+    justify-content: center;
+    gap: 12px;
+    padding: 10px;
+    font-size: 13px;
+  }
+
+  .layout {
+    flex-direction: column;
+    padding: 10px;
+    gap: 12px;
+  }
+
+  .panel {
+    width: 100%;
+    padding: 14px;
+  }
+
+  .shop-panel,
+  .side-panel,
+  .center-panel {
+    width: 100%;
+    min-width: unset;
+  }
+
+  /* BIG CLICK AREA */
+  .star {
+    font-size: 64px;
+    margin: 12px 0;
+  }
+
+  /* Stats text slightly bigger for readability */
+  .stats {
+    font-size: 16px;
+  }
+
+  /* Buttons easier to tap */
+  .controls {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 15px;
+  }
+
+  /* Shop items stack nicely */
+  .item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .cost {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .cost .price {
+    text-align: left;
+    min-width: unset;
+  }
+
+  .buy {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  /* Achievements spacing */
+  .achievement {
+    font-size: 14px;
+  }
+}
+
+
   </style> 
 
   <body>
