@@ -1,5 +1,6 @@
   <html>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <style>   
   :root {
   --bg: #0f1412;
@@ -16,6 +17,7 @@
       background:var(--bg);
       color:#e9f5ef;
       font-family: "Helvetica Neue", Arial, sans-serif;
+      touch-action: manipulation; 
       }
       /* Top nav */
       header.nav {
@@ -273,7 +275,20 @@
       /* ===================== Setup Decimal =====================
      Use Break_Infinity's Decimal via the loaded CDN.
      If something is wrong, we fallback to Number but warn.
-  */
+  */let lastTap = 0;
+
+element.addEventListener("touchend", function(e) {
+  let currentTime = new Date().getTime();
+  let tapLength = currentTime - lastTap;
+
+  if (tapLength < 300 && tapLength > 0) {
+    e.preventDefault();
+    console.log("Double tap!");
+  }
+
+  lastTap = currentTime;
+});
+        document.body.style.userSelect = "none";
 
       const DecimalLib = window.Decimal || (window.BreakInfinity && window.BreakInfinity.Decimal) || null;
       const D = (v) => {
