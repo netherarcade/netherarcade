@@ -1,0 +1,327 @@
+:root {
+    --bg: #131316;
+    --surface: #1e1e22;
+    --card: #27272c;
+    --accent: #ff3c3c;
+    --accent2: #ff7a00;
+    --text: #f3f3f7;
+    --subtle: #9f9fa6;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Inter", system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.banner-wrap {
+    position: relative;
+    width: 100%;
+    height: 260px;
+    overflow: hidden;
+}
+
+.banner-img {
+    width: 100%;
+    height: 350px;
+    object-fit: cover;
+}
+
+.banner-fade {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(19, 19, 22, 0) 60%, var(--bg) 100%);
+}
+
+nav {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--surface);
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--card);
+}
+
+nav a {
+    background: none;
+    border: none;
+    color: var(--subtle);
+    font-size: 1rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+nav a.active,
+nav a:hover {
+    color: var(--accent);
+}
+
+main {
+    flex: 1;
+    padding: 2.5rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+section {
+    width: 100%;
+    max-width: 960px;
+}
+
+h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    margin-bottom: 1rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+p {
+    color: var(--subtle);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.divider {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.25rem;
+    margin: 1.5rem 0;
+    font-weight: 600;
+}
+
+/* Team Section */
+.team-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.member {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 1rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.member .name {
+    font-weight: 700;
+    margin-bottom: 0.2rem;
+}
+
+.member .role {
+    font-size: 0.85rem;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+}
+
+.fav-divider {
+    height: 3px;
+    width: 100%;
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+}
+
+.member-info {
+    font-size: 0.85rem;
+    line-height: 1.3;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: opacity 0.3s ease, max-height 0.3s ease;
+}
+
+.member:hover .member-info {
+    opacity: 1;
+    max-height: 500px;
+}
+
+.member-reviews {
+    display: grid;
+    gap: 0.4rem;
+    margin-bottom: 0.5rem;
+}
+
+.pill {
+    background: var(--surface);
+    padding: 0.4rem 0.6rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    color: var(--text);
+}
+
+/* Server Reviews */
+.server-reviews {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.server-email-box {
+    background: var(--bg);
+    border-radius: 10px;
+    padding: 0.8rem;
+    text-align: left;
+    cursor: pointer;
+}
+
+.server-email-box ul {
+    padding-left: 1.2rem;
+    margin-top: 0.5rem;
+}
+
+.server-review-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem 1rem;
+}
+
+/* Buttons */
+.btn {
+    display: inline-block;
+    background: var(--accent);
+    color: #000;
+    border: none;
+    padding: 0.75rem 1.75rem;
+    font-size: 1rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    text-decoration: none;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(255, 60, 60, 0.35);
+}
+
+.ip-box {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 1.2rem;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 600;
+    cursor: pointer;
+    position: relative;
+}
+
+
+.ip-box:hover {
+    background: var(--surface);
+}
+
+
+.tooltip {
+    position: absolute;
+    bottom: -1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--accent);
+    color: #000;
+    padding: 0.3rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+
+.ip-box.copied .tooltip {
+    opacity: 1;
+}
+
+/* Game Grid */
+.games-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.game-box {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 1.5rem;
+    width: 260px;
+    text-align: center;
+    text-decoration: none;
+    color: var(--text);
+    transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+}
+
+.game-box:hover {
+    background: var(--surface);
+    transform: translateY(-5px);
+    box-shadow: 0 0 10px rgba(255, 60, 60, 0.2);
+}
+
+.game-box i {
+    font-size: 2rem;
+    color: var(--accent);
+    margin-bottom: 0.8rem;
+}
+
+.game-box span {
+    display: block;
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.game-box p {
+    color: var(--subtle);
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+footer {
+    text-align: center;
+    padding: 1.5rem 1rem;
+    font-size: 0.8rem;
+    color: var(--subtle);
+}
+
+
+
+
+
+.social-buttons {
+    margin-top: 2rem;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
