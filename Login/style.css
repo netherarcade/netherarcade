@@ -3,7 +3,9 @@
 :root {
       --bg: #141416;
       --surface: #1b1c1f;
-      --card: #222327;
+      /*--card: #222327; this color caused the
+       annoying gray box around the email and password text if removing this
+        causes any problems you'll know what it is*/
       --accent: #ffb347;
       --text: #f3f3f7;
       --subtle: #a7a7ad;
