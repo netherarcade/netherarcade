@@ -216,7 +216,7 @@
       <div class="layout">
           <!-- Shop Panel -->
           <aside class="panel shop-panel" id="shopPanel">
-              <h2>⭐ Shop</h2>
+              <h2><i class="fa-solid fa-star"></i> Shop</h2>
               <div style="display:flex;justify-content:space-between;align-items:center;">
                   <div style="font-size:14px;color:#fff;">Stars: <span id="starCount">0</span></div>
                   <button class="btn" onclick="tradeForStar()" style="background:#202; color:#dfffe9; padding:8px; border-radius:8px;">Trade 50T → +1 Star</button>
@@ -228,8 +228,8 @@
                           <small>Start with +Idle/sec × Prestige multiplier.</small>
                       </div>
                       <div class="cost">
-                          <div class="price">2⭐</div>
-                          <button class="buy" onclick="buyStarUpgrade(0)">Buy</button>
+                          <div class="price">2 <i class="fa-solid fa-star" style="color: rgb(255, 212, 59);"></i></div>
+                          <button class="buy" onclick="buyStarUpgrade(0)"> Buy</button>
                       </div>
                   </div>
                   <div class="item">
@@ -238,7 +238,7 @@
                           <small>Permanently double click value.</small>
                       </div>
                       <div class="cost">
-                          <div class="price">5⭐</div>
+                          <div class="price">5 <i class="fa-solid fa-star" style="color: rgb(255, 212, 59);"></i></div>
                           <button class="buy" onclick="buyStarUpgrade(1)">Buy</button>
                       </div>
                   </div>
@@ -248,7 +248,7 @@
                           <small>Unlock auto prestige toggle.</small>
                       </div>
                       <div class="cost">
-                          <div class="price">10⭐</div>
+                          <div class="price">10 <i class="fa-solid fa-star" style="color: rgb(255, 212, 59);"></i></div>
                           <button class="buy" onclick="buyStarUpgrade(2)">Buy</button>
                       </div>
                   </div>
@@ -258,7 +258,7 @@
                           <small>5% cheaper upgrades.</small>
                       </div>
                       <div class="cost">
-                          <div class="price">15⭐</div>
+                          <div class="price">15 <i class="fa-solid fa-star" style="color: rgb(255, 212, 59);"></i></div>
                           <button class="buy" onclick="buyStarUpgrade(3)">Buy</button>
                       </div>
                   </div>
@@ -275,8 +275,8 @@
               <div id="starBtn" class="star" title="Click me">★</div>
               <div class="controls">
                   <button class="btn save" onclick="saveGame()"><i class="fa-solid fa-floppy-disk"></i> Save</button>
-                  <button class="btn reset" onclick="hardReset()">🗑 Hard Reset</button>
-                  <button class="btn prestige" id="prestigeBtn" onclick="prestige()" disabled="disabled">🌟 Prestige</button>
+                  <button class="btn reset" onclick="hardReset()"><i class="fa-solid fa-trash-can"></i> Hard Reset</button>
+                  <button class="btn prestige" id="prestigeBtn" onclick="prestige()" disabled="disabled"><i class="fa-solid fa-star"></i> Prestige</button>
               </div>
               <div style="margin-top:14px;text-align:left;color:var(--muted);font-size:13px;">
                   <p>• Achievements are trophies (no stat boost).</p>
@@ -288,7 +288,7 @@
           </main>
           <!-- Upgrades & Achievements -->
           <aside class="panel side-panel">
-              <h2>Upgrades</h2>
+              <h2><i class="fa-solid fa-store"></i> Upgrades</h2>
               <div id="upgradeList" class="list">
                   <div class="item">
                       <div class="left">
@@ -341,20 +341,20 @@
                        </div>
                   </div>
               </div>
-              <h2 style="margin-top:18px;">Achievements</h2>
+              <h2 style="margin-top:18px;"><i class="fa-solid fa-award"></i> Achievements</h2>
               <div id="achievementsList" style="margin-top:8px;">
-                  <div class="achievement locked">🔒 First Click</div>
-                  <div class="achievement locked">🔒 Ten Up</div>
-                  <div class="achievement locked">🔒 Triple Digits</div>
-                  <div class="achievement locked">🔒 1,000!</div>
-                  <div class="achievement locked">🔒 Automation</div>
-                  <div class="achievement locked">🔒 5,000 Banked</div>
-                  <div class="achievement locked">🔒 A Lot of Ones</div>
-                  <div class="achievement locked">🔒 Money Money</div>
-                  <div class="achievement locked">🔒 Prestigious</div>
-                  <div class="achievement locked">🔒 Starry Eyed</div>
-                  <div class="achievement locked">🔒 Collector</div>
-                  <div class="achievement locked">🔒 True Grinder</div>
+                  <div class="achievement locked"><i class="fa-solid fa-lock"></i> First Click</div>
+                  <div class="achievement locked"><i class="fa-solid fa-lock"></i> Ten Up</div>
+                  <div class="achievement locked"><i class="fa-solid fa-lock"></i> Triple Digits</div>
+                  <div class="achievement locked"><i class="fa-solid fa-lock"></i> 1,000!</div>
+                  <div class="achievement locked"><i class="fa-solid fa-lock"></i> Automation</div>
+                  <div class="achievement locked"><i class="fa-solid fa-lock"></i> 5,000 Banked</div>
+                  <div class="achievement locked"><i class="fa-solid fa-lock"></i> A Lot of Ones</div>
+                  <div class="achievement locked"><i class="fa-solid fa-lock"></i> Money Money</div>
+                  <div class="achievement locked"><i class="fa-solid fa-lock"></i> Prestigious</div>
+                  <div class="achievement locked"><i class="fa-solid fa-lock"></i> Starry Eyed</div>
+                  <div class="achievement locked"><i class="fa-solid fa-lock"></i> Collector</div>
+                  <div class="achievement locked"><i class="fa-solid fa-lock"></i> True Grinder</div>
               </div>
           </aside>
       </div>
@@ -638,7 +638,7 @@ document.addEventListener('touchend', function (event) {
           <small>${s.desc}</small>
         </div>
         <div class="cost">
-          <div class="price">${s.cost}⭐</div>
+          <div class="price">${s.cost} <i class="fa-solid fa-star" style="color: rgb(255, 212, 59);"></i></div>
           <button class="buy" ${s.owned ? 'disabled' : ''} onclick="buyStarUpgrade(${i})">Buy</button>
         </div>
       </div>`;
@@ -671,7 +671,7 @@ document.addEventListener('touchend', function (event) {
           let html = '';
           achievements.forEach(a => {
               const cls = a.unlocked ? 'achievement unlocked' : 'achievement locked';
-              html += `<div class="${cls}">${a.unlocked ? '🏆 ' : '🔒 '}${a.name}</div>`;
+              html += `<div class="${cls}">${a.unlocked ? '<i class="fa-solid fa-trophy" style="color: rgb(255, 212, 59);"></i> ' : '<i class="fa-solid fa-lock"></i> '}${a.name}</div>`;
           });
           container.innerHTML = html;
       }
