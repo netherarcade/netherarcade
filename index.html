@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Nether Arcade – Home</title>
@@ -11,73 +12,7 @@
     <meta property="og:image" content="logo.png">
     <meta property="og:url" content="https://netherarcade.qzz.io">
     <meta name="twitter:card" content="summary_large_image">
-    <style>
-        :root {
-
-  --bg: #131316;
-  --surface: #1e1e22;
-  --card: #27272c;
-  --accent: #ff3c3c;
-  --text: #f3f3f7;
-  --subtle: #9f9fa6;
-  --green: #00ff88;
-}
-
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: "Inter", system-ui, sans-serif; background: var(--bg); color: var(--text); display: flex; flex-direction: column; min-height: 100vh; }
-.banner-wrap { position: relative; width: 100%; height: 260px; overflow: hidden; }
-.banner-img { width: 100%; height: 100%; object-fit: cover; }
-.banner-fade { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(19,19,22,0) 60%, var(--bg) 100%); }
-
-nav { position: sticky; top: 0; z-index: 10; background: var(--surface); display: flex; justify-content: center; gap: 1.5rem; padding: 0.75rem 1rem; border-bottom: 1px solid var(--card); }
-
-
-nav a { background: none; border: none; color: var(--subtle); font-size: 1rem; cursor: pointer; text-decoration: none; transition: color 0.2s ease; }
-
-
-nav a.active, nav a:hover { color: var(--accent); }
-
-
-main { flex: 1; padding: 2.5rem 1.5rem; display: flex; flex-direction: column; align-items: center; text-align: center; }
-
-
-section { width: 100%; max-width: 960px; }
-
-
-h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 1rem; }
-
-
-p { color: var(--subtle); line-height: 1.6; margin-bottom: 1.5rem; }
-
-
-.divider { color: var(--green); display: flex; justify-content: center; align-items: center; margin: 1.5rem 0; font-weight: 600; }
-
-
-
-
-
-/* Server IP Box */
-
-
-.ip-box { background: var(--card); border-radius: 12px; padding: 1.2rem; text-align: center; font-size: 1.2rem; font-weight: 600; cursor: pointer; position: relative; }
-
-
-.ip-box:hover { background: var(--surface); }
-
-
-.tooltip { position: absolute; bottom: -1.5rem; left: 50%; transform: translateX(-50%); background: var(--accent); color: #000; padding: 0.3rem 0.6rem; border-radius: 6px; font-size: 0.75rem; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
-
-
-.ip-box.copied .tooltip { opacity: 1; }
-
-
-
-
-
-footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: var(--subtle); }
-
-
-</style>
+    <link rel="stylesheet" href="style/main-style.css">
 </head>
 
 <body>
@@ -88,10 +23,12 @@ footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: var
     </div>
     <!-- Navigation -->
     <nav>
-        <a class="active" href="index">Home</a>
-        <a href="about">Team</a>
-        <a href="minigame.html">Mini-Game</a>
-        <a href="socials.html">Socials</a>
+        <nav>
+            <a href="index">Home</a>
+            <a href="about">Team</a>
+            <a class="active" href="minigame.html">Mini-Game</a>
+            <a href="socials.html">Socials</a>
+        </nav>
     </nav>
     <div id="user-info" style="position: fixed; top: 10px; left: 10px; font-family: sans-serif;"></div>
     <!-- Firebase SDKs for showing user info and logout -->
